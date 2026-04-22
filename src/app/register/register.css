@@ -1,0 +1,127 @@
+/* Full page center (FIXED) */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e8f5e9, #ffffff);
+  font-family: 'Segoe UI', sans-serif;
+  /* background-image:url() ; */
+}
+
+/* Center card */
+.register-form {
+  width: 340px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(0, 128, 0, 0.15);
+  text-align: center;
+  margin: 80px auto;
+}
+
+/* Title */
+.register-form h2 {
+  color: #2e7d32;
+  margin-bottom: 18px;
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+/* Labels */
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 10px ; /* space for icon */
+  border: 1px solid #c8e6c9;
+  border-radius: 10px;
+  outline: none;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+/* Focus */
+input:focus {
+  border-color: #43a047;
+  box-shadow: 0 0 6px rgba(67, 160, 71, 0.25);
+}
+
+/* PASSWORD WRAPPER FIX */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* input inside wrapper */
+.password-wrapper input {
+  width: 100%;
+  padding-right: 10px;
+}
+
+/* eye icon INSIDE input (RIGHT SIDE) */
+.password-wrapper span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #2e7d32;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #43a047, #1b5e20);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+/* Messages */
+.error {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+
+.success {
+  color: #2e7d32;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* login link */
+.login-link {
+  margin-top: 12px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.login-link a {
+  color: #2e7d32;
+  font-weight: 600;
+}

@@ -1,0 +1,128 @@
+<div class="page-bg">
+  <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()" class="form-container">
+    <h2 class="title">Doctor Register</h2>
+
+    <!-- BASIC INFO -->
+    <div class="section-header">Basic Information</div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Doctor Code *</label>
+        <input type="text" formControlName="doctorCode" placeholder="e.g. DOC-1042" />
+        <small *ngIf="f['doctorCode'].touched && f['doctorCode'].errors">
+          {{ fieldErrorMessage }}
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Years of Experience *</label>
+        <input type="number" formControlName="yearsExperience" placeholder="e.g. 8" />
+        <small *ngIf="f['yearsExperience'].touched && f['yearsExperience'].errors">
+          {{ fieldErrorMessage }}
+        </small>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Speciality *</label>
+        <select formControlName="speciality" (change)="onSpecialityChange($event)">
+          <option value="">Select speciality</option>
+          <option *ngFor="let s of specialityMap | keyvalue" [value]="s.key">
+            {{ s.key }}
+          </option>
+        </select>
+
+        <small *ngIf="f['speciality'].touched && f['speciality'].errors">
+          {{ fieldErrorMessage }}
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Hospital Affiliation</label>
+        <input type="text" formControlName="hospitalAffiliation" placeholder="e.g. AIMS Hospital" />
+      </div>
+    </div>
+
+    <!-- SUB SPECIALITY -->
+    <div class="field full">
+      <label>Sub Speciality</label>
+
+      <div class="subspec-box">
+        <div *ngFor="let sub of subSpecialities">
+          <label>
+            <input type="checkbox" [value]="sub" (change)="onSubSpecialityChange($event)" />
+            <!-- <input type="checkbox" [value]="sub" formControlName="subSpecialities"  (change)="onSubSpecialityChange($event)"> -->
+            {{ sub }}
+          </label>
+        </div>
+
+        <span *ngIf="subSpecialities.length === 0"> Select a speciality first </span>
+      </div>
+    </div>
+
+    <!-- LICENSE -->
+    <div class="section-header">License & Fees</div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>License Number *</label>
+        <input type="text" formControlName="licenseNumber" />
+        <small *ngIf="f['licenseNumber'].touched && f['licenseNumber'].errors">
+          {{ fieldErrorMessage }}
+        </small>
+      </div>
+
+      <div class="field">
+        <label>License Authority *</label>
+        <input type="text" formControlName="licenseAuthority" />
+        <small *ngIf="f['licenseAuthority'].touched && f['licenseAuthority'].errors">
+          {{ fieldErrorMessage }}
+        </small>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Consultation Fee (₹)</label>
+        <input type="number" formControlName="consultationFee" />
+      </div>
+
+      <div class="field">
+        <label>Languages Spoken</label>
+
+        <div class="dropdown" (click)="toggleLangDropdown($event)">
+          <div class="dropdown-box" >
+            <span *ngIf="selectedLanguages.length === 0"> Select languages </span>
+            <span class="has-value" *ngIf="selectedLanguages.length > 0">
+              {{ selectedLanguages.join(', ') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="dropdown-list" *ngIf="showLangDropdown">
+          <div
+            class="dropdown-item"
+            *ngFor="let lang of availableLanguages"
+            (click)="selectLanguage(lang, $event)"
+          >
+            <input
+              type="checkbox" [checked]="selectedLanguages.includes(lang)" (click)="selectLanguage(lang, $event)"
+            />
+
+            <span>{{ lang }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIO -->
+    <div class="field full">
+      <label>Bio</label>
+      <textarea formControlName="bio" rows="4"></textarea>
+    </div>
+
+    <button type="submit" [disabled]="doctorForm.invalid">Register Doctor</button>
+    <a routerLink="/register">dr</a>
+  </form>
+</div>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+   
+</head>
+
+<body>
+
+    <form [formGroup]="patientForm" (ngSubmit)="submitPatient()">
+
+<div class="container">
+    <h1>Patient Register</h1>
+
+    <!-- BASIC INFORMATION -->
+    <div class="pr-section">
+        <div class="section-label">Basic Information</div>
+
+        <div class="grid-2">
+            <div>
+                <label class="field-label">Patient Code *</label>
+                <input class="pr-input" type="text"
+                       formControlName="patientCode"
+                       placeholder="e.g. PAT-2041" />
+            </div>
+
+            <div>
+                <label class="field-label">Date of Birth *</label>
+                <input class="pr-input" type="date"
+                       formControlName="dateOfBirth" />
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div>
+                <label class="field-label">Gender *</label>
+                <div class="select-wrap">
+                    <select class="pr-select" formControlName="gender">
+                        <option value="">Select gender</option>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="field-label">Blood Type</label>
+                <div class="select-wrap">
+                    <select class="pr-select" formControlName="bloodType">
+                        <option value="">Select blood type</option>
+                        <option value="A_POS">A+</option>
+                        <option value="A_NEG">A−</option>
+                        <option value="B_POS">B+</option>
+                        <option value="B_NEG">B−</option>
+                        <option value="AB_POS">AB+</option>
+                        <option value="AB_NEG">AB−</option>
+                        <option value="O_POS">O+</option>
+                        <option value="O_NEG">O−</option>
+                        <option value="UNKNOWN">Unknown</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-1">
+            <label class="field-label">National ID</label>
+            <input class="pr-input" type="text"
+                   formControlName="nationalId"
+                   placeholder="AADHAAR / Passport Number" />
+        </div>
+    </div>
+
+    <!-- MEDICAL HISTORY -->
+    <div class="pr-section">
+        <div class="section-label">Medical History</div>
+
+        <div class="grid-1">
+            <label class="field-label">Medical History *</label>
+            <textarea class="pr-textarea"
+                      formControlName="medicalHistory"></textarea>
+        </div>
+
+        <div class="grid-2">
+
+            <!-- Allergies -->
+            <div>
+                <label class="field-label">Allergies</label>
+                <div class="pill-group">
+                    <label class="pill">
+                        <input type="checkbox" value="airborne"
+                         (change)="onCheckboxChange($event,'allergies')">
+                        <span>airborne</span>
+                    </label>
+
+                    <label class="pill">
+                        <input type="checkbox" value="food"
+                         (change)="onCheckboxChange($event,'allergies')">
+                        <span>food</span>
+                    </label>
+
+                    <label class="pill">
+                        <input type="checkbox" value="skin"
+                         (change)="onCheckboxChange($event,'allergies')">
+                        <span>skin</span>
+                    </label>
+
+                    <label class="pill">
+                        <input type="checkbox" value="drug allergies"
+                         (change)="onCheckboxChange($event,'allergies')">
+                        <span>drug allergies</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Chronic -->
+            <div>
+                <label class="field-label">Chronic Conditions</label>
+                <div class="pill-group">
+                    <label class="pill">
+                        <input type="checkbox" value="Diabetes"
+                         (change)="onCheckboxChange($event,'chronicConditions')">
+                        <span>Diabetes</span>
+                    </label>
+
+                    <label class="pill">
+                        <input type="checkbox" value="Hypertension"
+                         (change)="onCheckboxChange($event,'chronicConditions')">
+                        <span>Hypertension</span>
+                    </label>
+
+                    <label class="pill">
+                        <input type="checkbox" value="Asthma"
+                         (change)="onCheckboxChange($event,'chronicConditions')">
+                        <span>Asthma</span>
+                    </label>
+
+                    <label class="pill">
+                        <input type="checkbox" value="Heart Disease"
+                         (change)="onCheckboxChange($event,'chronicConditions')">
+                        <span>Heart Disease</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- INSURANCE -->
+    <div class="pr-section">
+        <div class="section-label">Insurance & Identity</div>
+
+        <div class="grid-2">
+            <input class="pr-input" type="text"
+                   formControlName="insuranceProvider"
+                   placeholder="Provider" />
+
+            <input class="pr-input" type="text"
+                   formControlName="policyNumber"
+                   placeholder="Policy Number" />
+        </div>
+
+        <div class="grid-2">
+            <input class="pr-input" type="date"
+                   formControlName="insuranceExpiry" />
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="pr-section">
+        <div class="section-label">Emergency Contact</div>
+
+        <div class="grid-2">
+            <input class="pr-input" type="text"
+                   formControlName="contactName"
+                   placeholder="Name" />
+
+            <input class="pr-input" type="tel"
+                   formControlName="contactPhone"
+                   placeholder="Phone" />
+        </div>
+    </div>
+
+    <!-- DOCTOR -->
+    <div class="pr-section">
+        <div class="section-label">Doctor & Notes</div>
+
+        <div class="grid-1">
+            <select class="pr-select" formControlName="doctorId">
+                <option value="">Select Doctor</option>
+                <option *ngFor="let doc of doctors" [value]="doc.id">
+                    Dr. {{ doc.name }} — {{ doc.specialization }}
+                </option>
+            </select>
+        </div>
+
+        <textarea class="pr-textarea"
+                  formControlName="notes"
+                  placeholder="Notes"></textarea>
+    </div>
+
+    <button class="pr-btn" type="submit">Register Patient</button>
+
+</div>
+
+</form>
+
+</body>
+
+</html>

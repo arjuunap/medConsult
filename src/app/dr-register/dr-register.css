@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap');
+
+/* ─────────────────────────────────────────
+   ROOT TOKENS
+───────────────────────────────────────── */
+:host{
+  --green-900: #0d2b1f;
+  --green-700: #1a5c3e;
+  --green-500: #2d8c62;
+  --green-400: #3aab79;
+  --green-200: #a8dfc4;
+  --green-100: #dff4eb;
+  --green-50:  #f2fbf6;
+
+  --glass-bg:      rgba(255, 255, 255, 0.22);
+  --glass-border:  rgba(255, 255, 255, 0.45);
+  --glass-shadow:  0 8px 40px rgba(13, 43, 31, 0.18);
+
+  --field-bg:      rgba(255, 255, 255, 0.72);
+  --field-border:  rgba(58, 171, 121, 0.3);
+  --field-focus:   #2d8c62;
+  --field-radius:  8px;
+
+  --text-main:     #0d2b1f;
+  --text-muted:    #5a8070;
+  --text-label:    #2a5042;
+
+  --radius-form:   18px;
+  --font-body:     'DM Sans', sans-serif;
+  --font-display:  'Playfair Display', serif;
+}
+
+/* ─────────────────────────────────────────
+   PAGE
+───────────────────────────────────────── */
+.page-bg {
+  min-height: 100vh;
+  background-image: url("/images/bg.jpeg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 16px;
+  font-family: var(--font-body);
+}
+
+/* ─────────────────────────────────────────
+   FORM GLASS CARD
+───────────────────────────────────────── */
+.form-container {
+  width: 900px;
+  max-width: 100%;
+  padding: 36px 40px;
+  border-radius: var(--radius-form);
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ─────────────────────────────────────────
+   TITLE
+───────────────────────────────────────── */
+.title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--green-900);
+  letter-spacing: -0.3px;
+  margin: 0 0 4px;
+}
+
+/* ─────────────────────────────────────────
+   SECTION HEADER
+───────────────────────────────────────── */
+.section-header {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--green-500);
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(58, 171, 121, 0.22);
+  margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────
+   GRID
+───────────────────────────────────────── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ─────────────────────────────────────────
+   FIELD
+───────────────────────────────────────── */
+.field {
+  position: relative;   /* 🔥 REQUIRED */
+  overflow: visible;        
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-label);
+  letter-spacing: 0.2px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+/* ─────────────────────────────────────────
+   INPUTS & TEXTAREA
+───────────────────────────────────────── */
+input[type="text"],
+input[type="number"],
+textarea {
+  padding: 10px 13px;
+  border-radius: var(--field-radius);
+  border: 1.5px solid var(--field-border);
+  background: var(--field-bg);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+  color: #9bbfb0;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  border-color: var(--field-focus);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(45, 140, 98, 0.12);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────
+   SELECT — custom arrow, no browser default
+───────────────────────────────────────── */
+select {
+  padding: 10px 36px 10px 13px;
+  border-radius: var(--field-radius);
+  border: 1.5px solid var(--field-border);
+  background-color: var(--field-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232d8c62' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-main);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+select:focus {
+  border-color: var(--field-focus);
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(45, 140, 98, 0.12);
+}
+
+select option {
+  background: #fff;
+  color: var(--text-main);
+}
+
+/* ─────────────────────────────────────────
+   ERROR
+───────────────────────────────────────── */
+small {
+  color: #d64545;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+small::before {
+  content: '⚠';
+  font-size: 10px;
+}
+
+/* ─────────────────────────────────────────
+   SUB SPECIALITY BOX
+───────────────────────────────────────── */
+.subspec-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--field-radius);
+  border: 1.5px solid var(--field-border);
+  background: var(--field-bg);
+  min-height: 44px;
+  align-items: center;
+}
+
+.subspec-box label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-main);
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  border-radius: 20px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.subspec-box label:hover {
+  background: var(--green-100);
+  border-color: var(--green-400);
+}
+
+.subspec-box input[type="checkbox"] {
+  accent-color: var(--green-500);
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  border: none;
+  background: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.subspec-box span {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────
+   MULTI SELECT / LANGUAGE DROPDOWN
+───────────────────────────────────────── */
+.multi-select-box,
+.dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.multi-header,
+.dropdown-box {
+  padding: 10px 36px 10px 13px;
+  border-radius: var(--field-radius);
+  border: 1.5px solid var(--field-border);
+  background: var(--field-bg)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232d8c62' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")
+    no-repeat right 12px center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(4px);
+  margin-bottom: 4px;
+}
+
+.multi-header:hover,
+.dropdown-box:hover {
+  border-color: var(--green-400);
+}
+
+.multi-header .has-value,
+.dropdown-box .has-value {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* dropdown lists */
+.multi-dropdown,
+.dropdown-list {
+  position: absolute;
+  top: 83px;
+  left:0;
+  z-index: 100;
+  width: 100%;
+  
+  border: 1.5px solid var(--field-border);
+  border-radius: var(--field-radius);
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(12px);
+  max-height: 190px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(13, 43, 31, 0.12);
+}
+
+/* each option row */
+.option,
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 13px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-main);
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(58, 171, 121, 0.08);
+}
+
+.option:last-child,
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.option:hover,
+.dropdown-item:hover {
+  background: var(--green-50);
+  color: var(--green-700);
+}
+
+/* checkbox inside option */
+.option input[type="checkbox"] {
+  accent-color: var(--green-500);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* scrollbar */
+.multi-dropdown::-webkit-scrollbar,
+.dropdown-list::-webkit-scrollbar {
+  width: 4px;
+}
+.multi-dropdown::-webkit-scrollbar-thumb,
+.dropdown-list::-webkit-scrollbar-thumb {
+  background: var(--green-200);
+  border-radius: 10px;
+}
+
+/* ─────────────────────────────────────────
+   SUBMIT BUTTON
+───────────────────────────────────────── */
+button[type="submit"] {
+  margin-top: 6px;
+  padding: 13px 28px;
+  border: none;
+  border-radius: var(--field-radius);
+  background: linear-gradient(135deg, var(--green-500) 0%, var(--green-700) 100%);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(45, 140, 98, 0.35);
+  align-self: flex-end;
+  min-width: 180px;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  opacity: 0.93;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(45, 140, 98, 0.45);
+}
+
+button[type="submit"]:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
