@@ -30,7 +30,7 @@ export class PatientRegisterComponent implements OnInit {
 
   initForm() {
     this.patientForm = this.fb.group({
-      userId: ['db9bec87-df6f-4c7d-9285-2d6ff13e273c'],
+      userId: ['c82a1aae-8aa1-4a6f-a1f3-990cc0673cec'],
       patientCode: [''],
       dateOfBirth: [''],
       gender: [''],

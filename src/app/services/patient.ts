@@ -16,7 +16,7 @@ export class PatientService {
     return this.http.post(this.baseUrl+ '/register', data);
   }
 
-  // GET - (optional)
+  // GET - (optional) 
   // getPatients(): Observable<any> {
   //   return this.http.get(this.baseUrl);
   // }

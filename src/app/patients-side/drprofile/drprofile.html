@@ -1,0 +1,59 @@
+<div *ngIf="doctor" class="profile-container">
+  <div class="card">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <button class="back-btn" (click)="goback()">
+        ←
+      </button>
+      <h2>Doctor Profile</h2>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+      <img src="images/drarjun.jpeg" alt="Doctor" class="avatar" />
+
+      <h3 class="doctor-name">{{ doctor.name }}</h3>
+
+      <p class="doctor-meta">
+        {{ doctor.specialization }} • {{ doctor.yearsExperience }} years experience
+      </p>
+
+      <div class="rating">
+        ⭐⭐⭐⭐⭐
+        <span>4.9 (128 reviews)</span>
+      </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+      <h4>Information</h4>
+
+      <div class="info-item">
+        <span>🏥 Hospital</span>
+        <p>{{ doctor.hospitalAffiliation }}</p>
+      </div>
+
+      <div class="info-item">
+        <span>🌐 Language</span>
+        <p>{{ doctor.languagesSpoken }}</p>
+      </div>
+
+      <div class="info-item">
+        <span>🟢 Availability</span>
+        <p class="available">Available Today</p>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="actions">
+      <button class="btn primary" (click)="goToSchedule(doctor.id)">
+        Book Consultation
+      </button>
+      <button class="btn secondary">
+        Send Message
+      </button>
+    </div>
+
+  </div>
+</div>

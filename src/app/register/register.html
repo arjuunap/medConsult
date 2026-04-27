@@ -1,116 +1,165 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
- 
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <h2>Create Account</h2>
+<div class="page-wrapper">
 
-  <!-- Full Name -->
-  <div class="form-group">
-    <label>First Name</label>
-    <input type="text" formControlName="firstName" />
-    
+  <div class="form-card">
 
-    <small *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors?.['required']" class="error">
-      First name is required
-    </small>
-  </div>
+    <!-- Top accent bar -->
+    <div class="card-accent"></div>
 
-  <div class="form-group">
-    <label>Last Name</label>
-    <input type="text" formControlName="lastName" />
-    
-
-    <small *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors?.['required']" class="error">
-      Last name is required
-    </small>
-  </div>
-
-  <!-- Email -->
-  <div class="form-group">
-    <label>Email</label>
-    <input type="email" formControlName="email" />
-
-    <small *ngIf="registerForm.get('email')?.touched" class="error">
-      <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
-      <span *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email</span>
-    </small>
-  </div>
-
-  <!-- Password -->
-  <div class="form-group">
-    <label>Password</label>
-
-    <div class="password-wrapper">
-      <input [type]="showPassword ? 'text' : 'password'" formControlName="password" />
-     <span (click)="togglePassword()">
-
-  <!-- Show icon -->
-  <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg"
-       width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path d="M12 5C6 5 2 12 2 12s4 7 10 7 10-7 10-7-4-7-10-7z"
-          stroke="black" stroke-width="2"/>
-    <circle cx="12" cy="12" r="3"
-            stroke="black" stroke-width="2"/>
-  </svg>
-
-  <!-- Hide icon -->
-  <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg"
-       width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path d="M2 2l20 20" stroke="black" stroke-width="2"/>
-    <path d="M12 5c6 0 10 7 10 7"
-          stroke="black" stroke-width="2"/>
-    <path d="M6 6c-2 1.5-4 6-4 6s4 7 10 7"
-          stroke="black" stroke-width="2"/>
-  </svg>
-
-</span>
+    <!-- Header inside card -->
+    <div class="card-header">
+      <div class="logo-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
+          <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402C1 3.518 4.945 1 8 1c2.026 0 3.98 1.012 5 2.997C14.02 2.012 15.974 1 18 1c3.055 0 7 2.518 7 6.191 0 4.105-5.369 8.863-11 14.402z" fill="#3aad6e"/>
+          <!-- cross symbol -->
+          <rect x="11" y="6" width="2" height="7" rx="1" fill="white"/>
+          <rect x="8" y="9" width="8" height="2" rx="1" fill="white"/>
+        </svg>
+      </div>
+      <h2>Register</h2>
+      <p>Create your account to access healthcare services</p>
     </div>
-  </div>
 
-  
-  <!-- Confirm Password -->
-<div class="form-group">
-  <label>Confirm Password</label>
-  <div class="password-wrapper">
-    <input [type]="showPassword ? 'text' : 'password'" formControlName="confirmPassword" />
+    <!-- Form Body -->
+    <div class="card-body">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
 
-    <span (click)="togglePassword()">
-      <!-- Show icon -->
-      <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M12 5C6 5 2 12 2 12s4 7 10 7 10-7 10-7-4-7-10-7z" stroke="black" stroke-width="2"/>
-        <circle cx="12" cy="12" r="3" stroke="black" stroke-width="2"/>
-      </svg>
+        <!-- Name Row -->
+        <div class="form-row">
 
-      <!-- Hide icon -->
-      <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M2 2l20 20" stroke="black" stroke-width="2"/>
-        <path d="M12 5c6 0 10 7 10 7" stroke="black" stroke-width="2"/>
-        <path d="M6 6c-2 1.5-4 6-4 6s4 7 10 7" stroke="black" stroke-width="2"/>
-      </svg>
-    </span>
+          <!-- First Name -->
+          <div class="form-group"
+            [class.field-error]="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.invalid"
+            [class.field-success]="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.valid">
+            <label for="firstName">First Name <span class="star">*</span></label>
+            <div class="input-box">
+              <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input id="firstName" type="text" formControlName="firstName" placeholder="John" autocomplete="given-name"/>
+              <svg class="check-icon" *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.valid" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3aad6e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="err-msg" *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors?.['required']">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#e05c5c"><circle cx="12" cy="12" r="10"/><rect x="11" y="7" width="2" height="6" fill="white" rx="1"/><rect x="11" y="15" width="2" height="2" fill="white" rx="1"/></svg>
+              First name is required
+            </span>
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group"
+            [class.field-error]="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.invalid"
+            [class.field-success]="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.valid">
+            <label for="lastName">Last Name <span class="star">*</span></label>
+            <div class="input-box">
+              <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input id="lastName" type="text" formControlName="lastName" placeholder="Doe" autocomplete="family-name"/>
+              <svg class="check-icon" *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.valid" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3aad6e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="err-msg" *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors?.['required']">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#e05c5c"><circle cx="12" cy="12" r="10"/><rect x="11" y="7" width="2" height="6" fill="white" rx="1"/><rect x="11" y="15" width="2" height="2" fill="white" rx="1"/></svg>
+              Last name is required
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Email -->
+        <div class="form-group"
+          [class.field-error]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+          [class.field-success]="registerForm.get('email')?.touched && registerForm.get('email')?.valid">
+          <label for="email">Email Address <span class="star">*</span></label>
+          <div class="input-box">
+            <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
+            <input id="email" type="email" formControlName="email" placeholder="john.doe@example.com" autocomplete="email"/>
+            <svg class="check-icon" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.valid" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3aad6e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="err-msg" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#e05c5c"><circle cx="12" cy="12" r="10"/><rect x="11" y="7" width="2" height="6" fill="white" rx="1"/><rect x="11" y="15" width="2" height="2" fill="white" rx="1"/></svg>
+            <span *ngIf="registerForm.get('email')?.errors?.['required']">Email address is required</span>
+            <span *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+          </span>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Password -->
+        <div class="form-group"
+          [class.field-error]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+          [class.field-success]="registerForm.get('password')?.touched && registerForm.get('password')?.valid">
+          <label for="password">Password <span class="star">*</span></label>
+          <div class="input-box">
+            <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Min. 6 characters" autocomplete="new-password"/>
+            <button type="button" class="eye-btn" (click)="togglePassword()">
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+
+          <!-- Password strength -->
+          <div class="strength-row" *ngIf="registerForm.get('password')?.value">
+            <div class="strength-track">
+              <div class="strength-fill" [style.width.%]="getPasswordStrength() * 33.3" [class.s1]="getPasswordStrength()===1" [class.s2]="getPasswordStrength()===2" [class.s3]="getPasswordStrength()===3"></div>
+            </div>
+            <span class="s-label s1-text" *ngIf="getPasswordStrength()===1">Weak</span>
+            <span class="s-label s2-text" *ngIf="getPasswordStrength()===2">Medium</span>
+            <span class="s-label s3-text" *ngIf="getPasswordStrength()===3">Strong</span>
+          </div>
+
+          <span class="err-msg" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#e05c5c"><circle cx="12" cy="12" r="10"/><rect x="11" y="7" width="2" height="6" fill="white" rx="1"/><rect x="11" y="15" width="2" height="2" fill="white" rx="1"/></svg>
+            <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
+            <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+          </span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group"
+          [class.field-error]="registerForm.get('confirmPassword')?.touched && (registerForm.get('confirmPassword')?.invalid || registerForm.errors?.['mismatch'])"
+          [class.field-success]="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.valid && !registerForm.errors?.['mismatch']">
+          <label for="confirmPassword">Confirm Password <span class="star">*</span></label>
+          <div class="input-box">
+            <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password"/>
+            <button type="button" class="eye-btn" (click)="toggleConfirmPassword()">
+              <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <span class="err-msg" *ngIf="registerForm.get('confirmPassword')?.touched && (registerForm.errors?.['mismatch'] || registerForm.get('confirmPassword')?.errors?.['required'])">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#e05c5c"><circle cx="12" cy="12" r="10"/><rect x="11" y="7" width="2" height="6" fill="white" rx="1"/><rect x="11" y="15" width="2" height="2" fill="white" rx="1"/></svg>
+            <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
+            <span *ngIf="registerForm.errors?.['mismatch'] && !registerForm.get('confirmPassword')?.errors?.['required']">Passwords do not match</span>
+          </span>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" [disabled]="registerForm.invalid">
+          Create Account
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+        <!-- Server messages -->
+        <div class="server-error" *ngIf="errorMsg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {{ errorMsg }}
+        </div>
+        <div class="server-success" *ngIf="successMsg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          {{ successMsg }}
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer">
+      Already have an account?
+      <a routerLink="/login">Sign in</a>
+    </div>
+
   </div>
 </div>
-
-  <!-- Password mismatch -->
-  <div class="form-group">
-    <small class="error" *ngIf="registerForm.errors?.['mismatch'] && registerForm.touched">
-      Passwords do not match ❌
-    </small>
-  </div>
-
-  <!-- Submit Button -->
-  <button type="submit" [disabled]="registerForm.invalid">
-    Register
-  </button>
-
-  <!-- Messages -->
-  <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
-  <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
-
-  <!-- Login Link -->
-  <p class="login-link">
-    Already have an account?
-    <a routerLink="/login">Login</a><br>
-    <a routerLink="/">dr</a>
-  </p>
-
-</form>

@@ -1,0 +1,155 @@
+<div class="schedule-wrapper" *ngIf="doctor?.length">
+  <div class="schedule-card" *ngFor="let d of doctor">
+    <div class="card-left">
+      <div class="day-badge">{{ d.dayOfWeek }}</div>
+    </div>
+
+    <div class="card-body">
+      <div class="time-row">
+        <div class="time-block">
+          <span class="time-label">Start</span>
+          <span class="time-value">{{ d.startTime }}</span>
+        </div>
+        <div class="time-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </div>
+        <div class="time-block">
+          <span class="time-label">End</span>
+          <span class="time-value">{{ d.endTime }}</span>
+        </div>
+      </div>
+      <div class="type-tag">{{ d.scheduleType }}</div>
+    </div>
+
+    <div class="card-action">
+      <button class="booking-btn" (click)="openBooking(d)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        Book Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: position:fixed covers ENTIRE viewport including sidebar & navbar -->
+<div class="modal-backdrop" *ngIf="showBookingForm" (click)="closeBooking()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <button class="modal-close" (click)="closeBooking()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <div class="modal-header">
+      <div class="modal-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <div>
+        <h3>Book Consultation</h3>
+        <p class="modal-sub">Fill in the details below to confirm your appointment</p>
+      </div>
+    </div>
+
+    <div class="schedule-pills">
+      <div class="pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        {{ selectedSchedule?.dayOfWeek }}
+      </div>
+      <div class="pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        {{ selectedSchedule?.startTime }} – {{ selectedSchedule?.endTime }}
+      </div>
+    </div>
+
+    <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()">
+      <div class="form-grid">
+
+        <div class="field">
+          <label>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            Location
+          </label>
+          <input type="text" formControlName="location" placeholder="Enter clinic or address" />
+          <span class="error-msg"
+            *ngIf="bookingForm.get('location')?.touched && bookingForm.get('location')?.invalid">
+            Location is required
+          </span>
+        </div>
+
+        <div class="field">
+          <label>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+            Appointment Type
+          </label>
+          <input type="text" formControlName="appointmentType" placeholder="e.g. General, Specialist" />
+          <span class="error-msg"
+            *ngIf="bookingForm.get('appointmentType')?.touched && bookingForm.get('appointmentType')?.invalid">
+            Appointment type is required
+          </span>
+        </div>
+
+        <div class="field full-width">
+          <label>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Scheduled At
+          </label>
+          <input type="datetime-local" formControlName="scheduledAt" />
+          <span class="error-msg"
+            *ngIf="bookingForm.get('scheduledAt')?.touched && bookingForm.get('scheduledAt')?.invalid">
+            Date & time is required
+          </span>
+        </div>
+
+        <div class="field full-width">
+          <label>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Notes
+          </label>
+          <textarea formControlName="notes" placeholder="Any special requirements or symptoms..."></textarea>
+          <span class="error-msg"
+            *ngIf="bookingForm.get('notes')?.touched && bookingForm.get('notes')?.invalid">
+            Notes are required
+          </span>
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="closeBooking()">Cancel</button>
+        <button type="submit" class="btn-confirm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Confirm Booking
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>

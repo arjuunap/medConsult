@@ -34,5 +34,25 @@ export class DoctorService {
     return this.http.post(this.apiUrl + '/doctors/register', data);
 
   }
+  userLogin(data:any){
+    return this.http.post(this.apiUrl + '/auth/login', data);
+  }
+getDoctorById(id: string) {
+    return this.http.get(`${this.apiUrl}/doctors/${id}`);
+  }
 
+   getDoctors() {
+    return this.http.get(this.apiUrl + '/doctors/all');
+  }
+
+  getscheduleById(id: string) {
+    return this.http.get(`${this.apiUrl}/doctors/${id}/schedules`);
+  }
+
+  bookConsultation(doctorId: string, patientId: string, data: any) {
+  return this.http.post(
+    `${this.apiUrl}/doctors/${doctorId}/book_consultation/${patientId}`,
+    data
+  );
+}
 }

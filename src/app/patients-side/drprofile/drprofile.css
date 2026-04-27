@@ -1,0 +1,140 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f7fb;
+}
+
+/* Container */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Card */
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.back-btn {
+  border: none;
+  background: #f0f2f5;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.topbar h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 20px;
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4CAF50;
+}
+
+.doctor-name {
+  margin: 10px 0 5px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.doctor-meta {
+  color: #666;
+  font-size: 14px;
+}
+
+.rating {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #ff9800;
+}
+
+/* Info Section */
+.info-section {
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+.info-section h4 {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.info-item {
+  margin-bottom: 12px;
+}
+
+.info-item span {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.info-item p {
+  margin: 0;
+  color: #555;
+}
+
+.available {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+/* Buttons */
+.actions {
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary {
+  background: #4CAF50;
+  color: white;
+}
+
+.primary:hover {
+  background: #43a047;
+}
+
+.secondary {
+  background: #f1f3f6;
+  color: #333;
+}
+
+.secondary:hover {
+  background: #e0e3e7;
+}

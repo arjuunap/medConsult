@@ -1,0 +1,40 @@
+
+<div class="card-container">
+  <div
+    class="doctor-card"
+    *ngFor="let doc of doctors; let i = index"
+    (click)="goToProfile(doc.id)"
+    [style.--i]="i"
+  >
+
+    <div class="avatar-wrap">
+      <div class="avatar-ring">
+        <img src="images/drarjun.jpeg" alt="Doctor Image" />
+      </div>
+    </div>
+
+    <div class="doctor-info">
+      <!-- <p class="doc-label">Physician</p> -->
+      <h2>Dr. {{ doc.name }}</h2>
+      <div class="spec-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.2">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+        {{ doc.specialization }}
+      </div>
+      <p class="bio">{{ doc.bio }}</p>
+    </div>
+
+    <div class="card-footer">
+      <span class="view-link">
+        View Profile
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </span>
+    </div>
+
+  </div>
+</div>

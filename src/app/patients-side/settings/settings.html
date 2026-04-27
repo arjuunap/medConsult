@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f5f5f3;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      background: #f5f5f3;
+      padding: 32px 28px;
+      min-height: 500px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .page-title { font-size: 22px; font-weight: 500; color: #111; }
+    .page-sub   { font-size: 13px; color: #888; margin-top: 4px; margin-bottom: 28px; }
+
+    .more-btn {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      border: 0.5px solid #e0ddd6;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; gap: 3px;
+    }
+    .more-btn span {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: #888;
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border: 0.5px solid #e0ddd6;
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+    .card.full { grid-column: 1 / -1; }
+
+    .sec-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 14px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 0.5px solid #f0ede8;
+    }
+    .row:last-child  { border-bottom: none; padding-bottom: 0; }
+    .row:first-of-type { padding-top: 0; }
+
+    .rlabel { font-size: 13.5px; color: #444; }
+
+    .rval {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #1a8f66;
+      display: flex; align-items: center; gap: 4px;
+      cursor: pointer;
+    }
+    .rval svg { width: 11px; height: 11px; opacity: 0.55; }
+
+    .badge-active {
+      font-size: 11px; font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #e1f5ee;
+      color: #1a8f66;
+      border: 0.5px solid #b0e4cf;
+    }
+
+    /* Prescriptions */
+    .rx-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .rx-count { font-size: 12px; color: #999; }
+
+    .rx-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 28px;
+    }
+
+    .rx-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 0;
+      border-bottom: 0.5px solid #f0ede8;
+    }
+    .rx-item:last-child { border-bottom: none; }
+
+    .dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .dot-blue { background: #378add; }
+    .dot-teal { background: #1a8f66; }
+
+    .rx-name { font-size: 14px; font-weight: 500; color: #111; }
+    .rx-meta { font-size: 11.5px; color: #999; margin-top: 2px; line-height: 1.5; }
+
+    .pill {
+      margin-left: auto; align-self: center;
+      font-size: 11px; font-weight: 500;
+      padding: 3px 10px; border-radius: 20px;
+      white-space: nowrap;
+    }
+    .pill-green { background: #e1f5ee; color: #1a8f66; border: 0.5px solid #b0e4cf; }
+    .pill-amber { background: #faeeda; color: #ba7517; border: 0.5px solid rgba(245, 196, 117, 0.5); }
+
+    .add-btn {
+      margin-top: 14px; width: 100%;
+      padding: 10px;
+      font-size: 13px; font-weight: 500;
+      color: #444;
+      background: #f5f5f3;
+      border: 0.5px solid #dddad4;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+    }
+    .add-btn:hover { background: #eceae6; }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <div class="header-row">
+      <div class="page-title">Settings</div>
+      <div class="more-btn">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="page-sub">Manage your privacy, account and health preferences</div>
+
+    <div class="grid">
+
+      <!-- Privacy -->
+      <div class="card">
+        <div class="sec-label">Privacy</div>
+        <div class="row">
+          <span class="rlabel">Profile visibility</span>
+          <span class="rval">
+            Doctors only
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4.5 3l3 3-3 3"/>
+            </svg>
+          </span>
+        </div>
+        <div class="row">
+          <span class="rlabel">Share health data</span>
+          <span class="rval">
+            Restricted
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4.5 3l3 3-3 3"/>
+            </svg>
+          </span>
+        </div>
+        <div class="row">
+          <span class="rlabel">Access log</span>
+          <span class="rval">
+            Enabled
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4.5 3l3 3-3 3"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- Account -->
+      <div class="card">
+        <div class="sec-label">Account</div>
+        <div class="row">
+          <span class="rlabel">Notifications</span>
+          <span class="rval">
+            On
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4.5 3l3 3-3 3"/>
+            </svg>
+          </span>
+        </div>
+        <div class="row">
+          <span class="rlabel">Language</span>
+          <span class="rval">
+            English
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4.5 3l3 3-3 3"/>
+            </svg>
+          </span>
+        </div>
+        <div class="row">
+          <span class="rlabel">Two-factor auth</span>
+          <span class="rval">
+            <span class="badge-active">Active</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Prescriptions -->
+      <div class="card full">
+        <div class="rx-header">
+          <div class="sec-label" style="margin-bottom: 0;">Prescriptions</div>
+          <span class="rx-count">2 active</span>
+        </div>
+        <div class="rx-grid">
+          <div class="rx-item">
+            <div class="dot dot-blue"></div>
+            <div style="flex: 1;">
+              <div class="rx-name">Metformin 500mg</div>
+              <div class="rx-meta">2× / day · Morning &amp; Evening</div>
+            </div>
+            <span class="pill pill-green">90 days left</span>
+          </div>
+          <div class="rx-item">
+            <div class="dot dot-teal"></div>
+            <div style="flex: 1;">
+              <div class="rx-name">Atorvastatin 20mg</div>
+              <div class="rx-meta">1× / night · Before bed</div>
+            </div>
+            <span class="pill pill-amber">30 days left</span>
+          </div>
+        </div>
+        <button class="add-btn">+ Add prescription</button>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

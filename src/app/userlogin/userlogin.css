@@ -1,5 +1,5 @@
 /* =====================================================
-   PATIENT REGISTER — CLEAN CARD DESIGN
+   PATIENT LOGIN — same style as Register
    White card · Visible inputs · Mint green theme
    Font: Plus Jakarta Sans
    ===================================================== */
@@ -26,13 +26,13 @@
 /* ─── Card ─── */
 .form-card {
   width: 100%;
-  max-width: 500px;
+  max-width: 460px;
   background: #ffffff;
   border-radius: 20px;
   box-shadow:
-    0 4px 6px rgba(0,0,0,0.04),
-    0 12px 40px rgba(0,0,0,0.10),
-    0 32px 64px rgba(0,0,0,0.07);
+    0 4px 6px rgba(0, 0, 0, 0.04),
+    0 12px 40px rgba(0, 0, 0, 0.10),
+    0 32px 64px rgba(0, 0, 0, 0.07);
   overflow: hidden;
   animation: cardIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -42,13 +42,13 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ─── Top accent stripe ─── */
+/* ─── Accent stripe ─── */
 .card-accent {
   height: 5px;
   background: linear-gradient(90deg, #3aad6e 0%, #5cba8a 50%, #8dd4ae 100%);
 }
 
-/* ─── Card Header ─── */
+/* ─── Header ─── */
 .card-header {
   padding: 30px 36px 24px;
   border-bottom: 1px solid #f0f0f0;
@@ -84,18 +84,12 @@
   font-weight: 400;
 }
 
-/* ─── Card Body ─── */
+/* ─── Body ─── */
 .card-body {
   padding: 28px 36px 24px;
 }
 
-/* ─── Form rows / groups ─── */
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
+/* ─── Form group ─── */
 .form-group {
   margin-bottom: 20px;
 }
@@ -107,6 +101,31 @@
   color: #2c4a38;
   margin-bottom: 7px;
   letter-spacing: 0.1px;
+}
+
+/* Label row — label + forgot link side by side */
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.label-row label {
+  margin-bottom: 0;
+}
+
+.forgot-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #3aad6e;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.forgot-link:hover {
+  color: #1e7044;
+  text-decoration: underline;
 }
 
 .star {
@@ -237,45 +256,6 @@
   margin-bottom: 20px;
 }
 
-/* ─── Password strength ─── */
-.strength-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.strength-track {
-  flex: 1;
-  height: 5px;
-  background: #e8f0eb;
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.strength-fill {
-  height: 100%;
-  border-radius: 99px;
-  transition: width 0.35s ease, background 0.35s ease;
-}
-
-.strength-fill.s1 { background: #e05c5c; }
-.strength-fill.s2 { background: #f09b3a; }
-.strength-fill.s3 { background: #3aad6e; }
-
-.s-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  width: 46px;
-  text-align: right;
-}
-
-.s1-text { color: #e05c5c; }
-.s2-text { color: #f09b3a; }
-.s3-text { color: #3aad6e; }
-
 /* ─── Submit button ─── */
 .submit-btn {
   width: 100%;
@@ -350,7 +330,7 @@
   border: 1.5px solid #a8ddc0;
 }
 
-/* ─── Card footer ─── */
+/* ─── Footer ─── */
 .card-footer {
   padding: 16px 36px 24px;
   text-align: center;
@@ -374,9 +354,11 @@
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 520px) {
+@media (max-width: 480px) {
   .card-header,
-  .card-body   { padding-left: 22px; padding-right: 22px; }
-  .card-footer { padding-left: 22px; padding-right: 22px; }
-  .form-row    { grid-template-columns: 1fr; gap: 0; }
+  .card-body,
+  .card-footer {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
 }

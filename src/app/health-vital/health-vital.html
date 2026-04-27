@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Record Vitals</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #f5f5f3;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+    .wrap {
+      background: #f5f5f3;
+      padding: 28px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 680px;
+    }
+    .header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .page-title { font-size: 20px; font-weight: 500; color: #111; }
+    .page-sub { font-size: 13px; color: #999; margin-bottom: 24px; }
+    .more-btn {
+      width: 30px; height: 30px; border-radius: 8px;
+      border: 0.5px solid #e0ddd6; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; gap: 3px;
+    }
+    .more-btn span {
+      width: 3px; height: 3px; border-radius: 50%;
+      background: #888; display: block;
+    }
+
+    .sec-label {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.09em;
+      text-transform: uppercase; color: #aaa; margin: 20px 0 10px;
+    }
+
+    .card {
+      background: #fff;
+      border: 0.5px solid #e4e1db;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field label { font-size: 11.5px; font-weight: 500; color: #666; }
+    .field-wrap {
+      display: flex; align-items: center;
+      border: 0.5px solid #e0ddd6;
+      border-radius: 9px;
+      background: #fafaf8;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .field-wrap:focus-within { border-color: #1a8f66; background: #fff; }
+    .field-wrap input {
+      flex: 1; padding: 9px 12px;
+      font-size: 13.5px; color: #111;
+      background: transparent; border: none; outline: none;
+      font-family: inherit;
+    }
+    .field-wrap input::placeholder { color: #ccc; }
+    .field-wrap input:disabled { color: #aaa; cursor: not-allowed; }
+    .unit {
+      padding: 0 10px;
+      font-size: 11px; color: #bbb; font-weight: 500;
+      border-left: 0.5px solid #f0ede8;
+      white-space: nowrap;
+      background: #f7f6f3;
+      align-self: stretch;
+      display: flex; align-items: center;
+    }
+
+    .bmi-bar-wrap { margin-top: 6px; }
+    .bmi-bar-bg {
+      height: 5px; border-radius: 10px;
+      background: linear-gradient(to right, #378add 0%, #1a8f66 35%, #f5c475 65%, #e05555 100%);
+      position: relative;
+    }
+    .bmi-needle {
+      position: absolute; top: -3px;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: #111;
+      transform: translateX(-50%);
+      transition: left 0.4s;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .bmi-note { font-size: 11px; color: #999; margin-top: 5px; }
+    .bmi-note span { font-weight: 500; }
+
+    .submit-btn {
+      width: 100%; padding: 12px;
+      background: #1a8f66; color: #fff;
+      border: none; border-radius: 11px;
+      font-size: 14px; font-weight: 500;
+      font-family: inherit; cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .submit-btn:hover { background: #167a57; }
+
+    .reset-btn {
+      width: 100%; padding: 11px;
+      background: #f5f5f3; color: #666;
+      border: 0.5px solid #e0ddd6; border-radius: 11px;
+      font-size: 13.5px; font-weight: 500;
+      font-family: inherit; cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s;
+    }
+    .reset-btn:hover { background: #ece9e4; }
+
+    .toast {
+      display: none;
+      background: #e1f5ee; color: #1a8f66;
+      border: 0.5px solid #b0e4cf;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13px; font-weight: 500;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    @media (max-width: 520px) {
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="header-row">
+      <div>
+        <div class="page-title">Record Vitals</div>
+      </div>
+      <div class="more-btn"><span></span><span></span><span></span></div>
+    </div>
+    <div class="page-sub">Enter patient biometric and health readings</div>
+
+    <!-- Cardiovascular -->
+    <div class="sec-label">Cardiovascular</div>
+    <div class="card">
+      <div class="grid-3">
+        <div class="field">
+          <label>Heart Rate</label>
+          <div class="field-wrap">
+            <input type="number" id="heartRate" placeholder="72" min="30" max="220">
+            <span class="unit">bpm</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>BP Systolic</label>
+          <div class="field-wrap">
+            <input type="number" id="bpSystolic" placeholder="120" min="60" max="250">
+            <span class="unit">mmHg</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>BP Diastolic</label>
+          <div class="field-wrap">
+            <input type="number" id="bpDiastolic" placeholder="80" min="40" max="150">
+            <span class="unit">mmHg</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Respiratory & Metabolic -->
+    <div class="sec-label">Respiratory & Metabolic</div>
+    <div class="card">
+      <div class="grid-2">
+        <div class="field">
+          <label>SpO₂</label>
+          <div class="field-wrap">
+            <input type="number" id="spo2" placeholder="98" min="70" max="100" step="0.1">
+            <span class="unit">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Temperature</label>
+          <div class="field-wrap">
+            <input type="number" id="temp" placeholder="36.6" min="34" max="42" step="0.1">
+            <span class="unit">°C</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Blood Glucose</label>
+          <div class="field-wrap">
+            <input type="number" id="glucose" placeholder="5.5" min="1" max="30" step="0.1">
+            <span class="unit">mmol/L</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body Metrics -->
+    <div class="sec-label">Body Metrics</div>
+    <div class="card">
+      <div class="grid-3" style="margin-bottom: 14px;">
+        <div class="field">
+          <label>Weight</label>
+          <div class="field-wrap">
+            <input type="number" id="weight" placeholder="70.0" min="10" max="300" step="0.1" oninput="calcBMI()">
+            <span class="unit">kg</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Height</label>
+          <div class="field-wrap">
+            <input type="number" id="height" placeholder="170" min="50" max="250" step="0.1" oninput="calcBMI()">
+            <span class="unit">cm</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>BMI <span style="font-weight:400; color:#bbb;">(auto)</span></label>
+          <div class="field-wrap">
+            <input type="number" id="bmi" placeholder="—" disabled>
+            <span class="unit">kg/m²</span>
+          </div>
+        </div>
+      </div>
+      <div class="bmi-bar-wrap">
+        <div class="bmi-bar-bg">
+          <div class="bmi-needle" id="bmiNeedle" style="left: 30%"></div>
+        </div>
+        <div class="bmi-note" id="bmiNote">Enter weight & height to calculate BMI</div>
+      </div>
+    </div>
+
+    <!-- Metadata -->
+    <div class="sec-label">Metadata</div>
+    <div class="card">
+      <div class="grid-2">
+        <div class="field">
+          <label>Recorded At</label>
+          <div class="field-wrap">
+            <input type="datetime-local" id="recordedAt" style="padding: 8px 12px; font-size: 13px;">
+          </div>
+        </div>
+        <div class="field">
+          <label>Recorded By (User ID)</label>
+          <div class="field-wrap">
+            <input type="text" id="recordedBy" placeholder="user_id">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm()">Save Vitals Record</button>
+    <button class="reset-btn" onclick="resetForm()">Reset</button>
+    <div class="toast" id="toast">✓ Vitals saved successfully</div>
+
+  </div>
+
+  <script>
+    // Set default datetime to now
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById('recordedAt').value = now.toISOString().slice(0, 16);
+
+    function calcBMI() {
+      const w = parseFloat(document.getElementById('weight').value);
+      const h = parseFloat(document.getElementById('height').value);
+      const bmiField = document.getElementById('bmi');
+      const note = document.getElementById('bmiNote');
+      const needle = document.getElementById('bmiNeedle');
+
+      if (w && h && h > 0) {
+        const hm = h / 100;
+        const bmi = (w / (hm * hm)).toFixed(1);
+        bmiField.value = bmi;
+
+        let cat, color, pct;
+        if (bmi < 18.5)     { cat = 'Underweight'; color = '#378add'; pct = Math.max(5, (bmi / 18.5) * 25); }
+        else if (bmi < 25)  { cat = 'Normal';      color = '#1a8f66'; pct = 25 + ((bmi - 18.5) / 6.5) * 25; }
+        else if (bmi < 30)  { cat = 'Overweight';  color = '#ba7517'; pct = 50 + ((bmi - 25) / 5) * 25; }
+        else                { cat = 'Obese';        color = '#c93535'; pct = Math.min(95, 75 + ((bmi - 30) / 10) * 25); }
+
+        needle.style.left = pct + '%';
+        note.innerHTML = `BMI <span style="color:${color}">${bmi}</span> — <span style="color:${color}; font-weight:500">${cat}</span>`;
+      } else {
+        bmiField.value = '';
+        note.textContent = 'Enter weight & height to calculate BMI';
+        needle.style.left = '30%';
+      }
+    }
+
+    function submitForm() {
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 3000);
+    }
+
+    function resetForm() {
+      ['heartRate','bpSystolic','bpDiastolic','spo2','temp','glucose','weight','height','bmi','recordedBy']
+        .forEach(id => document.getElementById(id).value = '');
+      document.getElementById('bmiNote').textContent = 'Enter weight & height to calculate BMI';
+      document.getElementById('bmiNeedle').style.left = '30%';
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById('recordedAt').value = now.toISOString().slice(0, 16);
+    }
+  </script>
+</body>
+</html>

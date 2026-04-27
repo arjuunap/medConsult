@@ -1,0 +1,45 @@
+<div class="page">
+  <div class="card">
+
+    <!-- LEFT: Avatar + Identity -->
+    <div class="section identity">
+      <div class="avatar">{{ patient.initials }}</div>
+      <div class="id-block">
+        <h2 class="patient-name">{{ patient.name }}</h2>
+        <span class="patient-id">Patient · {{ patient.id }}</span>
+      </div>
+    </div>
+
+    <!-- <div class="divider"></div> -->
+
+    <!-- CENTER-LEFT: Next Appointment -->
+    <div class="section appt">
+      <span class="section-label">Next Appointment</span>
+      <span class="appt-time">{{ patient.nextAppt }}</span>
+    </div>
+
+    <!-- <div class="divider"></div> -->
+
+    <!-- CENTER-RIGHT: Alert -->
+    <div class="section alert-section">
+      <span class="section-label">Alert</span>
+      <span class=""> {{ patient.alert }}</span>
+    </div>
+
+    <!-- <div class="divider"></div> -->
+
+    <!-- RIGHT: Health Stats -->
+    <div class="section stats">
+      <span class="section-label">Health Summary</span>
+      <div class="stats-grid">
+        <div class="stat" *ngFor="let s of patient.stats">
+          <span class="stat-label">{{ s.label }}</span>
+          <span class="stat-value" [ngClass]="s.status">
+            {{ s.value }}<small *ngIf="s.unit"> {{ s.unit }}</small>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
