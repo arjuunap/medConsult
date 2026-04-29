@@ -1,0 +1,556 @@
+/* ─── CSS Custom Properties ─────────────────────────────────────── */
+:host {
+  --green-50:  #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-300: #86efac;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-700: #15803d;
+  --green-800: #166534;
+  --green-900: #14532d;
+
+  --white:    #ffffff;
+  --gray-50:  #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-700: #374151;
+  --gray-900: #111827;
+
+  --red-50:   #fef2f2;
+  --red-100:  #fee2e2;
+  --red-500:  #ef4444;
+  --red-600:  #dc2626;
+  --red-700:  #b91c1c;
+
+  --amber-50:  #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-500: #f59e0b;
+  --amber-700: #b45309;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+
+  display: block;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ─── Wrapper ────────────────────────────────────────────────────── */
+.vitals-wrapper {
+  background: var(--white);
+  border: 1px solid var(--green-200);
+  border-radius: var(--radius-xl);
+  padding: 24px 26px 22px;
+  max-width: 680px;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+}
+
+/* ─── Header ─────────────────────────────────────────────────────── */
+.vitals-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1.5px solid var(--green-100);
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: var(--green-600);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--white);
+}
+
+.header-text h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green-900);
+  margin: 0 0 2px;
+  letter-spacing: -0.3px;
+}
+
+.header-text p {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+.status-chip {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  color: var(--green-700);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--green-500);
+  border-radius: 50%;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ─── Vitals Grid ─────────────────────────────────────────────────── */
+.vitals-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 500px) {
+  .vitals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Vital Card ──────────────────────────────────────────────────── */
+.vital-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--green-50);
+  border: 1px solid var(--green-100);
+  border-radius: var(--radius-lg);
+  padding: 14px 14px 12px;
+  position: relative;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.vital-card:hover {
+  border-color: var(--green-300);
+  box-shadow: 0 2px 10px rgba(22, 163, 74, 0.1);
+}
+
+/* ─── Vital Icon ──────────────────────────────────────────────────── */
+.vital-icon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vital-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.vital-icon--bp     { background: #fce7f3; }
+.vital-icon--bp svg { stroke: #be185d; }
+
+.vital-icon--hr     { background: var(--red-100); }
+.vital-icon--hr svg { stroke: var(--red-600); }
+
+.vital-icon--spo2     { background: #ede9fe; }
+.vital-icon--spo2 svg { stroke: #7c3aed; }
+
+.vital-icon--temp     { background: #ffedd5; }
+.vital-icon--temp svg { stroke: #ea580c; }
+
+.vital-icon--glucose     { background: var(--amber-100); }
+.vital-icon--glucose svg { stroke: var(--amber-700); }
+
+.vital-icon--bmi     { background: var(--green-100); }
+.vital-icon--bmi svg { stroke: var(--green-700); }
+
+/* ─── Vital Info ──────────────────────────────────────────────────── */
+.vital-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.vital-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  line-height: 1;
+}
+
+.vital-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.vital-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gray-900);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.vital-sep {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--gray-400);
+  margin: 0 1px;
+}
+
+.vital-unit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-400);
+  margin-bottom: 1px;
+}
+
+.vital-sub {
+  font-size: 10px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
+/* ─── Status Badge ────────────────────────────────────────────────── */
+.vital-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.badge--normal {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+}
+
+.badge--warning {
+  background: var(--amber-100);
+  color: var(--amber-700);
+  border: 1px solid #fcd34d;
+}
+
+.badge--danger {
+  background: var(--red-100);
+  color: var(--red-700);
+  border: 1px solid #fca5a5;
+}
+
+/* ─── Section Divider ─────────────────────────────────────────────── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 14px;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--green-100);
+}
+
+.section-divider-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green-600);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+/* ─── Measurements Row ────────────────────────────────────────────── */
+.measurements-row {
+  display: flex;
+  align-items: center;
+  background: var(--green-50);
+  border: 1px solid var(--green-100);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.measure-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+}
+
+.measure-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--green-200);
+}
+
+.measure-icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  background: var(--green-100);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.measure-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--green-700);
+}
+
+.measure-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.measure-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gray-900);
+  letter-spacing: -0.4px;
+  line-height: 1;
+}
+
+.measure-unit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-400);
+}
+
+.measure-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* ─── Loading skeleton ───────────────────────────────────────────── */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.skeleton-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--green-50);
+  border: 1px solid var(--green-100);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--green-100) 25%, var(--green-50) 50%, var(--green-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-icon  { width: 36px; height: 36px; min-width: 36px; border-radius: var(--radius-sm); }
+.skeleton-lines { display: flex; flex-direction: column; gap: 7px; flex: 1; padding-top: 3px; }
+.skeleton-line  { height: 10px; border-radius: 4px; }
+.skeleton-line--short { width: 55%; }
+.skeleton-line--long  { width: 80%; height: 18px; }
+.skeleton-line--xs    { width: 40%; }
+
+.skeleton-measure {
+  display: flex;
+  gap: 12px;
+  background: var(--green-50);
+  border: 1px solid var(--green-100);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+}
+
+.skeleton-measure-block {
+  flex: 1;
+  height: 38px;
+  border-radius: var(--radius-md);
+}
+
+/* Loading chip */
+.status-chip--loading {
+  background: var(--green-50);
+  border-color: var(--green-200);
+  color: var(--green-700);
+}
+
+.chip-spinner {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--green-300);
+  border-top-color: var(--green-600);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Error State ────────────────────────────────────────────────── */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 8px;
+}
+
+.error-icon {
+  width: 48px;
+  height: 48px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.error-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--red-600);
+}
+
+.error-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+}
+
+.error-sub {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+.retry-btn {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  background: var(--green-600);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.retry-btn:hover { background: var(--green-700); }
+
+.retry-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke: var(--white);
+}
+
+/* ─── Header Actions (chip + edit button) ────────────────────────── */
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── Edit Vitals Button ─────────────────────────────────────────── */
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  background: var(--white);
+  border: 1.5px solid var(--green-500);
+  border-radius: 8px;
+  color: var(--green-700);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.edit-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke: var(--green-600);
+  transition: stroke 150ms ease;
+  flex-shrink: 0;
+}
+
+.edit-btn:hover {
+  background: var(--green-600);
+  border-color: var(--green-600);
+  color: var(--white);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+}
+
+.edit-btn:hover svg {
+  stroke: var(--white);
+}
+
+.edit-btn:active {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  box-shadow: none;
+}

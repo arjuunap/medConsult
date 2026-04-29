@@ -1,0 +1,320 @@
+<h1>Hello</h1>
+<div class="vitals-wrapper">
+    
+  <!-- ── Loading State ── -->
+  <ng-container *ngIf="loading">
+    <div class="vitals-header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="header-text">
+        <h2>Edit Vital Signs</h2>
+        <p>Fetching patient data…</p>
+      </div>
+      <span class="status-chip status-chip--loading">
+        <span class="chip-spinner"></span>
+        Loading
+      </span>
+    </div>
+    <div class="skeleton-grid">
+      <div class="skeleton-card" *ngFor="let n of [1,2,3,4,5,6]">
+        <div class="skeleton skeleton-icon"></div>
+        <div class="skeleton-lines">
+          <div class="skeleton skeleton-line skeleton-line--short"></div>
+          <div class="skeleton skeleton-line skeleton-line--long"></div>
+          <div class="skeleton skeleton-line skeleton-line--xs"></div>
+        </div>
+      </div>
+    </div>
+    <div class="skeleton-measure">
+      <div class="skeleton skeleton-measure-block"></div>
+      <div class="skeleton skeleton-measure-block"></div>
+    </div>
+  </ng-container>
+
+  <!-- ── Error State ── -->
+  <ng-container *ngIf="error && !loading">
+    <div class="error-state">
+      <div class="error-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <p class="error-title">Could not load vitals</p>
+      <p class="error-sub">{{ error }}</p>
+      <button class="retry-btn" (click)="retry()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-4.66"/>
+        </svg>
+        Try Again
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- ── Edit Form State ── -->
+  <ng-container *ngIf="vitalsForm && !loading">
+
+    <!-- Header -->
+    <div class="vitals-header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h2>Edit Vital Signs</h2>
+        <p>Update the patient's health metrics</p>
+      </div>
+      <span class="status-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Editing
+      </span>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast toast--success" *ngIf="successMessage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      {{ successMessage }}
+    </div>
+
+    <form [formGroup]="vitalsForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+      <!-- ── Vitals Grid ── -->
+      <div class="section-label">
+        <span class="section-bar"></span>Clinical Measurements
+      </div>
+
+      <div class="vitals-grid">
+
+        <!-- Blood Pressure -->
+        <div class="vital-card">
+          <div class="vital-icon vital-icon--bp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">Blood Pressure</span>
+            <div class="bp-row">
+              <div class="field-wrap">
+                <input class="vital-input"
+                       type="number"
+                       formControlName="bpSystolic"
+                       placeholder="Systolic"
+                       [class.is-invalid]="isInvalid('bpSystolic')" />
+                <span class="field-unit">mmHg</span>
+                <span class="field-hint">Systolic</span>
+              </div>
+              <span class="bp-sep">/</span>
+              <div class="field-wrap">
+                <input class="vital-input"
+                       type="number"
+                       formControlName="bpDiastolic"
+                       placeholder="Diastolic"
+                       [class.is-invalid]="isInvalid('bpDiastolic')" />
+                <span class="field-unit">mmHg</span>
+                <span class="field-hint">Diastolic</span>
+              </div>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('bpSystolic') || isInvalid('bpDiastolic')">Both BP values required</span>
+          </div>
+        </div>
+
+        <!-- Heart Rate -->
+        <div class="vital-card">
+          <div class="vital-icon vital-icon--hr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">Heart Rate</span>
+            <div class="field-wrap">
+              <input class="vital-input"
+                     type="number"
+                     formControlName="heartRateBpm"
+                     placeholder="0"
+                     [class.is-invalid]="isInvalid('heartRateBpm')" />
+              <span class="field-unit">bpm</span>
+              <span class="field-hint">Beats per minute</span>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('heartRateBpm')">Required</span>
+          </div>
+        </div>
+
+        <!-- SpO2 -->
+        <div class="vital-card">
+          <div class="vital-icon vital-icon--spo2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+              <line x1="9" y1="9" x2="9.01" y2="9"/>
+              <line x1="15" y1="9" x2="15.01" y2="9"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">Oxygen Saturation</span>
+            <div class="field-wrap">
+              <input class="vital-input"
+                     type="number"
+                     formControlName="spo2Percent"
+                     placeholder="0"
+                     [class.is-invalid]="isInvalid('spo2Percent')" />
+              <span class="field-unit">%</span>
+              <span class="field-hint">SpO₂ level</span>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('spo2Percent')">Required</span>
+          </div>
+        </div>
+
+        <!-- Temperature -->
+        <div class="vital-card">
+          <div class="vital-icon vital-icon--temp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">Temperature</span>
+            <div class="field-wrap">
+              <input class="vital-input"
+                     type="number"
+                     step="0.1"
+                     formControlName="temperatureC"
+                     placeholder="0.0"
+                     [class.is-invalid]="isInvalid('temperatureC')" />
+              <span class="field-unit">°C</span>
+              <span class="field-hint">Body temperature</span>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('temperatureC')">Required</span>
+          </div>
+        </div>
+
+        <!-- Blood Glucose -->
+        <div class="vital-card">
+          <div class="vital-icon vital-icon--glucose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C6 2 2 7 2 12s4 10 10 10 10-4.5 10-10S18 2 12 2z"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">Blood Glucose</span>
+            <div class="field-wrap">
+              <input class="vital-input"
+                     type="number"
+                     step="0.1"
+                     formControlName="bloodGlucoseMmol"
+                     placeholder="0.0"
+                     [class.is-invalid]="isInvalid('bloodGlucoseMmol')" />
+              <span class="field-unit">mmol/L</span>
+              <span class="field-hint">Fasting level</span>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('bloodGlucoseMmol')">Required</span>
+          </div>
+        </div>
+
+        <!-- BMI -->
+        <div class="vital-card">
+          <div class="vital-icon vital-icon--bmi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="7" r="4"/>
+              <path d="M5.5 20H18.5M12 11v9"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">BMI</span>
+            <div class="field-wrap">
+              <input class="vital-input"
+                     type="number"
+                     step="0.1"
+                     formControlName="bmi"
+                     placeholder="0.0"
+                     [class.is-invalid]="isInvalid('bmi')" />
+              <span class="field-unit">kg/m²</span>
+              <span class="field-hint">Body mass index</span>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('bmi')">Required</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Body Measurements ── -->
+      <div class="section-divider">
+        <span class="section-divider-label">Body Measurements</span>
+      </div>
+
+      <div class="measurements-row">
+        <div class="measure-card">
+          <div class="measure-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="2" x2="12" y2="22"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">Weight</span>
+            <div class="field-wrap">
+              <input class="vital-input"
+                     type="number"
+                     step="0.1"
+                     formControlName="weightKg"
+                     placeholder="0.0"
+                     [class.is-invalid]="isInvalid('weightKg')" />
+              <span class="field-unit">kg</span>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('weightKg')">Required</span>
+          </div>
+        </div>
+
+        <div class="measure-divider"></div>
+
+        <div class="measure-card">
+          <div class="measure-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="2" x2="12" y2="22"/>
+              <polyline points="17 7 12 2 7 7"/>
+              <polyline points="7 17 12 22 17 17"/>
+            </svg>
+          </div>
+          <div class="vital-fields">
+            <span class="vital-label">Height</span>
+            <div class="field-wrap">
+              <input class="vital-input"
+                     type="number"
+                     formControlName="heightCm"
+                     placeholder="0"
+                     [class.is-invalid]="isInvalid('heightCm')" />
+              <span class="field-unit">cm</span>
+            </div>
+            <span class="field-error" *ngIf="isInvalid('heightCm')">Required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Footer Actions ── -->
+      <div class="form-footer">
+        <button type="button" class="btn btn--ghost" (click)="resetForm()">
+          Reset Changes
+        </button>
+        <button type="submit" class="btn btn--primary" [disabled]="submitting">
+          <span class="btn-spinner" *ngIf="submitting"></span>
+          <svg *ngIf="!submitting" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M5 12l5 5L20 7"/>
+          </svg>
+          {{ submitting ? 'Saving…' : 'Save Changes' }}
+        </button>
+      </div>
+
+    </form>
+  </ng-container>
+
+</div>

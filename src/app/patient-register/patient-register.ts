@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DoctorService } from '../services/doctor';
-import { PatientService } from '../services/patient';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +18,6 @@ export class PatientRegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService,
-    private patientService: PatientService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -30,7 +28,7 @@ export class PatientRegisterComponent implements OnInit {
 
   initForm() {
     this.patientForm = this.fb.group({
-      userId: ['c82a1aae-8aa1-4a6f-a1f3-990cc0673cec'],
+      userId: ['971c9a3c-f96e-4c55-9fd2-5ffad2f57e52'],
       patientCode: [''],
       dateOfBirth: [''],
       gender: [''],
@@ -54,7 +52,7 @@ export class PatientRegisterComponent implements OnInit {
   }
 
   loadDoctors() {
-    this.doctorService.getAllDoctors().subscribe({
+    this.doctorService.getDoctors().subscribe({
       next: (res: any) => {
         this.doctors = Array.isArray(res) ? res : [];
         this.cd.detectChanges();
@@ -81,7 +79,7 @@ export class PatientRegisterComponent implements OnInit {
 
     console.log('Sending:', formData);
 
-    this.patientService.registerPatient(formData).subscribe({
+    this.doctorService.registerPatient(formData).subscribe({
       next: (res) => {
         console.log('Success:', res);
         alert('Patient registered successfully!');

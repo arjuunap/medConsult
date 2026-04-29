@@ -9,11 +9,21 @@ import { Drprofile } from './patients-side/drprofile/drprofile';
 import { Schedul } from './patients-side/schedul/schedul';
 import { Settings } from './patients-side/settings/settings';
 import { HealthVital } from './health-vital/health-vital';
+import { DrRegister } from './dr-register/dr-register';
+import { LabResultSubmissionComponent } from './lab-result-form/lab-result-form';
+import { VitalsDetailComponent } from './show-vitals/show-vitals';
+import { VitalsEditComponent } from './edit-vitals/edit-vitals';
+
 export const routes: Routes = [
    { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: Userlogin },
     { path: 'register', component: Register },
     { path: 'patient-register', component: PatientRegisterComponent },
+    { path: 'dr-register', component: DrRegister },
+    {path : 'lab-result', component : LabResultSubmissionComponent},
+    {path : 'show-vitals', component : VitalsDetailComponent},
+    { path: 'edit-vitals/:labResultId', component: VitalsEditComponent },
+    
     {
     path: 'layout',
     component: LayoutComponent,

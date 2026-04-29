@@ -1,0 +1,233 @@
+<div class="vitals-wrapper">
+
+  <!-- ── Loading State ── -->
+  <ng-container *ngIf="loading">
+    <div class="vitals-header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="header-text">
+        <h2>Vital Signs</h2>
+        <p>Fetching patient data…</p>
+      </div>
+      <span class="status-chip status-chip--loading">
+        <span class="chip-spinner"></span>
+        Loading
+      </span>
+    </div>
+    <div class="skeleton-grid">
+      <div class="skeleton-card" *ngFor="let n of [1,2,3,4,5,6]">
+        <div class="skeleton skeleton-icon"></div>
+        <div class="skeleton-lines">
+          <div class="skeleton skeleton-line skeleton-line--short"></div>
+          <div class="skeleton skeleton-line skeleton-line--long"></div>
+          <div class="skeleton skeleton-line skeleton-line--xs"></div>
+        </div>
+      </div>
+    </div>
+    <div class="skeleton-measure">
+      <div class="skeleton skeleton-measure-block"></div>
+      <div class="skeleton skeleton-measure-block"></div>
+    </div>
+  </ng-container> 
+
+  <!-- ── Error State ── -->
+  <ng-container *ngIf="error && !loading">
+    <div class="error-state">
+      <div class="error-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <p class="error-title">Could not load vitals</p>
+      <p class="error-sub">{{ error }}</p>
+      <button class="retry-btn" (click)="retry()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.66"/></svg>
+        Try Again
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- ── Data State ── -->
+  <ng-container *ngIf="vitals && !loading">
+
+    <!-- Header -->
+    <div class="vitals-header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h2>Vital Signs</h2>
+        <p>Patient health metrics overview</p>
+      </div>
+      <div class="header-actions">
+        <span class="status-chip">
+          <span class="pulse-dot"></span>
+          Recorded
+        </span>
+        <button class="edit-btn" (click)="onEdit()" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          Edit Vitals
+        </button>
+      </div>
+    </div>
+
+    <!-- Vitals Grid -->
+    <div class="vitals-grid">
+
+      <!-- Blood Pressure -->
+      <div class="vital-card">
+        <div class="vital-icon vital-icon--bp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <div class="vital-info">
+          <span class="vital-label">Blood Pressure</span>
+          <div class="vital-value-row">
+            <span class="vital-value">{{ vitals.bpSystolic }}<span class="vital-sep">/</span>{{ vitals.bpDiastolic }}</span>
+            <span class="vital-unit">mmHg</span>
+          </div>
+          <span class="vital-sub">Systolic / Diastolic</span>
+        </div>
+        <span class="vital-badge" [ngClass]="getBpStatus()">{{ getBpLabel() }}</span>
+      </div>
+
+      <!-- Heart Rate -->
+      <div class="vital-card">
+        <div class="vital-icon vital-icon--hr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="vital-info">
+          <span class="vital-label">Heart Rate</span>
+          <div class="vital-value-row">
+            <span class="vital-value">{{ vitals.heartRateBpm }}</span>
+            <span class="vital-unit">bpm</span>
+          </div>
+          <span class="vital-sub">Beats per minute</span>
+        </div>
+        <span class="vital-badge" [ngClass]="getHrStatus()">{{ getHrLabel() }}</span>
+      </div>
+
+      <!-- SpO2 -->
+      <div class="vital-card">
+        <div class="vital-icon vital-icon--spo2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
+          </svg>
+        </div>
+        <div class="vital-info">
+          <span class="vital-label">Oxygen Saturation</span>
+          <div class="vital-value-row">
+            <span class="vital-value">{{ vitals.spo2Percent }}</span>
+            <span class="vital-unit">%</span>
+          </div>
+          <span class="vital-sub">SpO₂ level</span>
+        </div>
+        <span class="vital-badge" [ngClass]="getSpo2Status()">{{ getSpo2Label() }}</span>
+      </div>
+
+      <!-- Temperature -->
+      <div class="vital-card">
+        <div class="vital-icon vital-icon--temp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+          </svg>
+        </div>
+        <div class="vital-info">
+          <span class="vital-label">Temperature</span>
+          <div class="vital-value-row">
+            <span class="vital-value">{{ vitals.temperatureC }}</span>
+            <span class="vital-unit">°C</span>
+          </div>
+          <span class="vital-sub">Body temperature</span>
+        </div>
+        <span class="vital-badge" [ngClass]="getTempStatus()">{{ getTempLabel() }}</span>
+      </div>
+
+      <!-- Blood Glucose -->
+      <div class="vital-card">
+        <div class="vital-icon vital-icon--glucose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6 2 2 7 2 12s4 10 10 10 10-4.5 10-10S18 2 12 2z"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <div class="vital-info">
+          <span class="vital-label">Blood Glucose</span>
+          <div class="vital-value-row">
+            <span class="vital-value">{{ vitals.bloodGlucoseMmol }}</span>
+            <span class="vital-unit">mmol/L</span>
+          </div>
+          <span class="vital-sub">Fasting level</span>
+        </div>
+        <span class="vital-badge" [ngClass]="getGlucoseStatus()">{{ getGlucoseLabel() }}</span>
+      </div>
+
+      <!-- BMI -->
+      <div class="vital-card">
+        <div class="vital-icon vital-icon--bmi">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="7" r="4"/>
+            <path d="M5.5 20H18.5M12 11v9"/>
+          </svg>
+        </div>
+        <div class="vital-info">
+          <span class="vital-label">BMI</span>
+          <div class="vital-value-row">
+            <span class="vital-value">{{ vitals.bmi }}</span>
+            <span class="vital-unit">kg/m²</span>
+          </div>
+          <span class="vital-sub">Body mass index</span>
+        </div>
+        <span class="vital-badge" [ngClass]="getBmiStatus()">{{ getBmiLabel() }}</span>
+      </div>
+
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider">
+      <span class="section-divider-label">Body Measurements</span>
+    </div>
+
+    <!-- Measurements -->
+    <div class="measurements-row">
+      <div class="measure-card">
+        <div class="measure-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="22"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="measure-info">
+          <span class="measure-value">{{ vitals.weightKg }} <span class="measure-unit">kg</span></span>
+          <span class="measure-label">Weight</span>
+        </div>
+      </div>
+      <div class="measure-divider"></div>
+      <div class="measure-card">
+        <div class="measure-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="22"/>
+            <polyline points="17 7 12 2 7 7"/>
+            <polyline points="7 17 12 22 17 17"/>
+          </svg>
+        </div>
+        <div class="measure-info">
+          <span class="measure-value">{{ vitals.heightCm }} <span class="measure-unit">cm</span></span>
+          <span class="measure-label">Height</span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

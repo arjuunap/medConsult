@@ -39,7 +39,7 @@ export class DrRegister implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.doctorService.getAllDoctors().subscribe({
+    this.doctorService.getDoctors().subscribe({
       next: (res) => {
         console.log('Doctors :', res); // 👈 HERE is your output
       },
@@ -56,17 +56,17 @@ export class DrRegister implements OnInit {
     //     console.error('Error fetching doctors:', err);
     //   },
     // });
-    this.doctorService.getDoctor().subscribe({
-      next: (res) => {
-        console.log('Doctor :', res); // 👈 HERE is your output
-      },
-      error: (err) => {
-        console.error('Error fetching doctors:', err);
-      },
-    });
+    // this.doctorService.getDoctor().subscribe({
+    //   next: (res) => {
+    //     console.log('Doctor :', res); // 👈 HERE is your output
+    //   },
+    //   error: (err) => {
+    //     console.error('Error fetching doctors:', err);
+    //   },
+    // });
 
     this.doctorForm = this.fb.group({
-      userId:['a6634d1e-a070-4eb7-9a15-bacddbe9d5a3'],
+      userId:['54fc1965-18b2-4c2e-a4b8-0ef40c3c5305'],
       doctorCode: ['', Validators.required],
       speciality: ['', Validators.required],
       subSpecialities: [''],
