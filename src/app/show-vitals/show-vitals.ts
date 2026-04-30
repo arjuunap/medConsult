@@ -13,6 +13,7 @@ export interface VitalsData {
   spo2Percent: number;
   temperatureC: number;
   weightKg: number;
+  vitalId: string;
 }
 
 @Component({
@@ -63,7 +64,8 @@ export class VitalsDetailComponent implements OnChanges {
       next: (data) => {
         this.vitals = data;
         console.log('Fetched vitals:', data);
-        console.log("patient id",this.patientId)
+        console.log('vitals id :', this.vitals.vitalId);
+        
         this.cd.detectChanges();
       },
       error: (err) => {
@@ -78,7 +80,7 @@ export class VitalsDetailComponent implements OnChanges {
   }
 
  onEdit(): void {
-  this.router.navigate(['/edit-vitals', this.patientId]);
+  this.router.navigate(['/edit-vitals', this.vitals?.vitalId]);
 }
 
   retry(): void {

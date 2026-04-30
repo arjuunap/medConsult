@@ -81,9 +81,12 @@ export class DoctorService {
   showVitals(patientId: string) {
     return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${patientId}/vitals`);
   }
-  editVitals(data: any, labResultId: string) {
+  fetchVitals(vitalId: string) {
+    return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${vitalId}/getVital`);
+  }
+  editVitals(data: any, vitalId: string) {
     return this.http.put(
-      `${this.apiUrl}/lab-result/${labResultId}/vitals`
+      `${this.apiUrl}/lab-result/${vitalId}/vitals`
       , data);
   }
 

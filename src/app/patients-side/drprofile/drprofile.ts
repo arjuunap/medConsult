@@ -3,11 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DoctorService } from '../../services/doctor';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Schedul } from '../schedul/schedul';
 
 @Component({
   selector: 'app-drprofile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,Schedul],
   templateUrl: './drprofile.html',
   styleUrl: './drprofile.css',
 })

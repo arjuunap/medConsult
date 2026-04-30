@@ -22,7 +22,7 @@ export const routes: Routes = [
     { path: 'dr-register', component: DrRegister },
     {path : 'lab-result', component : LabResultSubmissionComponent},
     {path : 'show-vitals', component : VitalsDetailComponent},
-    { path: 'edit-vitals/:labResultId', component: VitalsEditComponent },
+    { path: 'edit-vitals/:vitalId', component: VitalsEditComponent },
     
     {
     path: 'layout',

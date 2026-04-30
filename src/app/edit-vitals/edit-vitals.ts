@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { DoctorService } from '../services/doctor';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 export interface VitalsData {
   bloodGlucoseMmol: number;
@@ -27,10 +28,10 @@ export interface VitalsData {
 })
 export class VitalsEditComponent implements OnChanges {
 
-  @Input() labResultId!: string;
+  
 
-
-
+  
+  vitalId: string = '';
   
 
   vitalsForm: FormGroup | null = null;
@@ -45,16 +46,21 @@ export class VitalsEditComponent implements OnChanges {
   constructor(private fb: FormBuilder, private http: HttpClient,
               private doctorService: DoctorService,
               private cd: ChangeDetectorRef,
-              private router: Router
+              private router: Router,
+              private route: ActivatedRoute
   ) {}
-
   ngOnChanges(changes: SimpleChanges): void {
+    throw new Error('Method not implemented.');
+  }
+
+  
     
-      this.fetchVitals();
       
     
-  }
+  
   ngOnInit(): void {
+    this.vitalId = String(this.route.snapshot.paramMap.get('vitalId'));
+    console.log(this.vitalId);
     this.fetchVitals();
     this.cd.detectChanges();
   }
@@ -64,7 +70,7 @@ export class VitalsEditComponent implements OnChanges {
     this.error      = null;
     this.vitalsForm = null;
 
-    this.doctorService.showVitals(this.labResultId).subscribe({
+    this.doctorService.fetchVitals(this.vitalId).subscribe({
       next: (data) => {
         this.originalData = data;
         this.buildForm(data);
@@ -106,9 +112,10 @@ export class VitalsEditComponent implements OnChanges {
     this.submitting = true;
     const payload: VitalsData = this.vitalsForm.getRawValue();
 
-    this.doctorService.editVitals(payload, this.labResultId).subscribe({
+    this.doctorService.editVitals(payload, this.vitalId).subscribe({
       next: (res) => {
         this.showSuccess('Vitals updated successfully!');
+        console.log('Update response:', res);
         this.originalData = payload; // Update original data to current
       },
       error: (err) => {
