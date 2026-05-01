@@ -4,6 +4,8 @@ import { DoctorService } from '../services/doctor';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-patient-register',
   imports: [CommonModule,FormsModule,ReactiveFormsModule],
@@ -18,7 +20,8 @@ export class PatientRegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -83,11 +86,13 @@ export class PatientRegisterComponent implements OnInit {
       next: (res) => {
         console.log('Success:', res);
         alert('Patient registered successfully!');
+        this.router.navigate(['/layout/home']);
+        
         this.patientForm.reset();
       },
       error: (err) => {
         console.error(err);
-        alert('Error while saving patient');
+        alert(err.error.message);
       }
     });
   }

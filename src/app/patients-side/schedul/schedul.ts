@@ -87,6 +87,7 @@ export class Schedul implements OnInit {
     this.doctorService.bookConsultation(this.doctorId, this.patientId, payload).subscribe({
       next: (res) => {
         console.log('Booking successful', res);
+        this.router.navigate(['layout/home']);
         this.closeBooking();
       },
       error: (err) => console.error('Booking failed', err),

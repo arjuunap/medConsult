@@ -92,6 +92,7 @@ toggleConfirmPassword() {
       next: (res) => {
         console.log('Success:', res);
         this.successMsg = 'Registration successful';
+        this.router.navigate(['/layout/home']);
         this.errorMsg = '';
       },
       error: (err) => {

@@ -116,6 +116,7 @@ export class VitalsEditComponent implements OnChanges {
       next: (res) => {
         this.showSuccess('Vitals updated successfully!');
         console.log('Update response:', res);
+        this.router.navigate(['layout/show-vitals']);
         this.originalData = payload; // Update original data to current
       },
       error: (err) => {

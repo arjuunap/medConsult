@@ -36,7 +36,7 @@ export class VitalsDetailComponent implements OnChanges {
   loading = false;
   error: string | null = null;
 
-  constructor(private http: HttpClient,
+  constructor(
               private doctorService: DoctorService,
               private cd: ChangeDetectorRef,
               private router: Router
@@ -74,13 +74,14 @@ export class VitalsDetailComponent implements OnChanges {
       },
       complete: () => {
         this.loading = false;
+
         this.cd.detectChanges();
       }
     });
   }
 
  onEdit(): void {
-  this.router.navigate(['/edit-vitals', this.vitals?.vitalId]);
+  this.router.navigate(['layout/edit-vitals', this.vitals?.vitalId]);
 }
 
   retry(): void {
