@@ -3,7 +3,7 @@
 /* ─────────────────────────────────────────
    ROOT TOKENS
 ───────────────────────────────────────── */
-:host{
+:host {
   --green-900: #0d2b1f;
   --green-700: #1a5c3e;
   --green-500: #2d8c62;
@@ -102,8 +102,8 @@
    FIELD
 ───────────────────────────────────────── */
 .field {
-  position: relative;   /* 🔥 REQUIRED */
-  overflow: visible;        
+  position: relative;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -126,6 +126,8 @@
 input[type="text"],
 input[type="number"],
 textarea {
+  width: 100%;
+  box-sizing: border-box;
   padding: 10px 13px;
   border-radius: var(--field-radius);
   border: 1.5px solid var(--field-border);
@@ -162,6 +164,8 @@ textarea {
    SELECT — custom arrow, no browser default
 ───────────────────────────────────────── */
 select {
+  width: 100%;
+  box-sizing: border-box;
   padding: 10px 36px 10px 13px;
   border-radius: var(--field-radius);
   border: 1.5px solid var(--field-border);
@@ -288,6 +292,8 @@ small::before {
   transition: border-color 0.2s, box-shadow 0.2s;
   backdrop-filter: blur(4px);
   margin-bottom: 4px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .multi-header:hover,
@@ -306,10 +312,9 @@ small::before {
 .dropdown-list {
   position: absolute;
   top: 83px;
-  left:0;
+  left: 0;
   z-index: 100;
   width: 100%;
-  
   border: 1.5px solid var(--field-border);
   border-radius: var(--field-radius);
   background: rgba(255, 255, 255, 0.97);
@@ -362,6 +367,7 @@ small::before {
 .dropdown-list::-webkit-scrollbar {
   width: 4px;
 }
+
 .multi-dropdown::-webkit-scrollbar-thumb,
 .dropdown-list::-webkit-scrollbar-thumb {
   background: var(--green-200);
@@ -403,4 +409,99 @@ button[type="submit"]:disabled {
   opacity: 0.45;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE — TABLET  (≤ 768px)
+───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .page-bg {
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 28px 24px;
+    border-radius: 14px;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 21px;
+  }
+
+  /* 2-col grid collapses to 1 col */
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* .full is a no-op at 1-col but keep it tidy */
+  .full {
+    grid-column: 1 / -1;
+  }
+
+  button[type="submit"] {
+    align-self: stretch;
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE — MOBILE  (≤ 480px)
+───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .page-bg {
+    padding: 16px 12px;
+  }
+
+  .form-container {
+    padding: 20px 16px;
+    border-radius: 12px;
+    gap: 14px;
+  }
+
+  .title {
+    font-size: 19px;
+  }
+
+  .section-header {
+    font-size: 10px;
+    letter-spacing: 1.1px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px; /* prevents iOS auto-zoom on focus */
+    padding: 11px 13px;
+  }
+
+  select {
+    padding-right: 36px;
+  }
+
+  .multi-header,
+  .dropdown-box {
+    font-size: 16px; /* same iOS fix */
+  }
+
+  .subspec-box label {
+    font-size: 11px;
+    padding: 4px 9px;
+  }
+
+  .option,
+  .dropdown-item {
+    font-size: 14px;
+    padding: 10px 12px; /* bigger tap target */
+  }
+
+  button[type="submit"] {
+    font-size: 15px;
+    padding: 14px 20px;
+  }
 }

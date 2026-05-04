@@ -154,7 +154,6 @@ export class HealthVital {
         this.success = true;
         this.errors = [];
 
-        // console.log('Vitals saved successfully', payload);
         console.log('Vitals saved successfully', res);
 
         setTimeout(() => (this.success = false), 3000);

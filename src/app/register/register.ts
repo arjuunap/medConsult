@@ -38,51 +38,51 @@ export class Register {
       { validators: this.passwordMatchValidator },
     );
     this.registerForm.get('password')?.valueChanges.subscribe(() => {
-  this.registerForm.get('confirmPassword')?.updateValueAndValidity();
-});
+      this.registerForm.get('confirmPassword')?.updateValueAndValidity();
+    });
 
-this.registerForm.get('confirmPassword')?.valueChanges.subscribe(() => {
-  this.registerForm.updateValueAndValidity();
-});
+    this.registerForm.get('confirmPassword')?.valueChanges.subscribe(() => {
+      this.registerForm.updateValueAndValidity();
+    });
   }
 
   // ✅ Password Match Validator
- passwordMatchValidator(form: AbstractControl) {
-  const password = form.get('password')?.value;
-  const confirmPassword = form.get('confirmPassword')?.value;
+  passwordMatchValidator(form: AbstractControl) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
 
-  if (!password || !confirmPassword) return null;
+    if (!password || !confirmPassword) return null;
 
-  return password === confirmPassword ? null : { mismatch: true };
-}
-getPasswordStrength(): number {
-  const pwd = this.registerForm.get('password')?.value || '';
-  if (pwd.length === 0) return 0;
- 
-  let score = 0;
-  if (pwd.length >= 6)  score++;                        
-  if (/[A-Z]/.test(pwd) || /[0-9]/.test(pwd)) score++; 
-  if (/[^a-zA-Z0-9]/.test(pwd)) score++;              
- 
-  return score; 
-}
+    return password === confirmPassword ? null : { mismatch: true };
+  }
+  getPasswordStrength(): number {
+    const pwd = this.registerForm.get('password')?.value || '';
+    if (pwd.length === 0) return 0;
+
+    let score = 0;
+    if (pwd.length >= 6) score++;
+    if (/[A-Z]/.test(pwd) || /[0-9]/.test(pwd)) score++;
+    if (/[^a-zA-Z0-9]/.test(pwd)) score++;
+
+    return score;
+  }
 
   //show password
- showPassword = false;
-showConfirmPassword = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
-togglePassword() {
-  this.showPassword = !this.showPassword;
-}
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
-toggleConfirmPassword() {
-  this.showConfirmPassword = !this.showConfirmPassword;
-}
+  toggleConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 
 
 
   onSubmit() {
-    
+
     if (this.registerForm.invalid) {
       return;
     }

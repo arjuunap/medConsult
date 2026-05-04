@@ -112,9 +112,13 @@
 .star {
   color: #e05c5c;
 }
+#lastName{
+  width: 100px;
+}
 
 /* ─── Input box ─── */
 .input-box {
+
   display: flex;
   align-items: center;
   position: relative;

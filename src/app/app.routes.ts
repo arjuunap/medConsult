@@ -13,7 +13,7 @@ import { DrRegister } from './dr-register/dr-register';
 import { LabResultSubmissionComponent } from './lab-result-form/lab-result-form';
 import { VitalsDetailComponent } from './show-vitals/show-vitals';
 import { VitalsEditComponent } from './edit-vitals/edit-vitals';
-
+import { Alllabresults } from './patients-side/alllabresults/alllabresults'
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Userlogin },
@@ -21,7 +21,6 @@ export const routes: Routes = [
   { path: 'patient-register', component: PatientRegisterComponent },
   { path: 'dr-register', component: DrRegister },
   { path: 'lab-result', component: LabResultSubmissionComponent },
-
 
 
   {
@@ -35,6 +34,7 @@ export const routes: Routes = [
       { path: 'settings', component: Settings },
       { path: 'show-vitals', component: VitalsDetailComponent },
       { path: 'edit-vitals/:vitalId', component: VitalsEditComponent },
+      {path : 'lab-results',component : Alllabresults},
       //   { path: 'chat', component: ChatComponent },
 
       { path: '', redirectTo: 'home', pathMatch: 'full' } // default child

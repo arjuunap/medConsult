@@ -1,0 +1,47 @@
+<div class="lab-wrapper">
+
+  <h3 class="lab-title">All Lab Results</h3>
+
+  <!-- ✅ DATA EXISTS -->
+  <ng-container *ngIf="labResults && labResults.length > 0; else noData">
+
+    <div class="lab-list">
+
+      <div
+        class="lab-card"
+        *ngFor="let result of labResults"
+        (click)="goTolabresult(result.patientId)"
+      >
+        <div class="lab-card-left">
+
+          <!-- ICON -->
+          <div class="panel-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+          </div>
+
+          <!-- INFO -->
+          <div class="lab-card-info">
+            <span class="panel-name">
+              {{ result?.user?.fullName || 'Unknown Patient' }}
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+  <!-- ❌ NO DATA -->
+  <ng-template #noData>
+    <div class="no-data">
+      <p>📄 No lab results found</p>
+    </div>
+  </ng-template>
+
+</div>

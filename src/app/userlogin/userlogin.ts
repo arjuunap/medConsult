@@ -26,11 +26,16 @@ export class Userlogin {
     
     this.showPassword = !this.showPassword;
   }
+  googleLogin(){
+    this.authService.googleLogin()
+  }
  
   onSubmit() {
   if (this.loginForm.invalid) return;
+  
 
   const { email, password } = this.loginForm.value;
+  
 
   this.authService.userLogin({ email, password }).subscribe({
     next: (res: any) => {

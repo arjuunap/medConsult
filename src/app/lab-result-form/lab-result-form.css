@@ -50,8 +50,7 @@
   max-width: 760px;
   width: 100%;
   box-shadow: var(--shadow-md);
-    margin: 40px auto;
-
+  margin: 40px auto;
 }
 
 /* ─── Header ─────────────────────────────────────────────────────── */
@@ -62,6 +61,7 @@
   padding-bottom: 20px;
   margin-bottom: 22px;
   border-bottom: 1.5px solid var(--green-100);
+  flex-wrap: wrap;   /* lets badge drop on very narrow widths */
 }
 
 .header-icon {
@@ -73,6 +73,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .header-icon svg {
@@ -163,6 +164,7 @@
   height: 13px;
   background: var(--green-500);
   border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .item-count {
@@ -175,6 +177,7 @@
   border-radius: 20px;
   text-transform: none;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 
 /* ─── Grid Layouts ───────────────────────────────────────────────── */
@@ -182,20 +185,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
-}
-
-@media (max-width: 540px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .lab-item-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
-
-  .field-test-name {
-    grid-column: 1 / -1 !important;
-  }
 }
 
 /* ─── Field Group ─────────────────────────────────────────────────── */
@@ -230,6 +219,7 @@
   outline: none;
   transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
   width: 100%;
+  box-sizing: border-box;
 }
 
 .form-input:hover {
@@ -304,6 +294,7 @@
   appearance: none;
   cursor: pointer;
   transition: border-color var(--transition), box-shadow var(--transition);
+  box-sizing: border-box;
 }
 
 .form-select:hover {
@@ -382,6 +373,8 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .item-number {
@@ -399,6 +392,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 /* Range Badges */
@@ -427,6 +421,7 @@
 .remove-item-btn {
   width: 26px;
   height: 26px;
+  min-width: 26px;
   border: 1px solid #fca5a5;
   border-radius: 50%;
   background: var(--red-50);
@@ -450,7 +445,7 @@
   stroke: var(--red-600);
 }
 
-/* Lab Item Grid */
+/* Lab Item Grid — 5-col desktop default */
 .lab-item-grid {
   display: grid;
   grid-template-columns: 1.8fr 0.9fr 0.85fr 0.8fr 0.8fr;
@@ -507,6 +502,7 @@
   margin-top: 20px;
   padding-top: 18px;
   border-top: 1px solid var(--green-100);
+  flex-wrap: wrap;
 }
 
 /* ─── Buttons ─────────────────────────────────────────────────────── */
@@ -523,6 +519,7 @@
   gap: 7px;
   transition: background var(--transition), border-color var(--transition), opacity var(--transition);
   border: none;
+  white-space: nowrap;
 }
 
 .btn--ghost {
@@ -565,4 +562,132 @@
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE — TABLET  (≤ 768px)
+───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .lab-form-wrapper {
+    padding: 22px 20px 20px;
+    margin: 20px auto;
+    border-radius: var(--radius-lg);
+  }
+
+  .form-header {
+    gap: 10px;
+    padding-bottom: 16px;
+    margin-bottom: 18px;
+  }
+
+  .header-badge {
+    /* on mid-width, keep badge inline but allow it to shrink */
+    margin-left: auto;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* lab item grid: name full-width on top, 4 value cols below */
+  .lab-item-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .field-test-name {
+    grid-column: 1 / -1;
+  }
+
+  .form-footer {
+    justify-content: stretch;
+  }
+
+  .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE — MOBILE  (≤ 480px)
+───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .lab-form-wrapper {
+    padding: 16px 14px 16px;
+    margin: 12px auto;
+    border-radius: var(--radius-md);
+  }
+
+  .form-header {
+    gap: 10px;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+  }
+
+  .header-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+
+  .header-text h2 {
+    font-size: 14px;
+  }
+
+  .header-badge {
+    /* badge drops to its own row on very small screens */
+    margin-left: 0;
+    align-self: flex-start;
+  }
+
+  .form-section {
+    padding: 14px 12px;
+  }
+
+  /* iOS auto-zoom fix */
+  .form-input,
+  .form-select {
+    font-size: 16px;
+    height: 42px;        /* slightly taller tap target */
+  }
+
+  .form-input::placeholder {
+    font-size: 14px;
+  }
+
+  /* lab item grid: all fields single column */
+  .lab-item-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .field-test-name {
+    grid-column: 1 / -1;
+  }
+
+  .lab-item {
+    padding: 12px;
+  }
+
+  .add-item-btn {
+    font-size: 14px;
+    height: 44px;        /* bigger tap target */
+  }
+
+  .form-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    height: 44px;
+  }
+
+  .btn--primary {
+    padding: 0 20px;
+  }
 }

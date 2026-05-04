@@ -43,7 +43,7 @@ export class VitalsEditComponent implements OnChanges {
   successMessage: string | null = null;
   private successTimer: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient,
+  constructor(private fb: FormBuilder, private http: HttpClient, 
               private doctorService: DoctorService,
               private cd: ChangeDetectorRef,
               private router: Router,
