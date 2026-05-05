@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DoctorService } from '../services/doctor';
+import { AuthService } from '../services/authServices/auth';
 
 @Component({
   selector: 'app-register',
@@ -26,6 +27,7 @@ export class Register {
     private fb: FormBuilder,
     private router: Router,
     private doctorService: DoctorService,
+    private authService: AuthService,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -79,7 +81,7 @@ export class Register {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
   signWithGoogle(){
-    this.doctorService.googleRegister()
+    this.authService.googleRegister()
   }
 
 
@@ -91,10 +93,11 @@ export class Register {
     }
 
     const { confirmPassword, ...formData } = this.registerForm.value;
-    this.doctorService.registerUser(formData).subscribe({
+    this.authService.registerUser(formData).subscribe({
       next: (res) => {
         console.log('Success:', res);
         this.successMsg = 'Registration successful';
+        localStorage.setItem('token', res.token);
         this.router.navigate(['/layout/home']);
         this.errorMsg = '';
       },

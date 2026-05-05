@@ -32,9 +32,7 @@ export class DoctorService {
   // saveUser(){
   //   return this.http.post(this.apiUrl + '/register');
   // }
-  registerUser(data: any) {
-    return this.http.post(this.apiUrl + '/auth/register', data);
-  }
+
   registerDoctor(data: any) {
     return this.http.post(this.apiUrl + '/doctors/register', data);
 
@@ -44,9 +42,7 @@ export class DoctorService {
   }
 
 
-  userLogin(data: any) {
-    return this.http.post(this.apiUrl + '/auth/login', data);
-  }
+  
   getDoctorById(id: string) {
     return this.http.get(`${this.apiUrl}/doctors/${id}`);
   }
@@ -96,14 +92,6 @@ export class DoctorService {
   getLabResults(patientId: string) {
   return this.http.get<any[]>(`${this.apiUrl}/lab-result/patient/${patientId}`);
 }
-
-googleLogin() {
-  window.location.href = 'http://192.168.1.22:8080/oauth2/authorization/google';
-}
-googleRegister(){
-  window.location.href = 'http://192.168.1.22:8080/oauth2/authorization/google';
-}
-
 
 
 
