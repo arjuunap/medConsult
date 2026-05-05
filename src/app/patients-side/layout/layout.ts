@@ -6,6 +6,7 @@ import { Drcard } from '../drcard/drcard';
 import { Drprofile } from '../drprofile/drprofile';
 import { DoctorService } from '../../services/doctor';
 import { AuthService } from '../../services/authServices/auth';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-layout',
   standalone: true,
@@ -14,7 +15,9 @@ import { AuthService } from '../../services/authServices/auth';
   styleUrls: ['./layout.css']
 })
 export class LayoutComponent {
-  constructor(private doctorService: DoctorService, private authService: AuthService) {}
+  constructor(private doctorService: DoctorService, private authService: AuthService,
+              private router: Router
+  ) {}
   // logout() {
   //   localStorage.removeItem('token');
   //   window.location.href = '/login';
@@ -22,6 +25,13 @@ export class LayoutComponent {
    logout() {
 
     this.authService.logout();
+  }
+
+  ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if(!token) {
+      this.router.navigate(['/login']);
+        }
   }
   
 }

@@ -14,6 +14,7 @@ import { LabResultSubmissionComponent } from './lab-result-form/lab-result-form'
 import { VitalsDetailComponent } from './show-vitals/show-vitals';
 import { VitalsEditComponent } from './edit-vitals/edit-vitals';
 import { Alllabresults } from './patients-side/alllabresults/alllabresults'
+import { authGuard } from './guards/auth-guard';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Userlogin },
@@ -26,6 +27,7 @@ export const routes: Routes = [
   {
     path: 'layout',
     component: LayoutComponent,
+    canActivate: [authGuard], 
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'doctors', component: Drcard },
