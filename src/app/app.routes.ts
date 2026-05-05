@@ -1,20 +1,23 @@
 import { Routes } from '@angular/router';
-import { PatientRegisterComponent } from './patient-register/patient-register';
-import { Register } from './register/register';
-import { Userlogin } from './userlogin/userlogin';
-import { LayoutComponent } from './patients-side/layout/layout';
-import { Drcard } from './patients-side/drcard/drcard';
-import { HomeComponent } from './patients-side/home/home';
-import { Drprofile } from './patients-side/drprofile/drprofile';
-import { Schedul } from './patients-side/schedul/schedul';
-import { Settings } from './patients-side/settings/settings';
-import { HealthVital } from './health-vital/health-vital';
-import { DrRegister } from './dr-register/dr-register';
-import { LabResultSubmissionComponent } from './lab-result-form/lab-result-form';
-import { VitalsDetailComponent } from './show-vitals/show-vitals';
-import { VitalsEditComponent } from './edit-vitals/edit-vitals';
-import { Alllabresults } from './patients-side/alllabresults/alllabresults'
+import { PatientRegisterComponent } from './components/patient-register/patient-register';
+import { Register } from './components/register/register';
+import { Userlogin } from './components/userlogin/userlogin';
+import { LayoutComponent } from './components/patients-side/layout/layout';
+import { Drcard } from './components/patients-side/drcard/drcard';
+import { HomeComponent } from './components/patients-side/home/home';
+import { Drprofile } from './components/patients-side/drprofile/drprofile';
+import { Schedul } from './components/patients-side/schedul/schedul';
+import { Settings } from './components/patients-side/settings/settings';
+import { HealthVital } from './components/health-vital/health-vital';
+import { DrRegister } from './components/dr-register/dr-register';
+import { LabResultSubmissionComponent } from './components/lab-result-form/lab-result-form';
+import { VitalsDetailComponent } from './components/show-vitals/show-vitals';
+import { VitalsEditComponent } from './components/edit-vitals/edit-vitals';
+import { Alllabresults } from './components/patients-side/alllabresults/alllabresults'
 import { authGuard } from './guards/auth-guard';
+import { AuthSucessComponent } from './components/auth-sucess-component/auth-sucess-component';
+
+
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Userlogin },
@@ -22,6 +25,7 @@ export const routes: Routes = [
   { path: 'patient-register', component: PatientRegisterComponent },
   { path: 'dr-register', component: DrRegister },
   { path: 'lab-result', component: LabResultSubmissionComponent },
+  {path : 'auth-success', component : AuthSucessComponent},
 
 
   {
@@ -37,11 +41,10 @@ export const routes: Routes = [
       { path: 'show-vitals', component: VitalsDetailComponent },
       { path: 'edit-vitals/:vitalId', component: VitalsEditComponent },
       {path : 'lab-results',component : Alllabresults},
-      //   { path: 'chat', component: ChatComponent },
-
-      { path: '', redirectTo: 'home', pathMatch: 'full' } // default child
+      {path : 'add-vitals/:patientId', component : HealthVital},
+      { path: '', redirectTo: 'home', pathMatch: 'full' } 
     ]
   },
-  { path: 'health-vital', component: HealthVital }
+  
 
 ];
