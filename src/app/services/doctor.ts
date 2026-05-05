@@ -103,4 +103,8 @@ googleLogin() {
 googleRegister(){
   window.location.href = 'http://192.168.1.22:8080/oauth2/authorization/google';
 }
+
+
+
+
 }

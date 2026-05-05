@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DoctorService } from '../services/doctor';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 
 @Component({
@@ -15,7 +15,8 @@ export class Userlogin {
    showPassword = false;
   errorMsg = '';
   successMsg = '';
-  constructor(private authService: DoctorService) {}
+  
+  constructor(private authService: DoctorService, private router: Router) {}
  
   loginForm = new FormGroup({
     email:    new FormControl('', [Validators.required, Validators.email]),
@@ -41,6 +42,10 @@ export class Userlogin {
     next: (res: any) => {
       console.log('Login success:', res);
       this.successMsg = 'Logged in successfully!';
+      localStorage.setItem('token', res.token);
+      this.router.navigate(['/layout']);
+      console.log('res token:', res.token);
+      console.log('Token stored in localStorage:', localStorage.getItem('token'));
       this.errorMsg = '';
     },
     error: (err) => {
