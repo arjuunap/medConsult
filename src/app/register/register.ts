@@ -78,6 +78,9 @@ export class Register {
   toggleConfirmPassword() {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
+  signWithGoogle(){
+    this.doctorService.googleRegister()
+  }
 
 
 

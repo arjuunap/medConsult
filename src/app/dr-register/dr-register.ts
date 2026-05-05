@@ -66,7 +66,7 @@ export class DrRegister implements OnInit {
     // });
 
     this.doctorForm = this.fb.group({
-      userId:['54fc1965-18b2-4c2e-a4b8-0ef40c3c5305'],
+      userId:['8e9e9340-059d-4bd0-85da-eceae52aa417'],
       doctorCode: ['', Validators.required],
       speciality: ['', Validators.required],
       subSpecialities: [''],

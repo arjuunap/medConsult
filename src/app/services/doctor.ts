@@ -11,7 +11,7 @@ import { VitalsData } from '../show-vitals/show-vitals';
 })
 export class DoctorService {
 
-  private apiUrl = 'http://192.168.1.22:8080/api'; // ⚠️ backend URL
+  private apiUrl = 'http://localhost:8080/api'; // ⚠️ backend URL
 
   constructor(private http: HttpClient) { }
 
@@ -98,6 +98,9 @@ export class DoctorService {
 }
 
 googleLogin() {
+  window.location.href = 'http://192.168.1.22:8080/oauth2/authorization/google';
+}
+googleRegister(){
   window.location.href = 'http://192.168.1.22:8080/oauth2/authorization/google';
 }
 }
