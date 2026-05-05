@@ -33,4 +33,7 @@ export class AuthService {
     localStorage.removeItem('token');
     window.location.href = '/';
   }
+  homeUserDetails(){
+    return this.http.get(this.apiUrl + '/me');
+  }
 }

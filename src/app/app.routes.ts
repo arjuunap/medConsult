@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'patient-register', component: PatientRegisterComponent },
   { path: 'dr-register', component: DrRegister },
   { path: 'lab-result', component: LabResultSubmissionComponent },
-  {path : 'auth-success', component : AuthSucessComponent},
+  {path : 'oauth-success', component : AuthSucessComponent},
 
 
   {
