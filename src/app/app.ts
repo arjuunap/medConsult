@@ -1,6 +1,4 @@
 import { Component, signal } from '@angular/core';
-// import { RouterOutlet } from '@angular/router';
-import { DrRegister } from './components/dr-register/dr-register';
 import { RouterOutlet } from '@angular/router';
 
 

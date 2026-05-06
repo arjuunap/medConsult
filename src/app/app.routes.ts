@@ -1,21 +1,30 @@
 import { Routes } from '@angular/router';
-import { PatientRegisterComponent } from './components/patient-register/patient-register';
-import { Register } from './components/register/register';
-import { Userlogin } from './components/userlogin/userlogin';
-import { LayoutComponent } from './components/patients-side/layout/layout';
-import { Drcard } from './components/patients-side/drcard/drcard';
-import { HomeComponent } from './components/patients-side/home/home';
-import { Drprofile } from './components/patients-side/drprofile/drprofile';
-import { Schedul } from './components/patients-side/schedul/schedul';
-import { Settings } from './components/patients-side/settings/settings';
-import { HealthVital } from './components/health-vital/health-vital';
-import { DrRegister } from './components/dr-register/dr-register';
-import { LabResultSubmissionComponent } from './components/lab-result-form/lab-result-form';
-import { VitalsDetailComponent } from './components/show-vitals/show-vitals';
-import { VitalsEditComponent } from './components/edit-vitals/edit-vitals';
-import { Alllabresults } from './components/patients-side/alllabresults/alllabresults'
-import { authGuard } from './guards/auth-guard';
-import { AuthSucessComponent } from './components/auth-sucess-component/auth-sucess-component';
+// Auth feature imports
+import { PatientRegisterComponent } from './features/patients/components/patient-register/patient-register';
+import { Register } from './features/auth/components/register/register';
+import { Userlogin } from './features/auth/components/userlogin/userlogin';
+import { AuthSucessComponent } from './features/auth/components/auth-success-component/auth-sucess-component';
+
+// Dashboard feature imports
+import { LayoutComponent } from './features/dashboard/components/patients-side/layout/layout';
+import { Drcard } from './features/dashboard/components/patients-side/drcard/drcard';
+import { HomeComponent } from './features/dashboard/components/patients-side/home/home';
+import { Drprofile } from './features/dashboard/components/patients-side/drprofile/drprofile';
+import { Schedul } from './features/dashboard/components/patients-side/schedul/schedul';
+import { Settings } from './features/dashboard/components/patients-side/settings/settings';
+import { Alllabresults } from './features/dashboard/components/patients-side/alllabresults/alllabresults';
+
+// Patients feature imports
+import { HealthVital } from './features/patients/components/health-vital/health-vital';
+import { LabResultSubmissionComponent } from './features/patients/components/lab-result-form/lab-result-form';
+import { VitalsDetailComponent } from './features/patients/components/show-vitals/show-vitals';
+import { VitalsEditComponent } from './features/patients/components/edit-vitals/edit-vitals';
+
+// Doctors feature imports
+import { DrRegister } from './features/doctors/components/dr-register/dr-register';
+
+// Core imports
+import { authGuard } from './core/guards/auth-guard';
 
 
 export const routes: Routes = [
