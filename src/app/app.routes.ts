@@ -25,7 +25,7 @@ import { DrRegister } from './features/doctors/components/dr-register/dr-registe
 
 // Core imports
 import { authGuard } from './core/guards/auth-guard';
-
+import { Labresultlist } from './features/patients/components/labresultlist/labresultlist';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -50,7 +50,7 @@ export const routes: Routes = [
       { path: 'show-vitals', component: VitalsDetailComponent },
       { path: 'edit-vitals/:vitalId', component: VitalsEditComponent },
       {path : 'lab-results',component : Alllabresults},
-      {path : 'all-lab-results/:patientId',component : Alllabresults},
+      {path : 'all-lab-results/:patientId',component :Labresultlist },
       {path : 'add-vitals/:patientId', component : HealthVital},
       { path: '', redirectTo: 'home', pathMatch: 'full' } 
     ]

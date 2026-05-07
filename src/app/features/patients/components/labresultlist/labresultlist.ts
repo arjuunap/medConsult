@@ -37,7 +37,7 @@ labForm:FormGroup;
   }
 
   ngOnInit(): void {
-    const patientId = this.route.snapshot.paramMap.get('id');
+    const patientId = this.route.snapshot.paramMap.get('patientId');
     console.log("Patient ID:", patientId);
     if (patientId) {
       this.loadResults(patientId);
@@ -62,7 +62,7 @@ labForm:FormGroup;
     this.selectedResult = null;
     this.cd.detectChanges();
 
-    this.labService.getLabResults(id).subscribe({
+    this.labService.getLabResultById(id).subscribe({
       next: (res) => {
         console.log('full details',res)
         if (!res) {
@@ -116,42 +116,42 @@ labForm:FormGroup;
     return;
   }
 
-  // this.labService.updateLabStatus(id, payload).subscribe({
-  //   next: () => {
+  this.labService.updateLabResult(payload, id).subscribe({
+    next: () => {
 
-  //     console.log('successfully', payload); 
+      console.log('successfully', payload); 
 
-  //     // ✅ modal update
-  //     this.selectedResult.labStatus = payload.labStatus;
-  //     this.selectedResult.doctorNotes = payload.doctorNotes; // ✅ ADD THIS
+      // ✅ modal update
+      this.selectedResult.labStatus = payload.labStatus;
+      this.selectedResult.doctorNotes = payload.doctorNotes; // ✅ ADD THIS
 
-  //     if (payload.labStatus === 'REVIEWED') {
-  //       this.selectedResult.reviewedBy = {
-  //         name: 'Doctor',
-  //         specialization: 'General'
-  //       };
-  //     }
+      if (payload.labStatus === 'REVIEWED') {
+        this.selectedResult.reviewedBy = {
+          name: 'Doctor',
+          specialization: 'General'
+        };
+      }
 
-  //     // ✅ list update
-  //     const index = this.labResults.findIndex(
-  //       r => r.labResultId === id
-  //     );
+      // ✅ list update
+      const index = this.labResults.findIndex(
+        r => r.labResultId === id
+      );
 
-  //     if (index !== -1) {
-  //       this.labResults[index].labStatus = payload.labStatus;
-  //     }
+      if (index !== -1) {
+        this.labResults[index].labStatus = payload.labStatus;
+      }
 
-  //     // ✅ reset form
-  //     this.labForm.patchValue({
-  //       labStatus: '',
-  //       doctorNotes: ''
-  //     });
+      // ✅ reset form
+      this.labForm.patchValue({
+        labStatus: '',
+        doctorNotes: ''
+      });
 
-  //     this.cd.detectChanges();
-  //   },
-  //   error: (err) => {
-  //     console.error('Update failed', err);
-  //   }
-  // });
+      this.cd.detectChanges();
+    },
+    error: (err) => {
+      console.error('Update failed', err);
+    }
+  });
 }
 }

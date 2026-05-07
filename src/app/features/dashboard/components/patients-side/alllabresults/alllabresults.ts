@@ -32,6 +32,7 @@ labResults: any[] = [];
   }
 
   goTolabresult(patientId: string) {
+    console.log(patientId)
     if (!patientId) return;
     this.router.navigate(['/layout/all-lab-results', patientId]);
   }
