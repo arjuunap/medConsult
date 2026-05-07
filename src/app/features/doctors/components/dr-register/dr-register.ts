@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DoctorService } from '../../../../core/services/doctorServices/doctor';
@@ -35,6 +35,7 @@ export class DrRegister implements OnInit {
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService, //add//
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -169,6 +170,7 @@ export class DrRegister implements OnInit {
     this.doctorService.registerDoctor(payload).subscribe({
       next: (res) => {
         console.log('Success:', res);
+        this.router.navigate(['/layout/home']);
         alert('Doctor registered successfully'); //add//
       },
       error: (err) => {

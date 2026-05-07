@@ -58,7 +58,7 @@ export class VitalsEditComponent implements OnChanges {
     this.error      = null;
     this.vitalsForm = null;
 
-    this.vitalsService.getVitals(this.patientId).subscribe({
+    this.vitalsService.getVitals().subscribe({
       next: (data) => {
         this.originalData = data;
         this.buildForm(data);

@@ -1,7 +1,5 @@
-import { Component, OnChanges, SimpleChanges,ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { DoctorService } from '../../../../core/services/doctorServices/doctor';
 import { Router } from '@angular/router';
 import { VitalsData } from '../../../../core/models/vitals.model';
 import { VitalsService } from '../../../../core/services/vitalServices/vitals';
@@ -13,81 +11,65 @@ import { VitalsService } from '../../../../core/services/vitalServices/vitals';
   templateUrl: './show-vitals.html',
   styleUrls: ['./show-vitals.css'],
 })
-export class VitalsDetailComponent implements OnChanges {
+export class VitalsDetailComponent implements OnInit {
 
-  patientId : string = '8e6e33d0-b28d-460b-8af5-5529ff3e3461'; // Default patient ID for testing
-
-  // Emits patientId when Edit Vitals is clicked — parent decides what to do
- 
-
-  
+  // patientId: string = '8e6e33d0-b28d-460b-8af5-5529ff3e3461';
 
   vitals: VitalsData | null = null;
   loading = false;
   error: string | null = null;
 
   constructor(
-              private vitalsService: VitalsService,
-              private cd: ChangeDetectorRef,
-              private router: Router
+    private vitalsService: VitalsService,
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    
-      this.fetchVitals();
-      this.cd.detectChanges();
-      
-    
-  }
   ngOnInit(): void {
     this.fetchVitals();
-    this.cd.detectChanges();
-    
-  } 
+  }
 
- private fetchVitals(): void {
-  this.loading = true;
-  this.error   = null;
-  this.vitals  = null;
+  private fetchVitals(): void {
+    this.loading = true;
+    this.error = null;
+    this.vitals = null;
 
-  this.vitalsService.getVitals(this.patientId).subscribe({
-    next: (data) => {
-      this.vitals = data;
-      console.log('feched vitals',data)
-      this.loading = false;
-      this.cd.detectChanges();
-    },
-    error: (err) => {
-      const msg: string = err?.error?.message ?? '';
+    this.vitalsService.getVitals().subscribe({
+      next: (data) => {
+        this.vitals = data;
+        this.loading = false;
+        this.cd.detectChanges();
+      },
+      // error: (err) => {
+      //   const msg: string = err?.error?.message ?? '';
 
-      if (err.status === 500 && msg.toLowerCase().includes('no vitals found')) {
-        this.vitals = null;
-        this.error  = null;
-      } else {
-        this.error = 'Failed to load vitals. Please try again.';
-        console.error('Error fetching vitals:', err);
-      }
+      //   if (err.status === 500 && msg.toLowerCase().includes('no vitals found')) {
+      //     this.vitals = null;
+      //     this.error = null;
+      //   } else {
+      //     this.error = 'Failed to load vitals. Please try again.';
+      //     console.error('Error fetching vitals:', err);
+      //   }
 
-      this.loading = false;
-      this.cd.detectChanges();
-    }
-  });
-}
+      //   this.loading = false;
+      //   this.cd.detectChanges();
+      // }
+    });
+  }
 
- onEdit(): void {
-  this.router.navigate(['layout/edit-vitals', this.vitals?.vitalId]);
-}
+  onEdit(): void {
+    this.router.navigate(['layout/edit-vitals', this.vitals?.vitalId]);
+  }
 
   retry(): void {
     this.fetchVitals();
-    this.cd.detectChanges();
   }
+
   onAddVitals(): void {
-    this.router.navigate(['layout/add-vitals', this.patientId]);
+    this.router.navigate(['layout/add-vitals']);
+  }
 
-}
-
-  /* ── Blood Pressure ───────────────────────────────────────────── */
+  /* ── Blood Pressure ── */
   getBpStatus(): string {
     const s = this.vitals!.bpSystolic;
     const d = this.vitals!.bpDiastolic;
@@ -105,7 +87,7 @@ export class VitalsDetailComponent implements OnChanges {
     return 'High Stage 2';
   }
 
-  /* ── Heart Rate ───────────────────────────────────────────────── */
+  /* ── Heart Rate ── */
   getHrStatus(): string {
     const hr = this.vitals!.heartRateBpm;
     if (hr >= 60 && hr <= 100) return 'badge--normal';
@@ -119,7 +101,7 @@ export class VitalsDetailComponent implements OnChanges {
     return 'High';
   }
 
-  /* ── SpO2 ─────────────────────────────────────────────────────── */
+  /* ── SpO2 ── */
   getSpo2Status(): string {
     const s = this.vitals!.spo2Percent;
     if (s >= 95)            return 'badge--normal';
@@ -133,7 +115,7 @@ export class VitalsDetailComponent implements OnChanges {
     return 'Critical';
   }
 
-  /* ── Temperature ──────────────────────────────────────────────── */
+  /* ── Temperature ── */
   getTempStatus(): string {
     const t = this.vitals!.temperatureC;
     if (t >= 36.1 && t <= 37.2) return 'badge--normal';
@@ -148,7 +130,7 @@ export class VitalsDetailComponent implements OnChanges {
     return 'Low';
   }
 
-  /* ── Blood Glucose ────────────────────────────────────────────── */
+  /* ── Blood Glucose ── */
   getGlucoseStatus(): string {
     const g = this.vitals!.bloodGlucoseMmol;
     if (g >= 3.9 && g <= 5.6) return 'badge--normal';
@@ -163,7 +145,7 @@ export class VitalsDetailComponent implements OnChanges {
     return 'Low';
   }
 
-  /* ── BMI ──────────────────────────────────────────────────────── */
+  /* ── BMI ── */
   getBmiStatus(): string {
     const b = this.vitals!.bmi;
     if (b >= 18.5 && b < 25.0) return 'badge--normal';

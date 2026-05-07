@@ -51,7 +51,7 @@ export const routes: Routes = [
       { path: 'edit-vitals/:vitalId', component: VitalsEditComponent },
       {path : 'lab-results',component : Alllabresults},
       {path : 'all-lab-results/:patientId',component :Labresultlist },
-      {path : 'add-vitals/:patientId', component : HealthVital},
+      {path : 'add-vitals', component : HealthVital},
       { path: '', redirectTo: 'home', pathMatch: 'full' } 
     ]
   },

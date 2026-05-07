@@ -12,15 +12,15 @@ export class VitalsService {
 
   constructor(private http: HttpClient) {}
 
-  registerVital(data: any, patientId: string): Observable<any> {
+  registerVital(data: any): Observable<any> {
     return this.http.post(
-      `${this.apiUrl}/lab-result/${patientId}/vitals`,
+      `${this.apiUrl}/lab-result/vitals`,
       data
     );
   }
 
-  getVitals(VitalId: string): Observable<VitalsData> {
-    return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${VitalId}/vitals`);
+  getVitals(): Observable<VitalsData> {
+    return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/get-vitals/latest`);
   }
 
   getVitalById(vitalId: string): Observable<VitalsData> {

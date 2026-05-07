@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { DoctorService } from '../../../../core/services/doctorServices/doctor';
 import { VitalsService } from '../../../../core/services/vitalServices/vitals';
-
+import { ActivatedRoute } from '@angular/router';
 // ── Form Model (UI Binding) ─────────────────────────
 interface VitalForm {
   heartRate: number | null;
@@ -17,7 +17,6 @@ interface VitalForm {
   weight: number | null;
   height: number | null;
   bmi: number | null;
-  recordedByUserId: string;
 }
 
 // ── API Request Model (Backend Mapping) ─────────────
@@ -31,7 +30,6 @@ interface VitalRequest {
   weightKg: number | null;
   heightCm: number | null;
   bmi: number | null;
-  recordedByUserId: string;
 }
 
 @Component({
@@ -58,18 +56,18 @@ export class HealthVital {
     weight: null,
     height: null,
     bmi: null,
-    recordedByUserId: '3dbed4c2-ae86-4f8e-8e88-443de37474fc'
+
   };
 
-  // 🔥 Patient ID (dynamic later)
-  patientId = '8e6e33d0-b28d-460b-8af5-5529ff3e3461';
-  
+
+
 
   constructor(
     private http: HttpClient,
     private vitalsService: VitalsService,
-    private router : Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   // ── BMI Calculation ───────────────────────────────
   calculateBMI(): void {
@@ -91,42 +89,42 @@ export class HealthVital {
     this.errors = [];
 
     if (this.form.heartRate != null &&
-        (this.form.heartRate < 30 || this.form.heartRate > 220)) {
+      (this.form.heartRate < 30 || this.form.heartRate > 220)) {
       this.errors.push('Heart Rate must be between 30 and 220 bpm.');
     }
 
     if (this.form.bpSystolic != null &&
-        (this.form.bpSystolic < 60 || this.form.bpSystolic > 250)) {
+      (this.form.bpSystolic < 60 || this.form.bpSystolic > 250)) {
       this.errors.push('BP Systolic must be between 60 and 250 mmHg.');
     }
 
     if (this.form.bpDiastolic != null &&
-        (this.form.bpDiastolic < 40 || this.form.bpDiastolic > 150)) {
+      (this.form.bpDiastolic < 40 || this.form.bpDiastolic > 150)) {
       this.errors.push('BP Diastolic must be between 40 and 150 mmHg.');
     }
 
     if (this.form.spo2 != null &&
-        (this.form.spo2 < 70 || this.form.spo2 > 100)) {
+      (this.form.spo2 < 70 || this.form.spo2 > 100)) {
       this.errors.push('SpO₂ must be between 70 and 100%.');
     }
 
     if (this.form.temperature != null &&
-        (this.form.temperature < 34 || this.form.temperature > 42)) {
+      (this.form.temperature < 34 || this.form.temperature > 42)) {
       this.errors.push('Temperature must be between 34 and 42 °C.');
     }
 
     if (this.form.glucose != null &&
-        (this.form.glucose < 1 || this.form.glucose > 30)) {
+      (this.form.glucose < 1 || this.form.glucose > 30)) {
       this.errors.push('Blood glucose must be between 1 and 30 mmol/L.');
     }
 
     if (this.form.weight != null &&
-        (this.form.weight < 10 || this.form.weight > 300)) {
+      (this.form.weight < 10 || this.form.weight > 300)) {
       this.errors.push('Weight must be between 10 and 300 kg.');
     }
 
     if (this.form.height != null &&
-        (this.form.height < 50 || this.form.height > 250)) {
+      (this.form.height < 50 || this.form.height > 250)) {
       this.errors.push('Height must be between 50 and 250 cm.');
     }
 
@@ -150,19 +148,28 @@ export class HealthVital {
       weightKg: this.form.weight,
       heightCm: this.form.height,
       bmi: this.form.bmi,
-      recordedByUserId: this.form.recordedByUserId
+
     };
 
-    this.vitalsService.registerVital(payload, this.patientId).subscribe({
+    // const patientId = this.route.snapshot.paramMap.get('patientId');
+
+    // if (!patientId) {
+    //   this.errors = ['Patient ID not found'];
+    //   return;
+    // }
+
+    this.vitalsService.registerVital(payload).subscribe({
       next: (res) => {
         this.success = true;
         this.errors = [];
 
         console.log('Vitals saved successfully', res);
+
         this.router.navigate(['/layout/show-vitals']);
 
         setTimeout(() => (this.success = false), 3000);
       },
+
       error: (err) => {
         console.error('Failed to save vitals:', err);
         this.errors = ['Failed to save. Please try again.'];
@@ -186,7 +193,7 @@ export class HealthVital {
       weight: null,
       height: null,
       bmi: null,
-      recordedByUserId: ''
+    
     };
   }
 }

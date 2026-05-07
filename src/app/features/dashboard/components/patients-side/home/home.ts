@@ -38,7 +38,7 @@ export class HomeComponent {
     
   }
   ngOnInit(): void {  
-    this.authService.homeUserDetails().subscribe({
+    this.authService.UserDetails().subscribe({
       next: (res) => {
         this.patient = res;
         this.cd.detectChanges();
