@@ -24,7 +24,7 @@ export class LabService {
 
 
   getLabResultById(labResultId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/lab-result/${labResultId}`);
+    return this.http.get<any>(`${this.apiUrl}/lab-result/view/${labResultId}`);
   }
   updateLabResult(data: any, labResultId: string): Observable<any> {
     return this.http.put(

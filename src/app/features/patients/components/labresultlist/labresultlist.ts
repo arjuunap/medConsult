@@ -61,6 +61,7 @@ labForm:FormGroup;
     this.showModal = false;
     this.selectedResult = null;
     this.cd.detectChanges();
+    console.log('hello')
 
     this.labService.getLabResultById(id).subscribe({
       next: (res) => {
