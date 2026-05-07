@@ -10,7 +10,7 @@ export class VitalsService {
 
   private apiUrl = 'http://localhost:8080/api';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   registerVital(data: any, patientId: string): Observable<any> {
     return this.http.post(
@@ -19,8 +19,8 @@ export class VitalsService {
     );
   }
 
-  getVitals(patientId: string): Observable<VitalsData> {
-    return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${patientId}/vitals`);
+  getVitals(VitalId: string): Observable<VitalsData> {
+    return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${VitalId}/vitals`);
   }
 
   getVitalById(vitalId: string): Observable<VitalsData> {
@@ -33,7 +33,7 @@ export class VitalsService {
       data
     );
   }
-  showVitals(patientId: string): Observable<VitalsData> {
-    return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${patientId}/vitals`);
-  }
+//   showVitals(patientId: string): Observable<VitalsData> {
+//     return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${patientId}/vitals`);
+//   }
 }

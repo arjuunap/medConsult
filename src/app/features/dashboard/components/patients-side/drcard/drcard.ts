@@ -28,6 +28,9 @@ export class Drcard implements OnInit {
     this.router.navigate(['/layout/drprofile', id]);
     
   }
+  registerDr(){
+    this.router.navigate(['/dr-register'])
+  }
   loadDoctors() {
     this.doctorService.getDoctors().subscribe({
       next: (res: any) => {

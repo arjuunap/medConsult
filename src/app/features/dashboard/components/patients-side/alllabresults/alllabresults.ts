@@ -11,7 +11,7 @@ import { PatientService } from '../../../../../core/services/patientServices/pat
 
 @Component({
   selector: 'app-alllabresults',
-  imports: [ReactiveFormsModule,CommonModule,RouterLink],
+  imports: [ReactiveFormsModule,CommonModule],
   templateUrl: './alllabresults.html',
   styleUrl: './alllabresults.css',
 })
@@ -33,7 +33,7 @@ labResults: any[] = [];
 
   goTolabresult(patientId: string) {
     if (!patientId) return;
-    this.router.navigate(['/labresults', patientId]);
+    this.router.navigate(['/layout/all-lab-results', patientId]);
   }
 
 

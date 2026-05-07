@@ -1,0 +1,204 @@
+<div class="lab-container">
+  <!-- HEADER -->
+  <div class="lab-header">
+    <div class="lab-header-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24">
+        <path
+          d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"
+        />
+      </svg>
+    </div>
+    <h3 class="lab-title">Lab Results</h3>
+  </div>
+  <!-- ✅ DATA CHECK -->
+  <div *ngIf="labResults && labResults.length > 0; else noData">
+    <!-- LIST -->
+    <div class="lab-list">
+      <div
+        class="lab-card"
+        *ngFor="let result of labResults"
+        (click)="openDetails(result)"
+        [ngClass]="{
+          'card-normal': result.labStatus === 'REVIEWED',
+          'card-abnormal': result.labStatus === 'FLAGGED',
+        }"
+      >
+        <!-- LEFT -->
+        <div class="lab-card-left">
+          <div class="panel-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+            </svg>
+          </div>
+
+          <div class="lab-card-info">
+            <span class="panel-name">{{ result.panelName }}</span>
+            <span class="panel-date">{{ result.testDate | date: 'mediumDate' }}</span>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="lab-card-right">
+          <span
+            class="status-badge"
+            [ngClass]="{
+              'status-pending': result.labStatus === 'PENDING',
+              'status-reviewed': result.labStatus === 'REVIEWED',
+              'status-flagged': result.labStatus === 'FLAGGED',
+            }"
+          >
+            {{
+              result.labStatus === 'REVIEWED'
+                ? 'NORMAL'
+                : result.labStatus === 'FLAGGED'
+                  ? 'ABNORMAL'
+                  : result.labStatus || 'PENDING'
+            }}
+          </span>
+
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- ❌ NO DATA -->
+    <ng-template #noData>
+      <div class="no-data">
+        <p>No lab results available</p>
+      </div>
+    </ng-template>
+  </div>
+
+
+<!-- ================= MODAL ================= -->
+<div *ngIf="showModal && selectedResult" class="modal-overlay">
+  <div class="modal-panel">
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-panel-name">
+          {{ selectedResult.panelName }}
+        </h2>
+        <p class="modal-meta">
+          {{ selectedResult.testDate | date: 'mediumDate' }}
+        </p>
+      </div>
+
+      <div class="modal-header-right">
+        <span
+          class="status-badge"
+          [ngClass]="{
+            'status-pending': (selectedResult.labStatus || 'PENDING') === 'PENDING',
+            'status-reviewed': selectedResult.labStatus === 'REVIEWED',
+            'status-flagged': selectedResult.labStatus === 'FLAGGED',
+          }"
+        >
+          {{ selectedResult.labStatus || 'PENDING' }}
+        </span>
+
+        <button class="close-btn" (click)="closeModal()">✖</button>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+      <!-- LEFT: DOCTORS -->
+      <div class="modal-doctors">
+        <div class="doctor-chip">
+          <span class="doctor-label">Ordered by</span>
+          <span class="doctor-name">
+            {{ selectedResult.orderedBy?.name }}
+          </span>
+          <span class="doctor-spec">
+            {{ selectedResult.orderedBy?.specialization }}
+          </span>
+        </div>
+
+        <div class="doctor-chip" *ngIf="selectedResult.reviewedBy">
+          <span class="doctor-label">Reviewed by</span>
+          <span class="doctor-name">
+            {{ selectedResult.reviewedBy?.name }}
+          </span>
+          <span class="doctor-spec">
+            {{ selectedResult.reviewedBy?.specialization }}
+          </span>
+        </div>
+      </div>
+
+      <!-- RIGHT: CONTENT -->
+      <div>
+        <h4 class="section-title">Test Items</h4>
+
+        <!-- TABLE -->
+        <div class="items-table">
+          <div class="items-table-head">
+            <span>Test Name</span>
+            <span>Value</span>
+            <span>Range</span>
+            <span>Status</span>
+          </div>
+
+          <div class="items-table-row" *ngFor="let item of selectedResult.labItems">
+            <span>{{ item.testName }}</span>
+
+            <span>
+              {{ item.value }}
+              <span class="item-unit">{{ item.unit }}</span>
+            </span>
+
+            <span>
+              {{ item.referenceMin }} - {{ item.referenceMax }}
+              <span class="item-unit">{{ item.unit }}</span>
+            </span>
+
+            <span
+              class="item-status"
+              [ngClass]="{
+                'item-high': item.itemStatus === 'HIGH',
+                'item-low': item.itemStatus === 'LOW',
+                'item-normal': item.itemStatus === 'NORMAL',
+                'item-critical': item.itemStatus === 'CRITICAL',
+              }"
+            >
+              <span class="item-dot"></span>
+              {{ item.itemStatus }}
+            </span>
+          </div>
+        </div>
+
+        <!-- FORM -->
+        <form [formGroup]="labForm" class="status-form">
+          <div>
+            <label>Select Status</label>
+            <select formControlName="labStatus">
+              <option value="">-- Select --</option>
+              <option value="REVIEWED">Reviewed</option>
+              <option value="FLAGGED">Flagged</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Doctor Notes</label>
+            <textarea
+              rows="4"
+              formControlName="doctorNotes"
+              placeholder="Enter notes..."
+            ></textarea>
+          </div>
+
+          <button
+            type="button"
+            class="btn submit"
+            [disabled]="!labForm.value.labStatus"
+            (click)="submitStatus()"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

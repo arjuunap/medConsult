@@ -14,10 +14,10 @@ export class AuthService {
     return this.http.post<AuthResponse>(this.apiUrl + '/register', data);
   }
   googleLogin() {
-    window.location.href = 'http://192.168.1.22:8080/oauth2/authorization/google';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
   googleRegister() {
-    window.location.href = 'http://192.168.1.22:8080/oauth2/authorization/google';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
 
   googlelogout() {

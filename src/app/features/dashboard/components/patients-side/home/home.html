@@ -5,7 +5,7 @@
     <div class="section identity">
       <div class="avatar">{{ patient.initials }}</div>
       <div class="id-block">
-        <h2 class="patient-name">{{ patient.FullName }}</h2>
+        <h2 class="patient-name">{{ patient.fullName }}</h2>
         
         <span class="patient-id">Patient · {{ patient.id }}</span>
       </div>
@@ -44,3 +44,8 @@
 
   </div>
 </div>
+
+<button (click)="registerAsPatient()">
+  Register as Patient
+
+</button>

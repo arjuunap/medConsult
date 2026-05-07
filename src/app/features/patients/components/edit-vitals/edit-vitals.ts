@@ -44,7 +44,7 @@ export class VitalsEditComponent implements OnChanges {
   
     
       
-    
+    patientId : string = '8e6e33d0-b28d-460b-8af5-5529ff3e3461';
   
   ngOnInit(): void {
     this.vitalId = String(this.route.snapshot.paramMap.get('vitalId'));
@@ -58,7 +58,7 @@ export class VitalsEditComponent implements OnChanges {
     this.error      = null;
     this.vitalsForm = null;
 
-    this.vitalsService.getVitals(this.vitalId).subscribe({
+    this.vitalsService.getVitals(this.patientId).subscribe({
       next: (data) => {
         this.originalData = data;
         this.buildForm(data);

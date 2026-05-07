@@ -53,6 +53,7 @@ export class VitalsDetailComponent implements OnChanges {
   this.vitalsService.getVitals(this.patientId).subscribe({
     next: (data) => {
       this.vitals = data;
+      console.log('feched vitals',data)
       this.loading = false;
       this.cd.detectChanges();
     },

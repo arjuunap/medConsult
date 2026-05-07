@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component ,ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../../core/services/authServices/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +11,14 @@ import { AuthService } from '../../../../../core/services/authServices/auth';
   styleUrls: ['./home.css']
 })
 export class HomeComponent {
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService,
+    private cd : ChangeDetectorRef,
+    private router : Router
+  ){
     
   }
   patient : any = {}
+  vitals : any = {}
   // patient = {
   //   initials: 'AH',
   //   name: 'Ahmed Hassan',
@@ -27,11 +32,16 @@ export class HomeComponent {
   //     { label: 'Weight',         value: '84',     unit: 'kg',   status: 'normal' }
   //   ]
   // };
+
+  registerAsPatient(){
+    this.router.navigate(['/patient-register'])
+    
+  }
   ngOnInit(): void {  
     this.authService.homeUserDetails().subscribe({
       next: (res) => {
         this.patient = res;
-        
+        this.cd.detectChanges();
         console.log('User Details :', res); 
         
       },
@@ -39,6 +49,7 @@ export class HomeComponent {
         console.error('Error fetching user details:', err);
       },
     });
+    
   }
 
 }
