@@ -31,13 +31,16 @@ export class DoctorService {
   getScheduleById(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/doctors/${id}/schedules`);
   }
-  bookConsultation(doctorId: string, patientId: string, data: any): Observable<any> {
+  bookConsultation(doctorId: string, data: any): Observable<any> {
     return this.http.post(
-      `${this.apiUrl}/doctors/${doctorId}/book_appointment/${patientId}`,
+      `${this.apiUrl}/doctors/${doctorId}/book_appointment`,
       data
     );
   }
   getScheduleByDoctorId(doctorId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/doctors/${doctorId}/schedules`);
+  }
+  schedules(doctorId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/doctors/${doctorId}/schedules`);
   }
 
