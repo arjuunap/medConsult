@@ -15,7 +15,7 @@ import { AppointmentService } from '../../../../../core/services/appointmentServ
 export class Appointment implements OnInit {
 
   appointments: any[] = [];
-  doctorId: string = '6bc2ece1-ff1e-45f0-b14e-6a6387abdf21';
+  
   
 
   constructor(
@@ -28,7 +28,7 @@ export class Appointment implements OnInit {
   }
 
   getAppointments() {
-    this.appomentService.showAppointments(this.doctorId).subscribe({
+    this.appomentService.showAppointments().subscribe({
         next: (res) => {
           console.log('appointments',res)
           this.appointments = res;

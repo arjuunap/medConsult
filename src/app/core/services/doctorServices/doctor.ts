@@ -40,8 +40,15 @@ export class DoctorService {
   getScheduleByDoctorId(doctorId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/doctors/${doctorId}/schedules`);
   }
-  schedules(doctorId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/doctors/${doctorId}/schedules`);
+
+  registerSchedule(doctorId: string, data: any): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/doctors/${doctorId}/schedules`,
+      data
+    );
+  }
+  schedules(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/doctors/schedules`);
   }
 
   

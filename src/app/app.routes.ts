@@ -28,6 +28,8 @@ import { authGuard } from './core/guards/auth-guard';
 import { Labresultlist } from './features/patients/components/labresultlist/labresultlist';
 import { Appointment } from './features/dashboard/components/patients-side/appointments/appointment';
 import { Schedul } from './features/dashboard/components/patients-side/schedul/schedul';
+import { Drschedul } from './features/doctors/components/dr-schedules/drschedul';
+import { Addschedule } from './features/doctors/components/addschedule/addschedule';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Userlogin },
@@ -54,7 +56,8 @@ export const routes: Routes = [
       {path : 'all-lab-results/:patientId',component :Labresultlist },
       {path : 'add-vitals', component : HealthVital},
       {path : 'appointments', component : Appointment},
-      {path : 'schedules',component : Schedul},
+      {path : 'schedules',component : Drschedul},
+      {path : 'add-schedule', component : Addschedule},
       { path: '', redirectTo: 'home', pathMatch: 'full' } 
     ]
   },

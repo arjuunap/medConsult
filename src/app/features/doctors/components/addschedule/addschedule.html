@@ -1,0 +1,37 @@
+<div class="form-container">
+  <h2>Add Schedule</h2>
+
+  <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()">
+    <label>Day of Week</label>
+    <select formControlName="dayOfWeek">
+      <option value="">Select Day</option>
+      <option *ngFor="let day of days" [value]="day">
+        {{ day }}
+      </option>
+    </select>
+
+    <div class="tympart">
+      <label>Start Time</label>
+      <input type="time" formControlName="startTime" />
+
+      <label>End Time</label>
+      <input type="time" formControlName="endTime" />
+    </div>
+
+    <label>Schedule Type</label>
+    <select formControlName="scheduleType">
+      <option value="">Select Type</option>
+      <option value="REGULAR">Regular</option>
+      <option value="ON_CALL">On call</option>
+      <option value="OFF">Off</option>
+    </select>
+
+    <label>Effective From</label>
+    <input type="date" formControlName="effectiveFrom" />
+
+    <label>Effective Until</label>
+    <input type="date" formControlName="effectiveUntil" />
+
+    <button type="submit">Submit</button>
+  </form>
+</div>

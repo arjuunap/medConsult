@@ -1,0 +1,99 @@
+/* ── Base ───────────────────────── */
+/* body {
+  background: #f3fdf6;
+  font-family: 'Segoe UI', sans-serif;
+} */
+
+/* ── Container ─────────────────── */
+.form-container {
+  background: #ffffff;
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 128, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ── Header ───────────────────── */
+.form-container h2 {
+  text-align: center;
+  color: #1b5e20;
+  margin-bottom: 20px;
+}
+
+/* ── Labels ───────────────────── */
+.form-container label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+/* ── Inputs & Select ──────────── */
+.form-container input,
+.form-container select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #c8e6c9;
+  background: #f9fff9;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+/* Focus effect */
+.form-container input:focus,
+.form-container select:focus {
+  outline: none;
+  border-color: #4caf50;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+}
+
+/* ── Button ───────────────────── */
+.form-container button {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background: #2e7d32;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Hover */
+.form-container button:hover {
+  background: #1b5e20;
+}
+
+/* ── Validation ───────────────── */
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border-color: #e53935;
+}
+
+input.ng-valid.ng-dirty,
+select.ng-valid.ng-dirty {
+  border-color: #43a047;
+}
+
+.form-container input[type="time"] {
+  
+  width: 150px;
+}
+
+.tympart{
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+.form-container input[type="date"] {
+  
+  width: 94%;
+}
