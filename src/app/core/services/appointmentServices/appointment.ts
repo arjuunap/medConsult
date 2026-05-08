@@ -17,4 +17,7 @@ export class AppointmentService {
       data
     );
   }
+  showAppointments(doctorId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/doctors/${doctorId}/appointments`);
+  }
 }

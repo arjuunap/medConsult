@@ -1,0 +1,218 @@
+/* ─── Container ─── */
+.appointment-container {
+  max-width: 640px;
+  padding: 2rem 1.5rem;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #111827;
+  margin: 0 0 1.5rem;
+}
+
+/* ─── Card ─── */
+.card {
+  position: relative;
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  transform: translateY(-1px);
+}
+
+/* Coloured left accent strip */
+.card__accent {
+  width: 5px;
+  flex-shrink: 0;
+  background: #0d9e75;
+}
+
+.card--cancelled .card__accent {
+  background: #e24b4a;
+}
+
+/* ─── Card Body ─── */
+.card__body {
+  flex: 1;
+  padding: 1.25rem 1.5rem;
+}
+
+/* ─── Header row: type + badge ─── */
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.appt-type {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Badge ─── */
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.badge--cancelled {
+  background: #fcebeb;
+  color: #a32d2d;
+}
+
+/* ─── Meta grid ─── */
+.card__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 1.5rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+/* Icon dots using CSS only */
+.meta-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  position: relative;
+}
+
+.meta-icon::after {
+  content: '';
+  display: block;
+}
+
+.meta-icon--date {
+  background: #e1f5ee;
+}
+.meta-icon--date::after {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #0f6e56;
+  border-radius: 2px;
+}
+
+.meta-icon--location {
+  background: #e6f1fb;
+}
+.meta-icon--location::after {
+  width: 8px;
+  height: 8px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: #185fa5;
+}
+
+.meta-icon--duration {
+  background: #faeeda;
+}
+.meta-icon--duration::after {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #854f0b;
+  border-radius: 50%;
+  box-shadow: inset 2px -1px 0 0 #854f0b;
+}
+
+.meta-icon--notes {
+  background: #eeedfe;
+}
+.meta-icon--notes::after {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #534ab7;
+  border-radius: 2px;
+  box-shadow: 0 3px 0 0 #534ab7;
+}
+
+/* ─── Meta text ─── */
+.meta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.meta-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.meta-value {
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.4;
+}
+
+/* ─── Cancel reason strip ─── */
+.cancel-reason {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  padding: 0.65rem 0.9rem;
+  background: #fcebeb;
+  border-radius: 8px;
+}
+
+.cancel-reason__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a32d2d;
+  flex-shrink: 0;
+}
+
+.cancel-reason__text {
+  font-size: 0.83rem;
+  color: #791f1f;
+}
+
+/* ─── Cancelled card muted state ─── */
+.card--cancelled .appt-type {
+  color: #6b7280;
+}
+
+.card--cancelled .meta-value {
+  color: #9ca3af;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 480px) {
+  .card__meta {
+    grid-template-columns: 1fr;
+  }
+
+  .appointment-container {
+    padding: 1rem;
+  }
+}

@@ -22,8 +22,7 @@ export class Schedul implements OnInit {
   // 🔥 Form
   bookingForm!: FormGroup;
 
-  // ⚠️ Replace later with logged-in user
-  patientId = '9621af97-b7e5-4801-bbc8-92fb08c732cb';
+  
 
   constructor(
     private route: ActivatedRoute,

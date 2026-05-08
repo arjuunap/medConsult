@@ -1,0 +1,58 @@
+<div class="appointment-container">
+  <h2 class="section-title">Appointments</h2>
+
+  <div *ngFor="let appt of appointments" class="card" [class.card--cancelled]="appt.cancelReason">
+
+    <div class="card__accent"></div>
+
+    <div class="card__body">
+
+      <div class="card__header">
+        <span class="appt-type">{{ appt.appointmentType }}</span>
+        <span *ngIf="appt.cancelReason" class="badge badge--cancelled">Cancelled</span>
+      </div>
+
+      <div class="card__meta">
+
+        <div class="meta-item">
+          <span class="meta-icon meta-icon--date"></span>
+          <div class="meta-content">
+            <span class="meta-label">Date & Time</span>
+            <span class="meta-value">{{ appt.scheduledAt | date:'medium' }}</span>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-icon meta-icon--location"></span>
+          <div class="meta-content">
+            <span class="meta-label">Location</span>
+            <span class="meta-value">{{ appt.location }}</span>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-icon meta-icon--duration"></span>
+          <div class="meta-content">
+            <span class="meta-label">Duration</span>
+            <span class="meta-value">{{ appt.durationMinutes }} mins</span>
+          </div>
+        </div>
+
+        <div class="meta-item" *ngIf="appt.notes">
+          <span class="meta-icon meta-icon--notes"></span>
+          <div class="meta-content">
+            <span class="meta-label">Notes</span>
+            <span class="meta-value">{{ appt.notes }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cancel-reason" *ngIf="appt.cancelReason">
+        <span class="cancel-reason__label">Reason</span>
+        <span class="cancel-reason__text">{{ appt.cancelReason }}</span>
+      </div>
+
+    </div>
+  </div>
+</div>

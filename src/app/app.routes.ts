@@ -10,7 +10,7 @@ import { LayoutComponent } from './features/dashboard/components/patients-side/l
 import { Drcard } from './features/dashboard/components/patients-side/drcard/drcard';
 import { HomeComponent } from './features/dashboard/components/patients-side/home/home';
 import { Drprofile } from './features/dashboard/components/patients-side/drprofile/drprofile';
-import { Schedul } from './features/dashboard/components/patients-side/schedul/schedul';
+
 import { Settings } from './features/dashboard/components/patients-side/settings/settings';
 import { Alllabresults } from './features/dashboard/components/patients-side/alllabresults/alllabresults';
 
@@ -26,7 +26,8 @@ import { DrRegister } from './features/doctors/components/dr-register/dr-registe
 // Core imports
 import { authGuard } from './core/guards/auth-guard';
 import { Labresultlist } from './features/patients/components/labresultlist/labresultlist';
-
+import { Appointment } from './features/dashboard/components/patients-side/appointments/appointment';
+import { Schedul } from './features/dashboard/components/patients-side/schedul/schedul';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Userlogin },
@@ -52,6 +53,8 @@ export const routes: Routes = [
       {path : 'lab-results',component : Alllabresults},
       {path : 'all-lab-results/:patientId',component :Labresultlist },
       {path : 'add-vitals', component : HealthVital},
+      {path : 'appointments', component : Appointment},
+      {path : 'schedules',component : Schedul},
       { path: '', redirectTo: 'home', pathMatch: 'full' } 
     ]
   },
