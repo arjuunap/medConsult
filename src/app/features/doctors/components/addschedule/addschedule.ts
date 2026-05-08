@@ -47,7 +47,7 @@ export class Addschedule {
       const payload = this.scheduleForm.value;
       console.log(payload);
 
-      this.doctorService.registerSchedule(this.doctorId, payload).subscribe({
+      this.doctorService.registerSchedule(payload).subscribe({
         next: (res) => {
           this.successMessage = 'Schedule added successfully!';
           this.errorMessage = '';

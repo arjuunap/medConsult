@@ -41,14 +41,14 @@ export class DoctorService {
     return this.http.get(`${this.apiUrl}/doctors/${doctorId}/schedules`);
   }
 
-  registerSchedule(doctorId: string, data: any): Observable<any> {
+  registerSchedule( data: any): Observable<any> {
     return this.http.post(
-      `${this.apiUrl}/doctors/${doctorId}/schedules`,
+      `${this.apiUrl}/doctors/add-schedules`,
       data
     );
   }
   schedules(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/doctors/schedules`);
+    return this.http.get(`${this.apiUrl}/doctors/my-schedules`);
   }
 
   

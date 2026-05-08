@@ -32,13 +32,12 @@ export class Drschedul implements OnInit {
   // if (!this.doctorId) return;
 
   this.doctorService.schedules().subscribe({
-    next: (res) => {
+    next: (res: any) => {
       this.doctor = Array.isArray(res) ? res : [res];
-      console.log('schedules',res)
       this.cd.detectChanges();
+      console.log('Schedules fetched successfully', res);
     },
-    error: (err) => console.error('error',err),
-    
+    error: (err) => console.error(err),
   });
 }
 goToAddSchedule() {
