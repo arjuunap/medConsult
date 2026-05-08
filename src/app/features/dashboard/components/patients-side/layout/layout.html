@@ -39,7 +39,7 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/layout/doctors" routerLinkActive="active" class="nav-item">
+      <a *ngIf="role === 'PATIENT'" routerLink="/layout/doctors" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -64,7 +64,7 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/layout/show-vitals" routerLinkActive="active" class="nav-item">
+      <a *ngIf="role === 'PATIENT'"  routerLink="/layout/show-vitals" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -92,8 +92,8 @@
       </a>
 
 
-
-      <a routerLink="/layout/settings" routerLinkActive="active" class="nav-item">
+      
+      <a  routerLink="/layout/settings" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -107,7 +107,7 @@
       </a>
 
       <!-- Schedules -->
-      <a routerLink="/layout/schedules" routerLinkActive="active" class="nav-item">
+      <a *ngIf="role === 'DOCTOR'"  routerLink="/layout/schedules" routerLinkActive="active" class="nav-item">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">

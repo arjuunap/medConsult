@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthResponse } from '../../models/auth-response';
+import { UserDetailsResponse } from '../../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,6 @@ export class AuthService {
     window.location.href = '/';
   }
   UserDetails(){
-    return this.http.get(this.apiUrl + '/me');
+    return this.http.get<UserDetailsResponse>(this.apiUrl + '/me');
   }
 }

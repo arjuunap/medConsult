@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorService } from '../../../../core/services/doctorServices/doctor';
 
 
@@ -22,6 +22,7 @@ export class Addschedule {
 
     private doctorService: DoctorService,
     private route: ActivatedRoute,
+    private router: Router
   ) {
     this.scheduleForm = this.fb.group({
       dayOfWeek: ['', Validators.required],
@@ -52,6 +53,7 @@ export class Addschedule {
           this.successMessage = 'Schedule added successfully!';
           this.errorMessage = '';
           console.log('Schedule added successfully', res);
+          this.router.navigate(['/layout/schedules']);
           this.scheduleForm.reset();
         },
         error: (err) => {
