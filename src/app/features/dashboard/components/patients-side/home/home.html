@@ -5,7 +5,7 @@
     <div class="section identity">
       <div class="avatar">{{ patient.initials }}</div>
       <div class="id-block">
-        <h2 class="patient-name">{{ patient.fullName }}</h2>
+        <h2 class="patient-name">{{ patient.email }}</h2>
         
         <span class="patient-id">Patient · {{ patient.id }}</span>
       </div>
@@ -33,10 +33,10 @@
     <div class="section stats">
       <span class="section-label">Health Summary</span>
       <div class="stats-grid">
-        <div class="stat" *ngFor="let s of patient.stats">
-          <span class="stat-label">{{ s.label }}</span>
-          <span class="stat-value" [ngClass]="s.status">
-            {{ s.value }}<small *ngIf="s.unit"> {{ s.unit }}</small>
+        <div class="stat" >
+          <span class="stat-label">{{ vitals.bmi }}</span>
+          <span class="stat-value" [ngClass]="vitals.weight">
+            {{ vitals.temparature }}<small *ngIf="vitals.heartRateBpm"> {{ vitals.heightCm }}</small>
           </span>
         </div>
       </div>

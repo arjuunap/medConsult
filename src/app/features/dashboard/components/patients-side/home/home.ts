@@ -2,6 +2,7 @@ import { Component ,ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../../core/services/authServices/auth';
 import { Router } from '@angular/router';
+import { VitalsService } from '../../../../../core/services/vitalServices/vitals';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ import { Router } from '@angular/router';
 export class HomeComponent {
   constructor(private authService: AuthService,
     private cd : ChangeDetectorRef,
-    private router : Router
+    private router : Router,
+    private vitalsService : VitalsService
   ){
     
   }
@@ -49,7 +51,16 @@ export class HomeComponent {
         console.error('Error fetching user details:', err);
       },
     });
-    
+    this.vitalsService.getVitals().subscribe({
+      next: (vitals) => {
+        this.vitals = vitals;
+        this.cd.detectChanges();
+        console.log('Vitals :', vitals);
+      },
+      error: (err) => {
+        console.error('Error fetching vitals:', err);
+      }
+    });
   }
 
 }
