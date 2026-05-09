@@ -1,58 +1,160 @@
 <div class="appointment-container">
   <h2 class="section-title">Appointments</h2>
 
-  <div *ngFor="let appt of appointments" class="card" [class.card--cancelled]="appt.cancelReason">
-
+  <div
+    *ngFor="let appt of appointments"
+    class="card"
+    [class.card--cancelled]="appt.cancelReason"
+    (click)="openAppointment(appt)"
+  >
     <div class="card__accent"></div>
 
     <div class="card__body">
-
       <div class="card__header">
-        <span class="appt-type">{{ appt.appointmentType }}</span>
-        <span *ngIf="appt.cancelReason" class="badge badge--cancelled">Cancelled</span>
+        <span class="appt-type">
+          {{ appt.appointmentType }}
+        </span>
+
+        <!-- DEFAULT STATUS -->
+
+        <span
+          class="status-badge"
+          [ngClass]="{
+            scheduled: appt.status === 'SCHEDULED',
+            confirmed: appt.status === 'CONFIRMED',
+            cancelled: appt.status === 'CANCELLED',
+          }"
+        >
+          {{ appt.status }}
+        </span>
       </div>
 
       <div class="card__meta">
-
         <div class="meta-item">
-          <span class="meta-icon meta-icon--date"></span>
           <div class="meta-content">
             <span class="meta-label">Date & Time</span>
-            <span class="meta-value">{{ appt.scheduledAt | date:'medium' }}</span>
+
+            <span class="meta-value">
+              {{ appt.scheduledAt | date: 'medium' }}
+            </span>
           </div>
         </div>
 
         <div class="meta-item">
-          <span class="meta-icon meta-icon--location"></span>
           <div class="meta-content">
             <span class="meta-label">Location</span>
-            <span class="meta-value">{{ appt.location }}</span>
+
+            <span class="meta-value">
+              {{ appt.location }}
+            </span>
           </div>
         </div>
 
         <div class="meta-item">
-          <span class="meta-icon meta-icon--duration"></span>
           <div class="meta-content">
             <span class="meta-label">Duration</span>
-            <span class="meta-value">{{ appt.durationMinutes }} mins</span>
+
+            <span class="meta-value"> {{ appt.durationMinutes }} mins </span>
           </div>
         </div>
-
-        <div class="meta-item" *ngIf="appt.notes">
-          <span class="meta-icon meta-icon--notes"></span>
-          <div class="meta-content">
-            <span class="meta-label">Notes</span>
-            <span class="meta-value">{{ appt.notes }}</span>
-          </div>
-        </div>
-
       </div>
+    </div>
+  </div>
+</div>
 
-      <div class="cancel-reason" *ngIf="appt.cancelReason">
-        <span class="cancel-reason__label">Reason</span>
-        <span class="cancel-reason__text">{{ appt.cancelReason }}</span>
-      </div>
+<!-- POPUP -->
 
+<!-- POPUP -->
+
+<div class="modal-backdrop" *ngIf="selectedAppointment">
+  <div class="modal">
+    <h2>Appointment Details</h2>
+
+    <p>
+      <strong>Type:</strong>
+      {{ selectedAppointment.appointmentType }}
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      {{ selectedAppointment.status }}
+    </p>
+
+    <p>
+      <strong>Date:</strong>
+      {{ selectedAppointment.scheduledAt | date: 'medium' }}
+    </p>
+
+    <p>
+      <strong>Location:</strong>
+      {{ selectedAppointment.location }}
+    </p>
+
+    <p>
+      <strong>Notes:</strong>
+      {{ selectedAppointment.notes }}
+    </p>
+
+    <!-- PRIORITY -->
+
+    <div class="form-group" *ngIf="role === 'DOCTOR'">
+      <label><strong>Priority</strong></label>
+
+      <select [(ngModel)]="priority">
+        <option value="NORMAL">NORMAL</option>
+
+        <option value="URGENT">URGENT</option>
+
+        <option value="CRITICAL">CRITICAL</option>
+      </select>
+    </div>
+
+    <!-- BUTTONS -->
+
+    <div class="modal-actions">
+      <button
+        class="confirm-btn"
+        (click)="updateStatus('CONFIRMED'); "
+        *ngIf="role === 'DOCTOR'"
+      >
+        Confirm
+      </button>
+
+      <button class="cancel-btn" (click)="openCancelPopup()">
+        Cancel
+      </button>
+
+      <button class="close-btn" (click)="closeModal()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL REASON MODAL -->
+
+<div class="modal-backdrop" *ngIf="showCancelPopup">
+  <div class="modal">
+    <h2>Cancel Appointment</h2>
+
+    <div class="form-group">
+      <label><strong>Cancel Reason</strong></label>
+
+      <textarea
+        rows="4"
+        [(ngModel)]="cancelReason"
+        placeholder="Enter reason..."
+      ></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="cancel-btn" (click)="confirmCancel(); closeCancelPopup();">
+        OK
+      </button>
+
+      <button class="close-btn" (click)="closeCancelPopup()">
+        Close
+      </button>
     </div>
   </div>
 </div>

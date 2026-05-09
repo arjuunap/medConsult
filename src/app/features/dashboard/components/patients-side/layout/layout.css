@@ -60,7 +60,12 @@
   cursor: pointer;
   transition: 0.2s ease;
 }
-
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
 .profile-btn:hover {
   background: #f3f4f6;
 }
