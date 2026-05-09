@@ -1,6 +1,10 @@
 <div class="lab-wrapper">
 
   <h3 class="lab-title">All Lab Results</h3>
+  <button (click)="addlabresult()">
+    Add lab result
+
+  </button>
 
   <!-- ✅ DATA EXISTS -->
   <ng-container *ngIf="labResults && labResults.length > 0; else noData">

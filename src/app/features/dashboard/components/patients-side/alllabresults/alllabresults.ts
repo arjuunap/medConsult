@@ -36,6 +36,9 @@ labResults: any[] = [];
     if (!patientId) return;
     this.router.navigate(['/layout/all-lab-results', patientId]);
   }
+  addlabresult() {
+    this.router.navigate(['/layout/add-lab-result']);
+  }
 
 
 

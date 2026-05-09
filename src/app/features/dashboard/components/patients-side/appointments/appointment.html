@@ -11,6 +11,9 @@
 
     <div class="card__body">
       <div class="card__header">
+        <span>{{appt.patient.user.fullName}}</span>
+       
+
         <span class="appt-type">
           {{ appt.appointmentType }}
         </span>
@@ -28,6 +31,7 @@
           {{ appt.status }}
         </span>
       </div>
+       <span>{{appt.doctor.name}}</span>
 
       <div class="card__meta">
         <div class="meta-item">

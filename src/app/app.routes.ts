@@ -37,7 +37,6 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'patient-register', component: PatientRegisterComponent },
   { path: 'dr-register', component: DrRegister },
-  { path: 'lab-result', component: LabResultSubmissionComponent },
   {path : 'oauth-success', component : AuthSucessComponent},
 
 
@@ -54,6 +53,7 @@ export const routes: Routes = [
       { path: 'settings', component: Settings },
       { path: 'show-vitals', component: VitalsDetailComponent },
       { path: 'edit-vitals/:vitalId', component: VitalsEditComponent },
+      {path : 'add-lab-result', component : LabResultSubmissionComponent},
       {path : 'lab-results',component : Alllabresults},
       {path : 'all-lab-results/:patientId',component :Labresultlist },
       {path : 'add-vitals', component : HealthVital},
