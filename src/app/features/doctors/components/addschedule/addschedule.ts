@@ -39,7 +39,9 @@ export class Addschedule {
   ngOnInit() {
     this.doctorId = this.route.snapshot.paramMap.get('id')!;
   }
-
+  backToSchedules() {
+    this.router.navigate(['/layout/schedules']);
+  }
   successMessage = '';
   errorMessage = '';
 

@@ -20,6 +20,7 @@ import { finalize } from 'rxjs/operators';
 import { PatientService } from '../../../../core/services/patientServices/patient';
 import { DoctorService } from '../../../../core/services/doctorServices/doctor';
 import { LabService } from '../../../../core/services/labServices/lab';
+import { Router } from '@angular/router';
 /* ── Types ──────────────────────────────────────────────────────── */
 export interface Patient {
   patientId: string;
@@ -100,7 +101,8 @@ export class LabResultSubmissionComponent implements OnInit {
   constructor(private fb: FormBuilder, private http: HttpClient,
     private patientService: PatientService, private cd: ChangeDetectorRef ,
     private doctorService: DoctorService,
-    private labResultService: LabService
+    private labResultService: LabService,
+    private router: Router
   ) {}
 
   /* ── Lifecycle ──────────────────────────────────────────────────── */
@@ -244,6 +246,7 @@ export class LabResultSubmissionComponent implements OnInit {
         this.showToast('Lab result submitted successfully!');
         this.resetForm();
         console.log('Lab result submission response:', res);
+        this.router.navigate(['/layout/lab-results']);
       },
       error: () => {
         this.showToast('Failed to submit lab result.');

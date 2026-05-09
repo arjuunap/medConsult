@@ -68,7 +68,7 @@
                 {{ loadingDoctors ? 'Fetching doctors…' : '— Select doctor —' }}
               </option>
               <option *ngFor="let d of doctors" [value]="d.id">
-                {{ d.name }}
+                Dr {{ d.name }}
               </option>
             </select>
             <span class="select-chevron">
