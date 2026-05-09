@@ -38,6 +38,6 @@ export class AuthService {
     return this.http.get<UserDetailsResponse>(this.apiUrl + '/me');
   }
   updateProfile(data: any) {
-    return this.http.put(this.apiUrl + '/update-profile', data);
+    return this.http.put('http://localhost:8080/api/patients/update-profile', data);
   }
 }

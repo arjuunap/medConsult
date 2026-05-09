@@ -28,6 +28,7 @@ export class LayoutComponent {
     this.authService.logout();
   }
   role: string | null = '';
+  user: any = {};
  goToProfile() {
     this.router.navigate(['layout/profile']);
   }
