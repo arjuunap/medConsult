@@ -1,0 +1,226 @@
+<div class="profile-page">
+
+  <!-- Background decoration -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+
+  <div class="profile-container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="page-title">My Profile</h1>
+        <p class="page-subtitle">Manage your personal information</p>
+      </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+
+      <!-- Photo Section -->
+      <div class="photo-section">
+        <div class="photo-wrapper">
+          <div class="photo-ring"></div>
+          <img
+            class="profile-photo"
+            [src]="profilePhoto || 'assets/default-avatar.png'"
+            alt="Profile Photo"
+          />
+          <button class="photo-upload-btn" (click)="triggerPhotoUpload()" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </button>
+          <input #fileInput type="file" accept="image/*" class="hidden-input" (change)="onPhotoSelected($event)" />
+        </div>
+        <p class="photo-hint">Click camera to update photo</p>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="form-grid">
+
+        <!-- User ID (read-only) -->
+        <div class="field-group field-full">
+          <label class="field-label" for="userId">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+            User ID
+          </label>
+          <div class="input-wrapper">
+            <input
+              id="userId"
+              class="form-input readonly-input"
+              type="text"
+              [value]="id"
+              readonly
+            />
+            <span class="readonly-badge">Auto</span>
+          </div>
+        </div>
+
+        <!-- Full Name -->
+        <div class="field-group">
+          <label class="field-label" for="fullName">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Full Name
+          </label>
+          <div class="input-wrapper">
+            <input
+              id="fullName"
+              class="form-input"
+              type="text"
+              placeholder="Enter your full name"
+              [(ngModel)]="fullName"
+            />
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="field-group">
+          <label class="field-label" for="phone">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.28 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Phone
+          </label>
+          <div class="input-wrapper">
+            <input
+              id="phone"
+              class="form-input"
+              type="tel"
+              placeholder="+91 00000 00000"
+              [(ngModel)]="phone"
+            />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group field-full">
+          <label class="field-label" for="email">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Email Address
+          </label>
+          <div class="input-wrapper">
+            <input
+              id="email"
+              class="form-input"
+              type="email"
+              placeholder="you@example.com"
+              [(ngModel)]="email"
+            />
+          </div>
+        </div>
+
+        <!-- Language -->
+        <div class="field-group field-full">
+          <label class="field-label" for="language">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            Preferred Language
+          </label>
+          <div class="input-wrapper select-wrapper">
+            <select id="language" class="form-input form-select" [(ngModel)]="language">
+              <option value="" disabled>Select a language</option>
+              <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="ta">Tamil</option>
+              <option value="te">Telugu</option>
+              <option value="kn">Kannada</option>
+              <option value="ml">Malayalam</option>
+              <option value="mr">Marathi</option>
+              <option value="bn">Bengali</option>
+              <option value="gu">Gujarati</option>
+            </select>
+            <svg class="select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Save Button -->
+      <div class="save-row">
+        <button class="btn-save" type="button" (click)="saveProfile()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Save Changes
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Register Section -->
+    <div class="register-section">
+      <div class="register-header">
+        <div class="register-divider"></div>
+        <span class="register-label">Join As</span>
+        <div class="register-divider"></div>
+      </div>
+      <p class="register-desc">Choose a role to access specialized features</p>
+
+      <div class="register-buttons">
+
+        <!-- Register as Patient -->
+        <button class="btn-register btn-patient" type="button" (click)="registerAsPatient()">
+          <div class="btn-register-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div class="btn-register-text">
+            <span class="btn-register-title">Register as Patient</span>
+            <span class="btn-register-sub">Book appointments & track health</span>
+          </div>
+          <svg class="btn-register-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+
+        <!-- Register as Doctor -->
+        <button class="btn-register btn-doctor" type="button" (click)="registerAsDoctor()">
+          <div class="btn-register-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+              <circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="btn-register-text">
+            <span class="btn-register-title">Register as Doctor</span>
+            <span class="btn-register-sub">Manage patients & consultations</span>
+          </div>
+          <svg class="btn-register-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>

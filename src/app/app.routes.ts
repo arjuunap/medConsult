@@ -30,6 +30,7 @@ import { Appointment } from './features/dashboard/components/patients-side/appoi
 import { Schedul } from './features/dashboard/components/patients-side/schedul/schedul';
 import { Drschedul } from './features/doctors/components/dr-schedules/drschedul';
 import { Addschedule } from './features/doctors/components/addschedule/addschedule';
+import { ProfileComponent } from './features/dashboard/components/patients-side/profile/profile';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Userlogin },
@@ -46,6 +47,7 @@ export const routes: Routes = [
     canActivate: [authGuard], 
     children: [
       { path: 'home', component: HomeComponent },
+      {path : 'profile', component : ProfileComponent},
       { path: 'doctors', component: Drcard },
       { path: 'drprofile/:id', component: Drprofile },
       { path: 'schedule/:id', component: Schedul },

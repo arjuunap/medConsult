@@ -37,4 +37,7 @@ export class AuthService {
   UserDetails(){
     return this.http.get<UserDetailsResponse>(this.apiUrl + '/me');
   }
+  updateProfile(data: any) {
+    return this.http.put(this.apiUrl + '/update-profile', data);
+  }
 }

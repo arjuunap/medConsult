@@ -1,0 +1,483 @@
+/* ─── Google Fonts ─── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700&display=swap');
+
+/* ─── Variables ─── */
+:host {
+  --green-50:  #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-700: #15803d;
+
+  --grey-50:  #f8fafc;
+  --grey-100: #f1f5f9;
+  --grey-200: #e2e8f0;
+  --grey-300: #cbd5e1;
+  --grey-400: #94a3b8;
+  --grey-500: #64748b;
+  --grey-700: #334155;
+  --grey-900: #0f172a;
+
+  --white: #ffffff;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-input: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-btn:   0 4px 16px rgba(34,197,94,0.25);
+
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Syne', sans-serif;
+}
+
+/* ─── Page Wrapper ─── */
+.profile-page {
+  min-height: 100vh;
+  background: var(--grey-50);
+  padding: 32px 16px 60px;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+
+/* ─── Background Blobs ─── */
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-blob-1 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(187,247,208,0.55) 0%, transparent 70%);
+  top: -120px;
+  right: -100px;
+}
+.bg-blob-2 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(74,222,128,0.18) 0%, transparent 70%);
+  bottom: 60px;
+  left: -80px;
+}
+
+/* ─── Container ─── */
+.profile-container {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ─── Page Header ─── */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 4px;
+}
+.header-icon {
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-btn);
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--grey-900);
+  margin: 0 0 2px;
+  line-height: 1;
+}
+.page-subtitle {
+  font-size: 13px;
+  color: var(--grey-400);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ─── Profile Card ─── */
+.profile-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 32px 28px 28px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--grey-100);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ─── Photo Section ─── */
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.photo-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+.photo-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-400), var(--green-600));
+  z-index: 0;
+}
+.profile-photo {
+  position: relative;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--white);
+  background: var(--grey-100);
+  display: block;
+}
+.photo-upload-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--green-600);
+  color: white;
+  border: 2px solid var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  padding: 0;
+}
+.photo-upload-btn:hover {
+  background: var(--green-700);
+  transform: scale(1.08);
+}
+.hidden-input {
+  display: none;
+}
+.photo-hint {
+  font-size: 11.5px;
+  color: var(--grey-400);
+  margin: 0;
+}
+
+/* ─── Form Grid ─── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 18px;
+}
+.field-full {
+  grid-column: 1 / -1;
+}
+
+/* ─── Field Group ─── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--grey-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.field-label svg {
+  color: var(--green-500);
+  flex-shrink: 0;
+}
+
+/* ─── Input Wrapper ─── */
+.input-wrapper {
+  position: relative;
+}
+
+/* ─── Form Input ─── */
+.form-input {
+  width: 100%;
+  height: 46px;
+  background: var(--grey-50);
+  border: 1.5px solid var(--grey-200);
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--grey-900);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: var(--shadow-input);
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.form-input::placeholder {
+  color: var(--grey-300);
+}
+.form-input:focus {
+  border-color: var(--green-500);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+}
+
+/* ─── Readonly Input ─── */
+.readonly-input {
+  color: var(--grey-400);
+  cursor: not-allowed;
+  padding-right: 52px;
+}
+.readonly-badge {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--green-600);
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  border-radius: 6px;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+/* ─── Select ─── */
+.select-wrapper {
+  position: relative;
+}
+.form-select {
+  cursor: pointer;
+  padding-right: 38px;
+}
+.select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--grey-400);
+  pointer-events: none;
+}
+
+/* ─── Save Row ─── */
+.save-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+.btn-save {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0 24px;
+  height: 46px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  letter-spacing: 0.01em;
+}
+.btn-save:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(34,197,94,0.32);
+}
+.btn-save:active {
+  transform: translateY(0);
+}
+
+/* ─── Register Section ─── */
+.register-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.register-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.register-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--grey-200);
+}
+.register-label {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--grey-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.register-desc {
+  text-align: center;
+  font-size: 13px;
+  color: var(--grey-400);
+  margin: -6px 0 0;
+}
+
+/* ─── Register Buttons ─── */
+.register-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.btn-register {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+  text-align: left;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.btn-register::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: rgba(255,255,255,0.08);
+}
+.btn-register:hover::before { opacity: 1; }
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(34,197,94,0.18);
+}
+.btn-register:active { transform: translateY(0); }
+
+/* Patient button */
+.btn-patient {
+  background: linear-gradient(135deg, var(--green-500) 0%, var(--green-700) 100%);
+  box-shadow: 0 4px 18px rgba(34,197,94,0.22);
+  color: white;
+}
+
+/* Doctor button */
+.btn-doctor {
+  background: var(--white);
+  border-color: var(--green-400);
+  color: var(--grey-900);
+  box-shadow: var(--shadow-card);
+}
+.btn-doctor:hover {
+  border-color: var(--green-500);
+  box-shadow: 0 8px 28px rgba(34,197,94,0.14);
+}
+
+/* Register Icon */
+.btn-register-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.btn-patient .btn-register-icon {
+  background: rgba(255,255,255,0.18);
+  color: white;
+}
+.btn-doctor .btn-register-icon {
+  background: var(--green-50);
+  color: var(--green-600);
+}
+
+/* Register Text */
+.btn-register-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.btn-register-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+}
+.btn-register-sub {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+/* Register Arrow */
+.btn-register-arrow {
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+.btn-register:hover .btn-register-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 24px 12px 48px;
+  }
+  .profile-card {
+    padding: 24px 18px 22px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .field-full {
+    grid-column: 1;
+  }
+  .btn-register {
+    padding: 16px 16px;
+    gap: 12px;
+  }
+  .btn-register-icon {
+    width: 44px;
+    height: 44px;
+  }
+}

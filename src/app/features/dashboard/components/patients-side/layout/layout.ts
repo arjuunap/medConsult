@@ -28,7 +28,9 @@ export class LayoutComponent {
     this.authService.logout();
   }
   role: string | null = '';
-
+ goToProfile() {
+    this.router.navigate(['layout/profile']);
+  }
   ngOnInit(): void {
 
     const token = localStorage.getItem('token');

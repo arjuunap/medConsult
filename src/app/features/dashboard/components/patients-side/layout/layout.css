@@ -40,6 +40,43 @@
   box-shadow: 0 1px 6px #0000000a;
 }
 
+/* Right section */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Profile button */
+.profile-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.profile-btn:hover {
+  background: #f3f4f6;
+}
+
+.profile-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Existing logout button */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* ── Brand ─────────────────────────────────────── */
 .brand {
   display: flex;

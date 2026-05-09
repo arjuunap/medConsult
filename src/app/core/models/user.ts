@@ -1,5 +1,9 @@
 export interface UserDetailsResponse {
   email: string;
   role: string;
-  userId: string;
+  id: string;
+  phone : string;
+  language : string;
+  profilePhoto : string;
+  fullName : string;
 }
