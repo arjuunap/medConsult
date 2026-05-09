@@ -28,7 +28,7 @@ export class LabService {
   }
   updateLabResult(data: any, labResultId: string): Observable<any> {
     return this.http.put(
-      `${this.apiUrl}/lab-result/${labResultId}`,
+      `${this.apiUrl}/lab-result/${labResultId}/review`,
       data
     );
   }
