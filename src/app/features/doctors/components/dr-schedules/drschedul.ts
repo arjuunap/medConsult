@@ -22,25 +22,36 @@ export class Drschedul implements OnInit {
     private router: Router,
     private cd: ChangeDetectorRef,
   ) {
-    
+
   }
   // doctorId: string ='8b83fb0e-bd66-4d11-99c2-7c9d59d961aa';
 
- ngOnInit(): void {
-  // this.doctorId = this.route.snapshot.paramMap.get('id')!;
+  ngOnInit(): void {
+    // this.doctorId = this.route.snapshot.paramMap.get('id')!;
 
-  // if (!this.doctorId) return;
+    // if (!this.doctorId) return;
 
-  this.doctorService.schedules().subscribe({
-    next: (res: any) => {
-      this.doctor = Array.isArray(res) ? res : [res];
-      this.cd.detectChanges();
-      console.log('Schedules fetched successfully', res);
-    },
-    error: (err) => console.error(err),
-  });
-}
-goToAddSchedule() {
-  this.router.navigate(['/layout/add-schedule']);
-}
+    this.doctorService.schedules().subscribe({
+      next: (res: any) => {
+        this.doctor = Array.isArray(res) ? res : [res];
+        this.cd.detectChanges();
+        console.log('Schedules fetched successfully', res);
+      },
+      error: (err) => console.error(err),
+    });
+  }
+  goToAddSchedule() {
+    this.router.navigate(['/layout/add-schedule']);
+  }
+
+  deleteSchedule(scheduleId: string) {
+    // Implement delete functionality here
+    this.doctorService.deleteSchedule(scheduleId).subscribe({
+      next: (res) => {
+        console.log('Schedule deleted successfully', res);
+        // Optionally, refresh the schedule list after deletion
+        this.ngOnInit();
+      }
+    });
+  }
 }

@@ -43,7 +43,7 @@ labResults: any[] = [];
 
 
    loadResults() {
-  this.patientService.getPatients()
+  this.patientService.getPatientByDoctorId()
     .subscribe((res:any) => {
       console.log('this is', res);
       this.labResults = res  ?? [];

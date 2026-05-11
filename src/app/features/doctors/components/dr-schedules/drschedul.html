@@ -23,7 +23,7 @@
       </div>
       <div class="type-tag">{{ d.scheduleType }}</div>
 
-      <button class="delete-btn">
+      <button class="delete-btn" (click)="deleteSchedule(d.scheduleId)">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="14"
