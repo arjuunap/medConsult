@@ -7,7 +7,14 @@
     [class.card--cancelled]="appt.cancelReason"
     (click)="openAppointment(appt)"
   >
-    <div class="card__accent"></div>
+    <div
+  class="card__accent"
+  [ngClass]="{
+    'accent-confirmed': appt.status === 'CONFIRMED',
+    'accent-cancelled': appt.status === 'CANCELLED',
+    'accent-scheduled': appt.status === 'SCHEDULED'
+  }"
+></div>
 
     <div class="card__body">
       <div class="card__header">

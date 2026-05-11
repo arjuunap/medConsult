@@ -1,92 +1,54 @@
-<div class="mc-wrap">
+<div class="dash-header">
+  <h1 class="dash-title">Dashboard</h1>
+  <p class="dash-date">{{ today | date: 'EEEE, d MMMM yyyy' }}</p>
 
-  <!-- PATIENT VIEW -->
-  <ng-container *ngIf="role === 'PATIENT' ">
-    <div class="mc-header">
-      <div class="mc-avatar">{{ patient.email?.[0]?.toUpperCase() }}</div>
-      <div>
-        <p class="mc-name">{{ patient.email }}</p>
-        <p class="mc-email">{{ patient.userId | slice:0:24 }}…</p>
-      </div>
-      <span class="mc-role-badge patient">Patient</span>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <p class="stat-label">Active Patients</p>
+      <p class="stat-value">{{ totalPatients }}</p>
+      <p class="stat-sub sub-up">
+        <span class="arrow">↑</span> {{ stats.patientsDelta }} this week
+      </p>
     </div>
 
-    <p class="mc-section-label">Your vitals</p>
-
-    <div class="vitals-grid">
-      <div class="vital-card">
-        <p class="vital-label">Heart rate</p>
-        <p class="vital-value">{{ vitals.heartRateBpm }}<span class="vital-unit">bpm</span></p>
-      </div>
-      <div class="vital-card" [class.warn]="vitals.bpSystolic > 140">
-        <p class="vital-label">BP Systolic</p>
-        <p class="vital-value">{{ vitals.bpSystolic }}<span class="vital-unit">mmHg</span></p>
-      </div>
-      <div class="vital-card">
-        <p class="vital-label">BP Diastolic</p>
-        <p class="vital-value">{{ vitals.bpDiastolic }}<span class="vital-unit">mmHg</span></p>
-      </div>
-      <div class="vital-card">
-        <p class="vital-label">BMI</p>
-        <p class="vital-value">{{ vitals.bmi }}</p>
-      </div>
-      <div class="vital-card">
-        <p class="vital-label">Blood glucose</p>
-        <p class="vital-value">{{ vitals.bloodGlucoseMmol }}<span class="vital-unit">mmol/L</span></p>
-      </div>
-      <div class="vital-card">
-        <p class="vital-label">SpO2</p>
-        <p class="vital-value">{{ vitals.spo2Percent }}<span class="vital-unit">%</span></p>
-      </div>
-      <div class="vital-card" [class.warn]="vitals.temperatureC > 37.5">
-        <p class="vital-label">Temperature</p>
-        <p class="vital-value">{{ vitals.temperatureC }}<span class="vital-unit">°C</span></p>
-      </div>
-      <div class="vital-card">
-        <p class="vital-label">Weight</p>
-        <p class="vital-value">{{ vitals.weightKg }}<span class="vital-unit">kg</span></p>
-      </div>
+    <div class="stat-card">
+      <p class="stat-label">Today's Consults</p>
+      <p class="stat-value">{{ stats.todayConsults }}</p>
+      <p class="stat-sub sub-warn">{{ stats.pendingConsults }} pending</p>
     </div>
 
-    <div class="status-row">
-      <div class="status-pill" [class.normal]="vitals.heartRateBpm < 100" [class.warn]="vitals.heartRateBpm >= 100">
-        Heart: {{ vitals.heartRateBpm < 100 ? 'Normal' : 'High' }}
-      </div>
-      <div class="status-pill" [class.normal]="vitals.bpSystolic <= 120" [class.warn]="vitals.bpSystolic > 120 && vitals.bpSystolic <= 140" [class.alert]="vitals.bpSystolic > 140">
-        BP: {{ vitals.bpSystolic <= 120 ? 'Normal' : vitals.bpSystolic <= 140 ? 'Elevated' : 'High' }}
-      </div>
-      <div class="status-pill" [class.normal]="vitals.temperatureC <= 37.5" [class.warn]="vitals.temperatureC > 37.5">
-        Temp: {{ vitals.temperatureC <= 37.5 ? 'Normal' : 'High' }}
-      </div>
-    </div>
-  </ng-container>
-
-  <!-- DOCTOR VIEW -->
-  <ng-container *ngIf="role === 'DOCTOR'">
-    <div class="mc-header">
-      <div class="mc-avatar doctor">DR</div>
-      <div>
-        <p class="mc-name">{{ patient.email }}</p>
-        <p class="mc-email">{{ patient.userId | slice:0:24 }}…</p>
-      </div>
-      <span class="mc-role-badge doctor">Doctor</span>
+    <div class="stat-card">
+      <p class="stat-label">Open Cases</p>
+      <p class="stat-value">{{ stats.openCases }}</p>
+      <p class="stat-sub sub-danger">{{ stats.criticalCases }} critical</p>
     </div>
 
-    <p class="mc-section-label">Profile details</p>
-    <div class="mc-info-card">
-      <div class="info-row">
-        <span class="info-key">User ID</span>
-        <span class="info-val" style="font-size:11px; color:#9ca3af;">{{ patient.userId }}</span>
-      </div>
-      <div class="info-row">
-        <span class="info-key">Email</span>
-        <span class="info-val">{{ patient.email }}</span>
-      </div>
-      <div class="info-row">
-        <span class="info-key">Role</span>
-        <span class="info-val">{{ patient.role }}</span>
-      </div>
+    <div class="stat-card">
+      <p class="stat-label">Lab Results</p>
+      <p class="stat-value">{{ stats.labResults }}</p>
+      <p class="stat-sub sub-info">{{ stats.unreviewedLabs }} unreviewed</p>
     </div>
-  </ng-container>
+  </div>
+</div>
 
+<div class="patients-section">
+  <div class="patients-header">
+    <p class="patients-title">Recent Patients</p>
+    <a class="view-all" routerLink="/patients">View all →</a>
+  </div>
+
+  <div class="patient-row" *ngFor="let patient of Patients">
+<div
+  class="avatar"
+  [ngClass]="getAvatarColor(patient.user.fullName)"
+>
+  {{ getInitials(patient.user.fullName) }}
+</div>    <div class="patient-info">
+      <p class="patient-name">{{ patient.user.fullName }}</p>
+      <p class="patient-meta">{{ patient.gender }}, {{ patient.age }} · {{ patient.department }}</p>
+    </div>
+    <!-- <span class="badge" [ngClass]="'badge-' + patient.status.toLowerCase()">
+      {{ patient.status }}
+    </span> -->
+  </div>
 </div>

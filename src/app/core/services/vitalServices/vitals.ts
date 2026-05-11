@@ -14,7 +14,7 @@ export class VitalsService {
 
   registerVital(data: any): Observable<any> {
     return this.http.post(
-      `${this.apiUrl}/lab-result/vitals`,
+      `${this.apiUrl}/lab-result/add-vitals`,
       data
     );
   }

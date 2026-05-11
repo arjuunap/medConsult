@@ -1,224 +1,147 @@
-/* home.css */
-
-.mc-wrap {
-  font-family: 'DM Sans', sans-serif;
-  padding: 1.5rem;
-  max-width: 720px;
-  margin: 0 auto;
+.dash-header {
+  padding: 1.5rem 0 1rem;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
-/* ── Header ── */
-.mc-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid #e8f5e9;
-}
-
-.mc-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #EAF3DE;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  color: #3B6D11;
-  border: 1.5px solid #C0DD97;
-  flex-shrink: 0;
-}
-
-.mc-avatar.doctor {
-  background: #E6F1FB;
-  color: #185FA5;
-  border-color: #B5D4F4;
-}
-
-.mc-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 17px;
+.dash-title {
+  font-size: 22px;
   font-weight: 600;
   color: #1a1a1a;
   margin: 0 0 2px;
 }
 
-.mc-email {
+.dash-date {
   font-size: 13px;
   color: #6b7280;
-  margin: 0;
+  margin: 0 0 1.25rem;
 }
 
-.mc-role-badge {
-  margin-left: auto;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.mc-role-badge.patient {
-  background: #EAF3DE;
-  color: #3B6D11;
-}
-
-.mc-role-badge.doctor {
-  background: #E6F1FB;
-  color: #185FA5;
-}
-
-/* ── Section label ── */
-.mc-section-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: #6b7280;
-  margin: 0 0 0.75rem;
-}
-
-/* ── Vitals grid ── */
-.vitals-grid {
+.stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-  margin-bottom: 1.25rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
-.vital-card {
+.stat-card {
   background: #ffffff;
-  border: 1px solid #e8f5e9;
-  border-radius: 12px;
-  padding: 14px 14px 12px;
-  position: relative;
-  overflow: hidden;
-}
-
-.vital-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: #639922;
-}
-
-.vital-card.warn::before { background: #BA7517; }
-.vital-card.alert::before { background: #E24B4A; }
-
-.vital-label {
-  font-size: 11px;
-  color: #6b7280;
-  margin: 0 0 6px;
-  font-weight: 500;
-}
-
-.vital-value {
-  font-family: 'Syne', sans-serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
-  line-height: 1;
-}
-
-.vital-unit {
-  font-size: 11px;
-  color: #6b7280;
-  font-weight: 400;
-  margin-left: 2px;
-}
-
-/* ── Status pills ── */
-.status-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 1.25rem;
-}
-
-.status-pill {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.status-pill.normal { background: #EAF3DE; color: #3B6D11; }
-.status-pill.warn   { background: #FAEEDA; color: #854F0B; }
-.status-pill.alert  { background: #FCEBEB; color: #A32D2D; }
-
-/* ── Doctor info card ── */
-.mc-info-card {
-  background: #ffffff;
-  border: 1px solid #e8f5e9;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 1rem 1.25rem;
 }
 
-.info-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px solid #f0f9f0;
+.stat-label {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0 0 6px;
 }
 
-.info-row:last-child { border-bottom: none; padding-bottom: 0; }
-.info-row:first-child { padding-top: 0; }
+.stat-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 6px;
+  line-height: 1;
+}
 
-.info-icon {
-  font-size: 16px;
-  color: #639922;
-  width: 20px;
+.stat-sub {
+  font-size: 12px;
+  margin: 0;
+}
+
+.sub-up    { color: #3B6D11; }
+.sub-warn  { color: #BA7517; }
+.sub-danger { color: #A32D2D; }
+.sub-info  { color: #185FA5; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+.patients-section {
+  margin-top: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-left: 30px;
+  margin-right: 30px;
+  width: 1000px;
+}
+
+.patients-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.patients-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.view-all {
+  font-size: 13px;
+  color: #3B6D11;
+  text-decoration: none;
+}
+
+.view-all:hover { text-decoration: underline; }
+
+.patient-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid #f3f4f6;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
   flex-shrink: 0;
 }
 
-.info-key {
-  font-size: 13px;
-  color: #6b7280;
-  min-width: 90px;
-}
+.av-blue  { background: #E6F1FB; color: #185FA5; }
+.av-pink  { background: #FBEAF0; color: #993556; }
+.av-amber { background: #FAEEDA; color: #854F0B; }
+.av-teal  { background: #E1F5EE; color: #0F6E56; }
 
-.info-val {
-  font-size: 13px;
-  color: #1a1a1a;
+.patient-info { flex: 1; min-width: 0; }
+
+.patient-name {
+  font-size: 14px;
   font-weight: 500;
-  margin-left: auto;
-  text-align: right;
+  color: #111827;
+  margin: 0 0 2px;
 }
 
-/* ── Doctor stat cards ── */
-.doctor-stats {
-  margin-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.stat-card {
-  background: #f9fafb;
-  border-radius: 8px;
-  padding: 1rem;
-  text-align: center;
-}
-
-.stat-card p:first-child {
-  font-size: 11px;
+.patient-meta {
+  font-size: 12px;
   color: #6b7280;
-  margin: 0 0 4px;
+  margin: 0;
 }
 
-.stat-card p:last-child {
-  font-family: 'Syne', sans-serif;
-  font-size: 22px;
-  font-weight: 600;
-  margin: 0;
-  color: #1a1a1a;
+.badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
 }
+
+.badge-critical { background: #FCEBEB; color: #A32D2D; }
+.badge-active   { background: #EAF3DE; color: #3B6D11; }
+.badge-pending  { background: #FAEEDA; color: #854F0B; }
