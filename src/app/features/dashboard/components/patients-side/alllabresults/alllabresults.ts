@@ -35,13 +35,14 @@ export class Alllabresults {
         this.role = res?.role || '';
         console.log('User Details:', res);
         this.cd.detectChanges();
+           this.loadResults()
       },
       error: (err) => {
         console.error('Error fetching user details:', err);
       },
     });
 
-   this.loadResults()
+
   }
 
   goTolabresult(patientId: string) {
