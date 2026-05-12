@@ -1,4 +1,5 @@
-<div class="dash-header">
+<div *ngIf="role === 'DOCTOR'">
+  <div class="dash-header">
   <h1 class="dash-title">Dashboard</h1>
   <p class="dash-date">{{ today | date: 'EEEE, d MMMM yyyy' }}</p>
 
@@ -37,7 +38,8 @@
     <a class="view-all" routerLink="/patients">View all →</a>
   </div>
 
-  <div class="patient-row" *ngFor="let patient of Patients">
+  <!-- Patient rows -->
+  <div class="patient-row" *ngFor="let patient of Patients" (click)="openModal(patient)">
     <div class="avatar" [ngClass]="getAvatarColor(patient.user.fullName)">
       {{ getInitials(patient.user.fullName) }}
     </div>
@@ -45,8 +47,93 @@
       <p class="patient-name">{{ patient.user.fullName }}</p>
       <p class="patient-meta">{{ patient.gender }}, {{ patient.age }} · {{ patient.department }}</p>
     </div>
-    <!-- <span class="badge" [ngClass]="'badge-' + patient.status.toLowerCase()">
-      {{ patient.status }}
-    </span> -->
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="selectedPatient" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="modal-avatar">{{ getInitials(selectedPatient.user.fullName) }}</div>
+        <div class="modal-patient-info">
+          <h4 class="modal-name">{{ selectedPatient.user.fullName }}</h4>
+          <p class="modal-sub">
+            <span>{{ selectedPatient.patientCode }}</span>
+            <span class="badge">{{ selectedPatient.gender }}</span>
+            <span class="badge">{{ selectedPatient.bloodType }}</span>
+          </p>
+        </div>
+        <!-- <button class="close-btn" (click)="closeModal()">✕</button> -->
+      </div>
+
+      <div class="modal-body">
+        <p class="section-label">Basic info</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <p class="lbl">Date of birth</p>
+            <p class="val">{{ selectedPatient.dateOfBirth }}</p>
+          </div>
+          <div class="info-card">
+            <p class="lbl">National ID</p>
+            <p class="val">{{ selectedPatient.nationalId }}</p>
+          </div>
+          <!-- <div class="info-card">
+          <p class="lbl">Consultation fee</p>
+          <p class="val">₹ {{ selectedPatient.assignedDoctor?.consultationFee }}</p>
+        </div>
+        <div class="info-card">
+          <p class="lbl">Doctor code</p>
+          <p class="val">{{ selectedPatient.assignedDoctor?.doctorCode }}</p>
+        </div> -->
+        </div>
+
+        <p class="section-label">Chronic conditions</p>
+        <div class="tags-row">
+          <span class="tag" *ngFor="let c of selectedPatient.chronicConditions">{{ c }}</span>
+          <span class="tag" *ngIf="!selectedPatient.chronicConditions?.length">None</span>
+        </div>
+
+        <p class="section-label">Allergies</p>
+        <div class="tags-row">
+          <span class="tag" *ngFor="let a of selectedPatient.allergies">{{ a }}</span>
+          <span class="tag" *ngIf="!selectedPatient.allergies?.length">None</span>
+        </div>
+
+
+
+        <p class="section-label">Emergency contact</p>
+        <div class="info-rows">
+          <div class="info-row">
+            <span class="r-lbl">Name</span>
+            <span class="r-val">{{ selectedPatient.emergencyContactName }}</span>
+          </div>
+          <div class="info-row">
+            <span class="r-lbl">Phone</span>
+            <span class="r-val">{{ selectedPatient.emergencyContactPhone }}</span>
+          </div>
+          <div class="info-row">
+            <span class="r-lbl">Status</span>
+            <span class="r-val status-available">{{ selectedPatient.assignedDoctor?.availabilityStatus }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline" (click)="closeModal()">Close</button>
+        <!-- <button class="btn-primary" (click)="getPatientDetails(selectedPatient.patientId)">
+        View full profile
+      </button> -->
+      </div>
+
+    </div>
   </div>
 </div>
+
+
+</div>
+
+
+
+
+
+

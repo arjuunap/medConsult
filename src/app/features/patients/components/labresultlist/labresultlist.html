@@ -222,7 +222,8 @@
         </div>
 
         <!-- STATUS FORM -->
-        <form [formGroup]="labForm" class="status-form">
+         <div *ngIf="role === 'DOCTOR'">
+          <form [formGroup]="labForm" class="status-form">
           <h4 class="section-title">Update Status</h4>
           <div class="form-group">
             <label class="form-label">Select Status</label>
@@ -251,6 +252,9 @@
             Submit
           </button>
         </form>
+
+         </div>
+        
 
       </div><!-- /modal-content -->
     </div><!-- /modal-body -->

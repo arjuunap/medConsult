@@ -15,18 +15,29 @@ import { AuthService } from '../../../../../core/services/authServices/auth';
 })
 export class Appointment implements OnInit {
   appointments: any[] = [];
+  filteredAppointments: any[] = [];
 
   selectedAppointment: any = null;
 
   role: string = '';
 
-  // PRIORITY
   priority: string = 'NORMAL';
 
-  // CANCEL POPUP
   showCancelPopup: boolean = false;
 
   cancelReason: string = '';
+
+  // FILTERS
+  search: string = '';
+  statusFilter: string = '';
+
+  // STATS
+  todayCount = 0;
+  pendingCount = 0;
+  completedCount = 0;
+  cancelledCount = 0;
+
+  loading = false;
 
   constructor(
     private appomentService: AppointmentService,
@@ -40,7 +51,6 @@ export class Appointment implements OnInit {
     this.authservice.UserDetails().subscribe({
       next: (res) => {
         this.role = res.role;
-
         this.cd.detectChanges();
       },
 
@@ -51,24 +61,66 @@ export class Appointment implements OnInit {
   }
 
   getAppointments() {
+    this.loading = true;
+
     this.appomentService.showAppointments().subscribe({
       next: (res) => {
         this.appointments = res;
-        console.log('Appointments :', res);
+        this.filteredAppointments = res;
+
+        this.calculateStats();
+
+        this.loading = false;
 
         this.cd.detectChanges();
       },
 
       error: (err) => {
         console.error(err);
+        this.loading = false;
       },
+    });
+  }
+
+  // STATS
+  calculateStats() {
+    const today = new Date().toDateString();
+
+    this.todayCount = this.appointments.filter(
+      (a) => new Date(a.scheduledAt).toDateString() === today
+    ).length;
+
+    this.pendingCount = this.appointments.filter(
+      (a) => a.status === 'SCHEDULED'
+    ).length;
+
+    this.completedCount = this.appointments.filter(
+      (a) => a.status === 'COMPLETED'
+    ).length;
+
+    this.cancelledCount = this.appointments.filter(
+      (a) => a.status === 'CANCELLED'
+    ).length;
+  }
+
+  // SEARCH + FILTER
+  applyFilters() {
+    this.filteredAppointments = this.appointments.filter((appt) => {
+      const matchesSearch =
+        appt.patient.user.fullName
+          .toLowerCase()
+          .includes(this.search.toLowerCase());
+
+      const matchesStatus =
+        !this.statusFilter || appt.status === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
     });
   }
 
   // CARD CLICK
   openAppointment(appt: any) {
     const doctorId = appt.doctorId;
-
     const appointmentId = appt.appointmentId;
 
     this.appomentService
@@ -77,7 +129,6 @@ export class Appointment implements OnInit {
         next: (res) => {
           this.selectedAppointment = res;
 
-          // existing priority load
           this.priority = res.priority || 'NORMAL';
 
           this.cd.detectChanges();
@@ -91,10 +142,9 @@ export class Appointment implements OnInit {
 
   closeModal() {
     this.selectedAppointment = null;
-
   }
 
-  // CONFIRM
+  // STATUS UPDATE
   updateStatus(status: string) {
     const appointmentId = this.selectedAppointment.appointmentId;
 
@@ -106,45 +156,29 @@ export class Appointment implements OnInit {
     this.appomentService
       .updateAppointment(appointmentId, payload)
       .subscribe({
-        next: (res) => {
-          console.log('updated', res);
-
-          this.selectedAppointment.status = status;
-          this.selectedAppointment.priority = this.priority;
-
-          const index = this.appointments.findIndex(
-            (a) => a.appointmentId === appointmentId
-          );
-
-          if (index !== -1) {
-            this.appointments[index].status = status;
-            this.appointments[index].priority = this.priority;
-          }
-
+        next: () => {
           this.closeModal();
-          this.cd.detectChanges();
+
+          this.getAppointments();
         },
 
         error: (err) => {
           console.error(err);
         },
       });
-
   }
 
-  // OPEN CANCEL POPUP
+  // CANCEL
   openCancelPopup() {
     this.showCancelPopup = true;
   }
 
-  // CLOSE CANCEL POPUP
   closeCancelPopup() {
     this.showCancelPopup = false;
     this.cancelReason = '';
     this.cd.detectChanges();
   }
 
-  // FINAL CANCEL
   confirmCancel() {
     const appointmentId = this.selectedAppointment.appointmentId;
 
@@ -156,30 +190,56 @@ export class Appointment implements OnInit {
     this.appomentService
       .updateAppointment(appointmentId, payload)
       .subscribe({
-        next: (res) => {
-          console.log('cancelled', res);
-
-          this.selectedAppointment.status = 'CANCELLED';
-          
-          this.selectedAppointment.cancelReason = this.cancelReason;
-
-          const index = this.appointments.findIndex(
-            (a) => a.appointmentId === appointmentId
-          );
-
-          if (index !== -1) {
-            this.appointments[index].status = 'CANCELLED';
-            this.appointments[index].cancelReason = this.cancelReason;
-          }
-
+        next: () => {
           this.closeCancelPopup();
           this.closeModal();
-          this.cd.detectChanges();
+
+          this.getAppointments();
         },
 
         error: (err) => {
           console.error(err);
         },
       });
+  }
+
+  // STATUS CLASS
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'SCHEDULED':
+        return 'scheduled';
+
+      case 'CONFIRMED':
+        return 'confirmed';
+
+      case 'COMPLETED':
+        return 'completed';
+
+      case 'CANCELLED':
+        return 'cancelled';
+
+      case 'NO_SHOW':
+        return 'no-show';
+
+      default:
+        return '';
+    }
+  }
+
+  // TYPE CLASS
+  getTypeClass(type: string): string {
+    switch (type) {
+      case 'Follow-up':
+        return 'followup';
+
+      case 'New Consult':
+        return 'consult';
+
+      case 'Referral':
+        return 'referral';
+
+      default:
+        return '';
+    }
   }
 }

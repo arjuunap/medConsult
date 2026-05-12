@@ -11,19 +11,20 @@
 
     <div class="lab-list">
 
-      <div
-        class="lab-card"
-        *ngFor="let result of labResults"
-        (click)="goTolabresult(result.patientId)"
-      >
+      <div class="lab-card" *ngFor="let result of labResults" (click)="goTolabresult(result.patientId)">
         <div class="lab-card-left">
 
           <!-- ICON -->
           <div class="panel-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+
+              <!-- Head -->
+              <circle cx="12" cy="8" r="4"></circle>
+
+              <!-- Body -->
+              <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path>
+
             </svg>
           </div>
 
@@ -44,7 +45,7 @@
   <!-- ❌ NO DATA -->
   <ng-template #noData>
     <div class="no-data">
-      <p>📄 No  Patients found</p>
+      <p>📄 No Patients found</p>
     </div>
   </ng-template>
 

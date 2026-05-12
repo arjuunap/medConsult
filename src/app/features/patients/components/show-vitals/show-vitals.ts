@@ -37,6 +37,7 @@ export class VitalsDetailComponent implements OnInit {
     this.vitalsService.getVitals().subscribe({
       next: (data) => {
         this.vitals = data;
+        console.log('Fetched vitals:', data);
         this.loading = false;
         this.cd.detectChanges();
       },

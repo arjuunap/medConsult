@@ -1,157 +1,292 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder,FormGroup } from '@angular/forms';
 import { LabService } from '../../../../core/services/labServices/lab';
+import { AuthService } from '../../../../core/services/authServices/auth';
 
 @Component({
   selector: 'app-labresultlist',
+  standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './labresultlist.html',
   styleUrl: './labresultlist.css',
 })
 export class Labresultlist implements OnInit {
-labForm:FormGroup;
+
+  labForm: FormGroup;
 
   labResults: any[] = [];
-  selectedResult: any = null;
-  showModal = false; // ✅ must start as false
-  
 
+  selectedResult: any = null;
+
+  showModal = false;
+
+  role: string = '';
+
+  user: any = {};
 
   constructor(
-     private fb: FormBuilder,
+    private fb: FormBuilder,
     private labService: LabService,
     private cd: ChangeDetectorRef,
+    private authService: AuthService,
     private route: ActivatedRoute
-  ) { 
+  ) {
+
     this.labForm = this.fb.group({
-      
-      labStatus: ['',],
-      doctorNotes: ['',]
-      
+
+      labStatus: [''],
+
+      doctorNotes: ['']
+
     });
+
   }
 
   ngOnInit(): void {
-    const patientId = this.route.snapshot.paramMap.get('patientId');
-    console.log("Patient ID:", patientId);
-    if (patientId) {
-      this.loadResults(patientId);
-    }
-  }
 
-  loadResults(patientId: string) {
-    this.labService.getLabResults(patientId).subscribe((res) => {
-      this.labResults = res;
-      this.cd.detectChanges();
+    // ✅ logged user details
+    this.authService.UserDetails().subscribe({
+
+      next: (res) => {
+
+        this.user = res;
+
+        this.role = res?.role || '';
+
+        console.log('User Details:', res);
+
+        this.cd.detectChanges();
+
+      },
+
+      error: (err) => {
+        console.error('User fetch error:', err);
+      }
+
     });
+
+    // ✅ patient id
+    const patientId = this.route.snapshot.paramMap.get('patientId');
+
+    console.log('Patient ID:', patientId);
+
+    if (patientId) {
+
+      this.loadResults(patientId);
+
+    }
+
   }
 
+  // ✅ load all lab results
+  loadResults(patientId: string) {
+
+    this.labService.getLabResults(patientId).subscribe({
+
+      next: (res) => {
+
+        this.labResults = res ?? [];
+
+        console.log('Lab Results:', this.labResults);
+
+        this.cd.detectChanges();
+
+      },
+
+      error: (err) => {
+        console.error('Lab results fetch error:', err);
+      }
+
+    });
+
+  }
+
+  // ✅ open modal
   openDetails(result: any) {
+
     const id = result?.labResultId || result?.id;
+
     if (!id) {
+
       console.error('Invalid ID');
+
       return;
+
     }
 
     this.showModal = false;
+
     this.selectedResult = null;
+
     this.cd.detectChanges();
-    console.log('hello')
 
     this.labService.getLabResultById(id).subscribe({
+
       next: (res) => {
-        console.log('full details',res)
+
+        console.log('Full details:', res);
+
         if (!res) {
-          
-         
+
           console.warn('Empty response from API');
+
           return;
+
         }
+
         this.selectedResult = res;
-         // ✅ 👉 THIS IS THE FIX
-      // this.labForm.patchValue({
-      //   labStatus: res. || '',
-      //   doctorNotes: res.doctorNotes || ''
-      // });
+
+        // ✅ patch existing values into form
+        this.labForm.patchValue({
+
+          labStatus: res.labStatus || '',
+
+          doctorNotes: res.doctorNotes || ''
+
+        });
 
         this.showModal = true;
+
         this.cd.detectChanges();
+
       },
+
       error: (err) => {
+
         console.error('API ERROR:', err);
+
         this.showModal = false;
+
         this.selectedResult = null;
+
         this.cd.detectChanges();
+
       }
+
     });
+
   }
 
-  // ✅ this was missing — template calls (click)="closeModal()"
+  // ✅ close modal
   closeModal() {
+
     this.showModal = false;
+
     this.selectedResult = null;
+
     this.cd.detectChanges();
+
   }
 
- submitStatus() {
-  if (!this.selectedResult) return;
+  // ✅ submit review
+  submitStatus() {
 
-  const id = this.selectedResult.labResultId;
+    if (!this.selectedResult) return;
 
-  const payload = {
-    labStatus: this.labForm.value.labStatus?.toUpperCase(),
-    doctorNotes: this.labForm.value.doctorNotes,
-    
-  };
+    const id =
+      this.selectedResult.labResultId ||
+      this.selectedResult.id;
 
-  console.log('📦 Payload going to backend:', payload); // 👈 ADD HERE
+    // ✅ safer payload
+    const payload = {
 
-  if (!payload.labStatus) {
-    alert('Select status');
-    return;
-  }
+      labStatus:
+        this.labForm.value.labStatus?.toUpperCase(),
 
-  this.labService.updateLabResult(payload, id).subscribe({
-    next: () => {
+      doctorNotes:
+        this.labForm.value.doctorNotes,
 
-      console.log('successfully', payload); 
+      reviewedBy:
+        this.user?.id
 
-      // ✅ modal update
-      this.selectedResult.labStatus = payload.labStatus;
-      this.selectedResult.doctorNotes = payload.doctorNotes; // ✅ ADD THIS
+    };
 
-      if (payload.labStatus === 'REVIEWED') {
-        this.selectedResult.reviewedBy = {
-          name: 'Doctor',
-          specialization: 'General'
-        };
-      }
+    console.log('📦 Payload going to backend:', payload);
 
-      // ✅ list update
-      const index = this.labResults.findIndex(
-        r => r.labResultId === id
-      );
+    if (!payload.labStatus) {
 
-      if (index !== -1) {
-        this.labResults[index].labStatus = payload.labStatus;
-      }
+      alert('Select status');
 
-      // ✅ reset form
-      this.labForm.patchValue({
-        labStatus: '',
-        doctorNotes: ''
-      });
+      return;
 
-      this.cd.detectChanges();
-    },
-    error: (err) => {
-      console.error('Update failed', err);
     }
-  });
-}
+
+    this.labService.updateLabResult(payload, id).subscribe({
+
+      next: () => {
+
+        console.log('Successfully updated');
+
+        // ✅ modal update
+        this.selectedResult.labStatus =
+          payload.labStatus;
+
+        this.selectedResult.doctorNotes =
+          payload.doctorNotes;
+
+        this.selectedResult.reviewedBy = {
+
+          id: this.user?.id,
+
+          name:
+            this.user?.fullName ||
+            this.user?.name
+
+        };
+
+        // ✅ list update
+        const index = this.labResults.findIndex(
+
+          r =>
+            r.labResultId === id ||
+            r.id === id
+
+        );
+
+        if (index !== -1) {
+
+          this.labResults[index].labStatus =
+            payload.labStatus;
+
+          this.labResults[index].doctorNotes =
+            payload.doctorNotes;
+
+          this.labResults[index].reviewedBy = {
+
+            id: this.user?.id,
+
+            name:
+              this.user?.fullName ||
+              this.user?.name
+
+          };
+
+        }
+
+        // ✅ reset form
+        this.labForm.patchValue({
+
+          labStatus: '',
+
+          doctorNotes: ''
+
+        });
+
+        this.cd.detectChanges();
+
+      },
+
+      error: (err) => {
+
+        console.error('Update failed', err);
+
+      }
+
+    });
+
+  }
+
 }

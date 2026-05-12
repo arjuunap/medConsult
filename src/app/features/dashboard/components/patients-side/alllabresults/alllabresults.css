@@ -1,88 +1,120 @@
-/* ===== PAGE TITLE ===== */
-.lab-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 10px 0 16px;
-  letter-spacing: -0.2px;
+.lab-wrapper {
+  font-family: 'DM Sans', sans-serif;
+  padding: 1.5rem;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
-/* ===== LIST WRAPPER ===== */
+.lab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.lab-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a4731;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  background: #16a34a;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+button:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
 .lab-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* ===== CARD ===== */
 .lab-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
+  padding: 14px 18px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e2f5ea;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+
+.lab-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #22c55e;
+  border-radius: 12px 0 0 12px;
 }
 
 .lab-card:hover {
-  transform: translateY(-2px);
-  border-color: #93c5fd;
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
+  border-color: #86efac;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.1);
+  transform: translateY(-1px);
 }
 
-/* ===== LEFT SIDE ===== */
 .lab-card-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-/* ICON */
 .panel-icon {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
   border-radius: 10px;
-  background: #eff6ff;
-  color: #2563eb;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-/* TEXT */
-.lab-card-info {
-  display: flex;
-  flex-direction: column;
+.panel-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: #16a34a;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .panel-name {
   font-size: 14px;
-  font-weight: 600;
-  color: #0f172a;
-  letter-spacing: -0.1px;
-}
-
-/* optional subtitle if you add later */
-.panel-sub {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-/* ===== RIGHT ARROW STYLE (if you add later) ===== */
-.lab-card::after {
-  content: "›";
-  font-size: 20px;
-  color: #cbd5e1;
-  transition: 0.2s;
-}
-
-.lab-card:hover::after {
-  color: #3b82f6;
+  font-weight: 500;
+  color: #14532d;
 }
 
 .no-data {
@@ -90,23 +122,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  padding: 50px 20px;
-  margin: 20px 0;
-
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  padding: 3rem 2rem;
+  background: #f0fdf4;
+  border: 1.5px dashed #bbf7d0;
   border-radius: 14px;
-
-  color: #94a3b8;
   text-align: center;
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .no-data p {
   font-size: 14px;
+  color: #4b5563;
   margin: 0;
   font-weight: 500;
 }
-

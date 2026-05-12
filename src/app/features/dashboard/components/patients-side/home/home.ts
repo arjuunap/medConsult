@@ -20,7 +20,8 @@ export class HomeComponent {
     private router: Router,
     private vitalsService: VitalsService,
     private doctorService: DoctorService,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private authservice: AuthService
   ) {
 
   }
@@ -30,95 +31,78 @@ export class HomeComponent {
   doctor: any = {}
   vital: boolean = false;
   Patients: any[] = [];
-  totalPatients : number = 0;
+  totalPatients: number = 0;
   ngOnInit(): void {
-    this.patientService.getPatientByDoctorId().subscribe({
-    next: (res) => {
-      this.Patients = res;
-      console.log('Patients :', res);
-      this.totalPatients = res.length;
 
-      this.cd.detectChanges();
+  this.authService.UserDetails().subscribe({
+
+    next: (res) => {
+
+      this.role = res?.role || '';
+
+      console.log('role :', this.role);
+
+      // ✅ INSIDE HERE
+      if (this.role === 'DOCTOR') {
+
+        this.patientService.getPatientByDoctorId().subscribe({
+
+          next: (patients) => {
+
+            this.Patients = patients ?? [];
+
+            console.log('Patients :', patients);
+
+            this.totalPatients = this.Patients.length;
+
+            this.cd.detectChanges();
+
+          },
+
+          error: (err) => {
+            console.error(err);
+          }
+
+        });
+
+      }
+
     },
 
     error: (err) => {
-      console.error(err);
-    },
+      console.error('Error fetching user details:', err);
+    }
+
   });
-  }
+
+}
 
   getInitials(fullName: string): string {
-  return fullName
-    .split(' ')
-    .map(name => name.charAt(0).toUpperCase())
-    .join('');
-}
-
-getAvatarColor(name: string): string {
-  const colors = [
-    'av-blue',
-    'av-pink',
-    'av-amber',
-    'av-teal'
-  ];
-
-  let sum = 0;
-
-  for (let i = 0; i < name.length; i++) {
-    sum += name.charCodeAt(i);
+    return fullName
+      .split(' ')
+      .map(name => name.charAt(0).toUpperCase())
+      .join('');
   }
 
-  return colors[sum % colors.length];
-}
+  getAvatarColor(name: string): string {
+    const colors = [
+      'av-blue',
+      'av-pink',
+      'av-amber',
+      'av-teal'
+    ];
 
-//   registerAsPatient() {
-//     this.router.navigate(['/patient-register'])
+    let sum = 0;
 
-//   }
-//   ngOnInit(): void {
-//   // this.doctorService.
-//   this.authService.UserDetails().subscribe({
-//     next: (res) => {
+    for (let i = 0; i < name.length; i++) {
+      sum += name.charCodeAt(i);
+    }
 
-//       this.patient = res;
-//       this.role = res.role;
+    return colors[sum % colors.length];
+  }
 
-//       console.log('User Details :', res);
-//       console.log('Role :', this.role);
-
-//       this.cd.detectChanges();
-
-//       // ✅ MOVE INSIDE HERE
-//       if (this.role === 'PATIENT') {
-
-//         this.vitalsService.getVitals().subscribe({
-//           next: (vitals) => {
-
-//             this.vitals = vitals;
-
-//             console.log('Vitals :', vitals);
-
-//             this.vital = true;
-//             this.cd.detectChanges();
-//           },
-
-//           error: (err) => {
-//             console.error('Error fetching vitals:', err);
-//           }
-//         });
-
-//       }
-
-//     },
-
-//     error: (err) => {
-//       console.error('Error fetching user details:', err);
-//     },
-
-//   });
-
-// }
-today = new Date();
+  
+  today = new Date();
 
   // Replace with actual API data later
   stats = {
@@ -131,8 +115,28 @@ today = new Date();
     labResults: 31,
     unreviewedLabs: 9
   };
+  selectedPatient: any = null;
 
-  
+  openModal(patient: any): void {
+    this.selectedPatient = patient;
+  }
+
+  closeModal(): void {
+    this.selectedPatient = null;
+  }
+
+  getPatientDetails(id: string) {
+    this.patientService.getPatientById(id).subscribe({
+      next: (res) => {
+        console.log('Patient details:', res);
+        // this.router.navigate(['/layout/patient-details', id]);
+      },
+      error: (err) => {
+        console.error('Error fetching patient details:', err);
+      }
+    });
+  }
+
 
 
 }
