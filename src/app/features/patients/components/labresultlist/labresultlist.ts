@@ -29,7 +29,7 @@ labForm:FormGroup;
     private route: ActivatedRoute
   ) { 
     this.labForm = this.fb.group({
-      doctorId: ['b3e6c8be-6699-471f-b94b-097c2b538be4',],
+      
       labStatus: ['',],
       doctorNotes: ['',]
       
@@ -104,7 +104,6 @@ labForm:FormGroup;
   const id = this.selectedResult.labResultId;
 
   const payload = {
-    reviewedBy: this.labForm.value.doctorId,
     labStatus: this.labForm.value.labStatus?.toUpperCase(),
     doctorNotes: this.labForm.value.doctorNotes,
     

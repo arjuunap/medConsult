@@ -45,12 +45,22 @@ export class Drschedul implements OnInit {
   }
 
   deleteSchedule(scheduleId: string) {
-    // Implement delete functionality here
     this.doctorService.deleteSchedule(scheduleId).subscribe({
       next: (res) => {
-        console.log('Schedule deleted successfully', res);
-        // Optionally, refresh the schedule list after deletion
-        this.ngOnInit();
+        console.log(res);
+
+        // Remove deleted schedule from UI
+        this.doctor = this.doctor.filter(
+          (s: any) => s.scheduleId !== scheduleId
+        );
+
+        // Refresh UI
+        this.cd.detectChanges();
+      },
+
+      
+      error: (err) => {
+        console.error(err);
       }
     });
   }

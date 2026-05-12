@@ -41,7 +41,7 @@ export class DoctorService {
     return this.http.get(`${this.apiUrl}/doctors/${doctorId}/schedules`);
   }
 
-  registerSchedule( data: any): Observable<any> {
+  registerSchedule(data: any): Observable<any> {
     return this.http.post(
       `${this.apiUrl}/doctors/add-schedules`,
       data
@@ -50,11 +50,14 @@ export class DoctorService {
   schedules(): Observable<any> {
     return this.http.get(`${this.apiUrl}/doctors/my-schedules`);
   }
-  deleteSchedule(scheduleId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/doctors/schedule/delete/${scheduleId}`);
+  deleteSchedule(scheduleId: string) {
+    return this.http.delete(
+      `${this.apiUrl}/doctors/schedule/delete/${scheduleId}`,
+      { responseType: 'text' }
+    );
   }
 
-  
+
 }
 
 

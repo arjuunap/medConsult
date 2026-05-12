@@ -17,6 +17,7 @@ export class Schedul implements OnInit {
 
   // 🔥 Booking popup
   showBookingForm = false;
+   showSuccessPopup = false;
   selectedSchedule: any;
 
   // 🔥 Form
@@ -85,9 +86,16 @@ export class Schedul implements OnInit {
 
     this.doctorService.bookConsultation(this.doctorId,  payload).subscribe({
       next: (res) => {
+
         console.log('Booking successful', res);
-        this.router.navigate(['layout/home']);
+        this.showBookingForm = false;
+       setTimeout(() => {
+    this.showSuccessPopup = true;
+    this.cd.detectChanges();
+  }, 0);
+        // this.router.navigate(['layout/home']);
         this.closeBooking();
+
       },
       error: (err) => console.error('Booking failed', err),
     });

@@ -1,60 +1,117 @@
-<div *ngIf="doctor" class="profile-container">
-  <div class="card">
-
-    <!-- Top Bar -->
-    <div class="topbar">
-      <button class="back-btn" (click)="goback()">
-        ←
-      </button>
-      <h2>Doctor Profile</h2>
-    </div>
-
-    <!-- Hero Section -->
-    <div class="hero">
-      <img src="{{doctor.profilePhotoUrl}}" alt="Doctor" class="avatar" />
-
-      <h3 class="doctor-name">{{ doctor.name }}</h3>
-
-      <p class="doctor-meta">
-        {{ doctor.specialization }} • {{ doctor.yearsExperience }} years experience
-      </p>
-
-      <div class="rating">
-        ⭐⭐⭐⭐⭐
-        <span>4.9 (128 reviews)</span>
-      </div>
-    </div>
-
-    <!-- Info Section -->
-    <div class="info-section">
-      <h4>Information</h4>
-
-      <div class="info-item">
-        <span>🏥 Hospital</span>
-        <p>{{ doctor.hospitalAffiliation }}</p>
+<div>
+  <div *ngIf="doctor" class="profile-container">
+    <div class="card">
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="back-btn" (click)="goback()">←</button>
+        <h2>Doctor Profile</h2>
       </div>
 
-      <div class="info-item">
-        <span>🌐 Language</span>
-        <p>{{ doctor.languagesSpoken }}</p>
+      <!-- Hero Section (Left Panel) -->
+      <div class="hero">
+        <div class="avatar-wrap">
+          <img src="{{ doctor.profilePhotoUrl }}" alt="Doctor" class="avatar" />
+          <span class="senior-badge" *ngIf="doctor.isSenior">Senior</span>
+        </div>
+
+        <div class="hero-text">
+          <div class="name-row">
+            <h3 class="doctor-name">{{ doctor.name }}</h3>
+          </div>
+          <p class="doctor-code">{{ doctor.doctorCode }}</p>
+          <p class="doctor-meta">
+            {{ doctor.specialization }} • {{ doctor.yearsExperience }} yrs exp
+          </p>
+
+          <div class="sub-specialties">
+            <span class="tag" *ngFor="let sub of doctor.subSpecialties">{{ sub }}</span>
+          </div>
+
+          <div class="rating">
+            ⭐ <span>{{ doctor.rating }} ({{ doctor.reviewCount }} reviews)</span>
+          </div>
+
+          <div class="avail-pill">
+            <span class="avail-dot"></span>
+            Available Today
+          </div>
+        </div>
       </div>
 
-      <div class="info-item">
-        <span>🟢 Availability</span>
-        <p class="available">Available Today</p>
+      <!-- Main Right Panel -->
+      <div class="main-panel">
+        <!-- Info Section -->
+        <div class="info-section">
+          <h4>Information</h4>
+
+          <div class="info-item">
+            <span>🏥 Hospital</span>
+            <p>{{ doctor.hospitalAffiliation }}</p>
+          </div>
+
+          <div class="info-item">
+            <span>🌐 Language</span>
+            <p>{{ doctor.languagesSpoken }}</p>
+          </div>
+
+          <div class="info-item">
+            <span>🪪 License</span>
+            <p>{{ doctor.licenseNumber }}</p>
+          </div>
+
+          <div class="info-item">
+            <span>📅 Today</span>
+            <p class="today-val">{{ doctor.todayAppointments }} Appointments</p>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p class="stat-value">{{ doctor.consultationCount }}</p>
+            <p class="stat-label">Consultations</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-value">{{ doctor.patientSatisfaction }}%</p>
+            <p class="stat-label">Satisfaction</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-value">{{ doctor.casesClosedThisMonth }}</p>
+            <p class="stat-label">Cases / Month</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-value">{{ doctor.activePatients }}</p>
+            <p class="stat-label">Active Patients</p>
+          </div>
+        </div>
+
+        <!-- Weekly Schedule Grid -->
+        <div class="schedule-section">
+          <h4>Weekly Schedule</h4>
+          <div class="schedule-grid">
+            <div
+              class="day-slot"
+              *ngFor="let day of doctor.weeklySchedule"
+              [class.active]="day.available"
+            >
+              <p class="day-name">{{ day.day }}</p>
+              <p class="day-time">{{ day.available ? day.time : 'Off' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+          <!-- <button class="btn primary" (click)="goToSchedule(doctor.id)">
+          Book Consultation
+        </button> -->
+          <button class="btn secondary">Send Message</button>
+        </div>
+        
       </div>
+      <!-- /main-panel -->
     </div>
-
-    <!-- Buttons -->
-    <div class="actions">
-      <!-- <button class="btn primary" (click)="goToSchedule(doctor.id)">
-        Book Consultation
-      </button> -->
-      <button class="btn secondary">
-        Send Message
-      </button>
-    </div>
-
+    <!-- /card -->
   </div>
+  <app-schedul></app-schedul>
 </div>
-<app-schedul></app-schedul>

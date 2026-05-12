@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Nunito:wght@300;400;500;600&display=swap');
 
-:root {
+:host {
   --g-dark:    #15653c;
   --g-mid:     #22a06b;
   --g-light:   #e6f5ed;
@@ -28,7 +28,7 @@ body {
 /* ── Outer wrapper ── */
 .profile-container {
   width: 100%;
-  max-width: 900px;
+  
   animation: rise 0.45s cubic-bezier(.22,1,.36,1) both;
 }
 
@@ -46,11 +46,13 @@ body {
   grid-template-areas:
     "topbar  topbar"
     "hero    main";
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 620px 1fr;
   grid-template-rows: auto 1fr;
 }
 
-/* ── Top Bar ── */
+/* ══════════════════════════════
+   TOP BAR
+══════════════════════════════ */
 .topbar {
   grid-area: topbar;
   display: flex;
@@ -76,7 +78,7 @@ body {
 .back-btn {
   width: 36px;
   height: 36px;
-  min-width: 36px;   /* prevents shrink */
+  min-width: 36px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -94,21 +96,22 @@ body {
   border-color: var(--g-mid);
 }
 
-/* ── LEFT PANEL — Hero ── */
+/* ══════════════════════════════
+   LEFT PANEL — Hero
+══════════════════════════════ */
 .hero {
   grid-area: hero;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 24px;
-  gap: 12px;
+  padding: 36px 20px 28px;
+  gap: 50px;
   background: linear-gradient(175deg, #d4f0e3 0%, var(--white) 55%);
   border-right: 1px solid var(--border);
   position: relative;
 }
 
-/* decorative circle behind avatar */
+/* Decorative circle behind avatar */
 .hero::before {
   content: '';
   position: absolute;
@@ -121,72 +124,187 @@ body {
   background: rgba(34, 160, 107, 0.08);
 }
 
-.avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--white);
-  outline: 3px solid var(--g-mid);
+/* Avatar + Senior badge wrapper */
+.avatar-wrap {
   position: relative;
   z-index: 1;
   flex-shrink: 0;
 }
 
+.avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--white);
+  outline: 3px solid var(--g-mid);
+  display: block;
+}
+
+/* Senior badge — sits bottom-right of avatar */
+.senior-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -6px;
+  background: var(--g-dark);
+  color: var(--white);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 2px solid var(--white);
+  white-space: nowrap;
+}
+
+/* Hero text block */
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .doctor-name {
   font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 500;
   color: var(--txt-dark);
   text-align: center;
   line-height: 1.2;
 }
 
+/* Doctor ID code */
+.doctor-code {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--txt-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 2px 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
 .doctor-meta {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--txt-muted);
   text-align: center;
   font-weight: 400;
 }
 
+/* Sub-specialties tag row */
+.sub-specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--g-dark);
+  background: var(--g-light);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+/* Star rating pill */
 .rating {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: var(--white);
   border: 1px solid var(--border);
   padding: 5px 12px;
   border-radius: 99px;
-  font-size: 0.8rem;
-  margin-top: 2px;
+  font-size: 0.78rem;
   white-space: nowrap;
+  margin-top: 2px;
 }
 .rating span {
   color: var(--txt-mid);
   font-weight: 600;
 }
 
-/* ── RIGHT PANEL — Info + Actions ── */
-.info-section {
-  padding: 32px 36px 24px;
-  min-width: 0; /* prevents grid blowout */
+/* Availability pill */
+.avail-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #e8f9f2;
+  border: 1px solid #a8dfc3;
+  color: var(--g-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 99px;
+  white-space: nowrap;
 }
 
-.info-section h4 {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+.avail-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--g-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(46, 204, 138, 0.25);
+  animation: pulse 1.8s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(46, 204, 138, 0.25); }
+  50%       { box-shadow: 0 0 0 6px rgba(46, 204, 138, 0.08); }
+}
+
+/* ══════════════════════════════
+   RIGHT PANEL — Main
+══════════════════════════════ */
+.main-panel {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Info Section ── */
+.info-section {
+  padding: 28px 32px 16px;
+  min-width: 0;
+}
+
+.info-section h4,
+.schedule-section h4 {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--txt-muted);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .info-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;           /* gap so label and value don't collide */
-  padding: 14px 0;
+  gap: 12px;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border);
 }
 .info-item:last-child {
@@ -195,17 +313,17 @@ body {
 }
 
 .info-item span {
-  font-size: 0.875rem;
+  font-size: 0.83rem;
   color: var(--txt-muted);
   font-weight: 400;
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;      /* label never wraps under value */
+  gap: 7px;
+  flex-shrink: 0;
 }
 
 .info-item p {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--txt-dark);
   text-align: right;
@@ -213,31 +331,110 @@ body {
   word-break: break-word;
 }
 
-.available {
+/* Today appointments value highlight */
+.today-val {
   color: var(--g-dark) !important;
+}
+
+/* ── Stats Grid (2×2) ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 0;
+}
+
+.stat-card {
+  background: var(--white);
+  padding: 16px 12px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 4px;
+  transition: background 0.15s;
+}
+.stat-card:hover {
+  background: var(--surface);
+}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--g-dark);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--txt-muted);
+  text-align: center;
+}
+
+/* ── Weekly Schedule ── */
+.schedule-section {
+  padding: 20px 32px 16px;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   gap: 6px;
 }
-.available::before {
-  content: '';
-  display: inline-block;
-  width: 8px; height: 8px;
-  background: var(--g-accent);
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(46,204,138,.25);
-  animation: pulse 1.8s infinite;
+
+.day-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: all 0.15s;
 }
-@keyframes pulse {
-  0%,100% { box-shadow: 0 0 0 3px rgba(46,204,138,.25); }
-  50%      { box-shadow: 0 0 0 6px rgba(46,204,138,.08); }
+
+.day-slot.active {
+  background: var(--g-light);
+  border-color: var(--g-mid);
+}
+
+.day-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--txt-muted);
+}
+
+.day-slot.active .day-name {
+  color: var(--g-dark);
+}
+
+.day-time {
+  font-size: 0.67rem;
+  font-weight: 600;
+  color: var(--txt-muted);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.day-slot.active .day-time {
+  color: var(--g-dark);
 }
 
 /* ── Actions ── */
 .actions {
   display: flex;
   gap: 12px;
-  padding: 20px 36px 32px;
+  padding: 18px 32px 28px;
+  margin-top: auto;
 }
 
 .btn {
@@ -276,21 +473,21 @@ body {
 }
 
 /* ══════════════════════════════════════════
-   RESPONSIVE — TABLET  (≤ 720px)
-   Hero shrinks, right panel stays alongside
+   RESPONSIVE — TABLET  (≤ 760px)
+   Collapse stats to 2×2, shrink hero
 ══════════════════════════════════════════ */
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   body {
     padding: 16px;
     align-items: flex-start;
   }
 
   .card {
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 210px 1fr;
   }
 
   .hero {
-    padding: 28px 16px;
+    padding: 28px 14px;
   }
 
   .hero::before {
@@ -299,16 +496,36 @@ body {
   }
 
   .avatar {
-    width: 80px;
-    height: 80px;
+    width: 78px;
+    height: 78px;
   }
 
   .doctor-name {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
 
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .schedule-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .day-slot {
+    padding: 8px 4px;
+  }
+
+  .day-name { font-size: 0.6rem; }
+  .day-time { font-size: 0.6rem; }
+
   .info-section {
-    padding: 24px 20px 16px;
+    padding: 20px 20px 12px;
+  }
+
+  .schedule-section {
+    padding: 16px 20px 12px;
   }
 
   .actions {
@@ -327,15 +544,14 @@ body {
 
 /* ══════════════════════════════════════════
    RESPONSIVE — MOBILE  (≤ 540px)
-   Grid collapses to single column stack
+   Grid collapses to full single column
 ══════════════════════════════════════════ */
 @media (max-width: 540px) {
   body {
-    padding: 12px;
+    padding: 10px;
     align-items: flex-start;
   }
 
-  /* stack hero above main panel */
   .card {
     grid-template-areas:
       "topbar"
@@ -354,20 +570,19 @@ body {
     margin-right: 36px;
   }
 
-  /* hero becomes a horizontal strip */
+  /* Hero becomes a horizontal strip */
   .hero {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 14px;
-    padding: 24px 20px;
+    padding: 20px 16px;
     border-right: none;
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, #d4f0e3 0%, var(--white) 80%);
   }
 
-  /* decorative circle repositions behind avatar */
   .hero::before {
     top: 50%;
     transform: translate(-50%, -50%);
@@ -376,48 +591,78 @@ body {
   }
 
   .avatar {
-    width: 72px;
-    height: 72px;
+    width: 70px;
+    height: 70px;
   }
 
-  /* text group sits to the right of avatar */
   .hero-text {
-    display: flex;
-    flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    flex: 1;
+    min-width: 160px;
   }
 
   .doctor-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-align: left;
   }
 
-  .doctor-meta {
+  .doctor-meta,
+  .doctor-code {
     text-align: left;
   }
 
-  .rating {
-    font-size: 0.75rem;
+  .sub-specialties {
+    justify-content: flex-start;
+  }
+
+  .rating,
+  .avail-pill {
+    font-size: 0.72rem;
     padding: 4px 10px;
   }
 
+  /* Stats — 2 per row on mobile */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+  }
+
+  /* Schedule — tighter */
+  .schedule-section {
+    padding: 14px 16px 10px;
+  }
+
+  .schedule-grid {
+    gap: 4px;
+  }
+
+  .day-slot {
+    padding: 8px 2px;
+    border-radius: 8px;
+  }
+
+  .day-name { font-size: 0.58rem; }
+  .day-time { font-size: 0.58rem; }
+
   .info-section {
-    padding: 20px 16px 12px;
+    padding: 16px 16px 10px;
   }
 
   .info-item {
-    padding: 12px 0;
+    padding: 10px 0;
   }
 
   .info-item span,
   .info-item p {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
   }
 
   .actions {
-    padding: 14px 16px 20px;
-    gap: 10px;
+    padding: 12px 16px 20px;
+    gap: 8px;
   }
 
   .btn {

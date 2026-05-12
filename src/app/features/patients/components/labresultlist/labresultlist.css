@@ -504,8 +504,8 @@
 .item-high     { color: #c0640c; }
 .item-high     .item-dot { background: #e07a1a; }
 
-.item-low      { color: #1a6fa8; }
-.item-low      .item-dot { background: #2a88d0; }
+.item-low      { color: #FFBF00; }
+.item-low      .item-dot { background: #FFBF00; }
 
 .item-critical { color: #a93226; }
 .item-critical .item-dot { background: #e05252; }
