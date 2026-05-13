@@ -49,8 +49,9 @@
   <aside class="sidebar">
     <nav class="nav">
 
-      <a routerLink="/layout/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-item">
+      <a routerLink="/layout/home"
+  [class.active]="isActive()"
+  class="nav-item">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">

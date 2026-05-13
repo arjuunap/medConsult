@@ -57,4 +57,9 @@ export class LayoutComponent {
     });
   }
 
+  isActive(): boolean {
+    return this.router.url === '/layout/home'
+        || this.router.url === '/layout/patient-dashboard';
+  }
+
 }

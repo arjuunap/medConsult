@@ -18,21 +18,26 @@ export class AppointmentService {
     );
   }
   showAppointments(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/doctors/appointments/all`);
+  }
+
+  showTodayAppointments(): Observable<any> {
     return this.http.get(`${this.apiUrl}/doctors/appointments`);
   }
+  
   showAppointmentsById(doctorId: string, appointmentId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/doctors/${doctorId}/appointments/${appointmentId}`);
   }
 
-updateAppointment(appointmentId: string, body: any): Observable<any> {
+  updateAppointment(appointmentId: string, body: any): Observable<any> {
 
-  return this.http.put(
-    `${this.apiUrl}/doctors/appointments/${appointmentId}`,
-    body
-  );
-}
+    return this.http.put(
+      `${this.apiUrl}/doctors/appointments/${appointmentId}`,
+      body
+    );
+  }
 
-getLatestAppointments(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/patients/next-appointment`);
-}
+  getLatestAppointments(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/patients/next-appointment`);
+  }
 }

@@ -1,0 +1,22 @@
+<div>
+
+  <h2>Chat App</h2>
+
+  <input
+    [(ngModel)]="message"
+    placeholder="Enter message"
+  />
+
+  <button (click)="sendMessage()">
+    Send
+  </button>
+
+  <div *ngFor="let msg of messages">
+
+    <b>{{msg.sender}}</b> :
+
+    {{msg.content}}
+
+  </div>
+
+</div>
