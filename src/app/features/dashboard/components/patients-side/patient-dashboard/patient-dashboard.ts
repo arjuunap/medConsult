@@ -46,6 +46,7 @@ export class PatientDashboard implements OnInit {
       next: (res) => {
         console.log('Appointments:', res);
         this.patient = res
+        console.log('Patient:', this.patient.patient.user.fullName);
 
         // assuming API returns array
         if (res && res.length > 0) {
@@ -100,8 +101,10 @@ export class PatientDashboard implements OnInit {
   }
 
   getInitials(name: string): string {
+    
 
     if (!name) return 'P';
+    
 
     return name
       .split(' ')

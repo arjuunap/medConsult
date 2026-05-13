@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppointmentService } from '../../../../../core/services/appointmentServices/appointment';
 import { AuthService } from '../../../../../core/services/authServices/auth';
+import th from '@angular/common/locales/th';
 
 @Component({
   selector: 'app-appointment',
@@ -61,22 +62,31 @@ export class Appointment implements OnInit {
   }
 
   getAppointments() {
+
   console.log("METHOD STARTED");
 
   this.loading = true;
 
   this.appomentService.showAppointments().subscribe({
+
     next: (res) => {
+
       console.log("API SUCCESS");
       console.log(res);
 
       this.appointments = res;
       this.filteredAppointments = res;
 
+      // IMPORTANT
+      this.calculateStats();
+
       this.loading = false;
+
+      this.cd.detectChanges();
     },
 
     error: (err) => {
+
       console.log("API FAILED");
       console.error(err);
 
@@ -86,6 +96,7 @@ export class Appointment implements OnInit {
     complete: () => {
       console.log("OBSERVABLE COMPLETED");
     }
+
   });
 }
 
@@ -96,18 +107,22 @@ export class Appointment implements OnInit {
     this.todayCount = this.appointments.filter(
       (a) => new Date(a.scheduledAt).toDateString() === today
     ).length;
+    this.cd.detectChanges();
 
     this.pendingCount = this.appointments.filter(
       (a) => a.status === 'SCHEDULED'
     ).length;
+    this.cd.detectChanges();
 
     this.completedCount = this.appointments.filter(
       (a) => a.status === 'COMPLETED'
     ).length;
+    this.cd.detectChanges();
 
     this.cancelledCount = this.appointments.filter(
       (a) => a.status === 'CANCELLED'
     ).length;
+    this.cd.detectChanges();
   }
 
   // SEARCH + FILTER
@@ -123,6 +138,7 @@ export class Appointment implements OnInit {
 
       return matchesSearch && matchesStatus;
     });
+    this.cd.detectChanges();
   }
 
   // CARD CLICK
@@ -150,6 +166,7 @@ export class Appointment implements OnInit {
 
   closeModal() {
     this.selectedAppointment = null;
+    this.cd.detectChanges();
   }
 
   // STATUS UPDATE
@@ -166,7 +183,7 @@ export class Appointment implements OnInit {
       .subscribe({
         next: () => {
           this.closeModal();
-
+          this.cd.detectChanges();
           this.getAppointments();
         },
 

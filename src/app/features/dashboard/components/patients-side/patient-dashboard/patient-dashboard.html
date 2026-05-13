@@ -3,10 +3,10 @@
   <!-- Top bar -->
   <div class="top-bar">
     <div class="patient-info">
-      <div class="av">{{ getInitials(patient?.user?.fullName) }}</div>
+      <div class="av">{{ getInitials(patient?.patient?.user?.fullName) }}</div>
       <div>
-        <p class="pt-name">{{ patient?.user?.fullName }}</p>
-        <p class="pt-sub">{{ patient?.patientCode }} · {{ patient?.gender }} · {{ patient?.bloodType }}</p>
+        <p class="pt-name">{{ patient?.patient?.user?.fullName }}</p>
+        <p class="pt-sub">{{ patient?.patient?.patientCode }} - {{ patient?.patient?.gender }} - {{ patient?.patient?.bloodType }}</p>
       </div>
     </div>
     <div class="current-date">
