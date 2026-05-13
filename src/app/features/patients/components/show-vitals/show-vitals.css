@@ -46,9 +46,9 @@
 .vitals-wrapper {
   background: var(--white);
   border: 1px solid var(--green-200);
-  border-radius: var(--radius-xl);
   padding: 24px 26px 22px;
-  max-width: 680px;
+  height: 90vh;
+  
   width: 100%;
   box-shadow: var(--shadow-md);
 }

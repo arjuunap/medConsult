@@ -61,26 +61,33 @@ export class Appointment implements OnInit {
   }
 
   getAppointments() {
-    this.loading = true;
+  console.log("METHOD STARTED");
 
-    this.appomentService.showAppointments().subscribe({
-      next: (res) => {
-        this.appointments = res;
-        this.filteredAppointments = res;
+  this.loading = true;
 
-        this.calculateStats();
+  this.appomentService.showAppointments().subscribe({
+    next: (res) => {
+      console.log("API SUCCESS");
+      console.log(res);
 
-        this.loading = false;
+      this.appointments = res;
+      this.filteredAppointments = res;
 
-        this.cd.detectChanges();
-      },
+      this.loading = false;
+    },
 
-      error: (err) => {
-        console.error(err);
-        this.loading = false;
-      },
-    });
-  }
+    error: (err) => {
+      console.log("API FAILED");
+      console.error(err);
+
+      this.loading = false;
+    },
+
+    complete: () => {
+      console.log("OBSERVABLE COMPLETED");
+    }
+  });
+}
 
   // STATS
   calculateStats() {
@@ -128,6 +135,7 @@ export class Appointment implements OnInit {
       .subscribe({
         next: (res) => {
           this.selectedAppointment = res;
+          console.log('Selected Appointment :', res);
 
           this.priority = res.priority || 'NORMAL';
 

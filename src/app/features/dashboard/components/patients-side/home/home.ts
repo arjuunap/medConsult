@@ -66,6 +66,9 @@ export class HomeComponent {
         });
 
       }
+      else{
+        this.router.navigate(['/layout/patient-dashboard']);
+      }
 
     },
 

@@ -1,0 +1,176 @@
+* { box-sizing: border-box; }
+
+.dash { padding: 16px; }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.patient-info { display: flex; align-items: center; gap: 12px; }
+
+.av {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #dcfce7;
+  border: 2px solid #86efac;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #15803d;
+  flex-shrink: 0;
+}
+
+.pt-name { font-size: 15px; font-weight: 500; color: #111827; margin: 0; }
+.pt-sub  { font-size: 12px; color: #6b7280; margin: 2px 0 0; }
+
+.current-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 6px 14px;
+  border-radius: 8px;
+}
+
+.sec-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.vcard {
+  background: #fff;
+  border: 1px solid #f0fdf4;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.vcard-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.vcard-val  { font-size: 22px; font-weight: 500; color: #111827; line-height: 1; }
+.vcard-sub  { font-size: 13px; font-weight: 400; }
+.vcard-unit { font-size: 11px; color: #6b7280; margin-top: 2px; }
+.vcard-name { font-size: 12px; color: #6b7280; margin-top: 6px; }
+
+.vcard-status {
+  display: inline-block;
+  font-size: 11px;
+  border-radius: 20px;
+  padding: 2px 8px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.st-normal { background: #f0fdf4; color: #15803d; }
+.st-warn   { background: #fef9c3; color: #92400e; }
+.st-high   { background: #fef2f2; color: #991b1b; }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.appt-badge {
+  background: #dcfce7;
+  color: #15803d;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+}
+
+.arow { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.arow:last-child { margin-bottom: 0; }
+
+.aicon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
+.albl { font-size: 11px; color: #6b7280; margin: 0; }
+.aval { font-size: 13px; font-weight: 500; color: #111827; margin: 0; }
+
+.vrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.vrow:last-child { border-bottom: none; }
+
+.vdot    { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.vlbl    { font-size: 12px; color: #6b7280; flex: 1; }
+.vval    { font-size: 13px; font-weight: 500; color: #111827; }
+.vstatus { font-size: 11px; border-radius: 20px; padding: 2px 8px; font-weight: 500; margin-left: 4px; }
+
+.body-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.bcard {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.bcard-icon { font-size: 20px; margin-bottom: 6px; }
+.bval  { font-size: 20px; font-weight: 500; color: #111827; }
+.bunit { font-size: 11px; color: #6b7280; margin-top: 2px; }
+.blbl  { font-size: 11px; color: #6b7280; margin-top: 6px; }

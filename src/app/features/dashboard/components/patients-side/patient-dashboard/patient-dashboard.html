@@ -1,1 +1,206 @@
-<p>patient-dashboard works!</p>
+<div class="dash">
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="patient-info">
+      <div class="av">{{ getInitials(patient?.user?.fullName) }}</div>
+      <div>
+        <p class="pt-name">{{ patient?.user?.fullName }}</p>
+        <p class="pt-sub">{{ patient?.patientCode }} · {{ patient?.gender }} · {{ patient?.bloodType }}</p>
+      </div>
+    </div>
+    <div class="current-date">
+      <i class="ti ti-calendar"></i>
+      {{ today | date: 'dd MMM yyyy' }}
+    </div>
+  </div>
+
+  <!-- Vitals cards -->
+  <p class="sec-label">Vitals</p>
+  <div class="vitals-grid">
+
+    <div class="vcard">
+      <div class="vcard-icon" style="background:#fef2f2;">
+        <i class="ti ti-heart" style="color:#dc2626" aria-hidden="true"></i>
+      </div>
+      <div class="vcard-val">{{ vitals?.heartRateBpm }}</div>
+      <div class="vcard-unit">bpm</div>
+      <div class="vcard-name">Heart rate</div>
+      <span class="vcard-status"
+        [ngClass]="getVitalStatus('heartRateBpm', vitals?.heartRateBpm).cls">
+        {{ getVitalStatus('heartRateBpm', vitals?.heartRateBpm).label }}
+      </span>
+    </div>
+
+    <div class="vcard">
+      <div class="vcard-icon" style="background:#eff6ff;">
+        <i class="ti ti-activity" style="color:#2563eb" aria-hidden="true"></i>
+      </div>
+      <div class="vcard-val">
+        {{ vitals?.bpSystolic }}<span class="vcard-sub">/{{ vitals?.bpDiastolic }}</span>
+      </div>
+      <div class="vcard-unit">mmHg</div>
+      <div class="vcard-name">Blood pressure</div>
+      <span class="vcard-status"
+        [ngClass]="getVitalStatus('bpSystolic', vitals?.bpSystolic).cls">
+        {{ getVitalStatus('bpSystolic', vitals?.bpSystolic).label }}
+      </span>
+    </div>
+
+    <div class="vcard">
+      <div class="vcard-icon" style="background:#f0fdf4;">
+        <i class="ti ti-droplet" style="color:#16a34a" aria-hidden="true"></i>
+      </div>
+      <div class="vcard-val">{{ vitals?.bloodGlucoseMmol }}</div>
+      <div class="vcard-unit">mmol/L</div>
+      <div class="vcard-name">Blood glucose</div>
+      <span class="vcard-status"
+        [ngClass]="getVitalStatus('bloodGlucoseMmol', vitals?.bloodGlucoseMmol).cls">
+        {{ getVitalStatus('bloodGlucoseMmol', vitals?.bloodGlucoseMmol).label }}
+      </span>
+    </div>
+
+    <div class="vcard">
+      <div class="vcard-icon" style="background:#fdf4ff;">
+        <i class="ti ti-lungs" style="color:#9333ea" aria-hidden="true"></i>
+      </div>
+      <div class="vcard-val">{{ vitals?.spo2Percent }}</div>
+      <div class="vcard-unit">%</div>
+      <div class="vcard-name">SpO2</div>
+      <span class="vcard-status"
+        [ngClass]="getVitalStatus('spo2Percent', vitals?.spo2Percent).cls">
+        {{ getVitalStatus('spo2Percent', vitals?.spo2Percent).label }}
+      </span>
+    </div>
+
+  </div>
+
+  <!-- Two column section -->
+  <div class="two-col">
+
+    <!-- Next appointment -->
+    <div class="card">
+      <div class="card-head">
+        <p class="sec-label" style="margin:0;">Next appointment</p>
+        <span class="appt-badge">Upcoming</span>
+      </div>
+      <div class="arow">
+        <div class="aicon"><i class="ti ti-calendar" aria-hidden="true"></i></div>
+        <div>
+          <p class="albl">Date</p>
+          <p class="aval">{{ patient?.nextAppointment?.date || '18 May 2026' }}</p>
+        </div>
+      </div>
+      <div class="arow">
+        <div class="aicon"><i class="ti ti-clock" aria-hidden="true"></i></div>
+        <div>
+          <p class="albl">Time</p>
+          <p class="aval">{{ patient?.nextAppointment?.time || '10:30 AM' }}</p>
+        </div>
+      </div>
+      <div class="arow">
+        <div class="aicon"><i class="ti ti-stethoscope" aria-hidden="true"></i></div>
+        <div>
+          <p class="albl">Doctor</p>
+          <p class="aval">{{ patient?.assignedDoctor?.doctorCode }} · {{ patient?.assignedDoctor?.specialization || 'General' }}</p>
+        </div>
+      </div>
+      <div class="arow">
+        <div class="aicon"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+        <div>
+          <p class="albl">Location</p>
+          <p class="aval">Room 204, OPD</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- All vitals list -->
+    <div class="card">
+      <p class="sec-label" style="margin-bottom:10px;">All vitals</p>
+      <div class="vrow">
+        <div class="vdot" style="background:#dc2626;"></div>
+        <span class="vlbl">Heart rate</span>
+        <span class="vval">{{ vitals?.heartRateBpm }} bpm</span>
+        <span class="vstatus" [ngClass]="getVitalStatus('heartRateBpm', vitals?.heartRateBpm).cls">
+          {{ getVitalStatus('heartRateBpm', vitals?.heartRateBpm).label }}
+        </span>
+      </div>
+      <div class="vrow">
+        <div class="vdot" style="background:#2563eb;"></div>
+        <span class="vlbl">BP systolic</span>
+        <span class="vval">{{ vitals?.bpSystolic }}</span>
+        <span class="vstatus" [ngClass]="getVitalStatus('bpSystolic', vitals?.bpSystolic).cls">
+          {{ getVitalStatus('bpSystolic', vitals?.bpSystolic).label }}
+        </span>
+      </div>
+      <div class="vrow">
+        <div class="vdot" style="background:#0891b2;"></div>
+        <span class="vlbl">BP diastolic</span>
+        <span class="vval">{{ vitals?.bpDiastolic }}</span>
+        <span class="vstatus" [ngClass]="getVitalStatus('bpDiastolic', vitals?.bpDiastolic).cls">
+          {{ getVitalStatus('bpDiastolic', vitals?.bpDiastolic).label }}
+        </span>
+      </div>
+      <div class="vrow">
+        <div class="vdot" style="background:#9333ea;"></div>
+        <span class="vlbl">SpO2</span>
+        <span class="vval">{{ vitals?.spo2Percent }}%</span>
+        <span class="vstatus" [ngClass]="getVitalStatus('spo2Percent', vitals?.spo2Percent).cls">
+          {{ getVitalStatus('spo2Percent', vitals?.spo2Percent).label }}
+        </span>
+      </div>
+      <div class="vrow">
+        <div class="vdot" style="background:#d97706;"></div>
+        <span class="vlbl">Temperature</span>
+        <span class="vval">{{ vitals?.temperatureC }} °C</span>
+        <span class="vstatus" [ngClass]="getVitalStatus('temperatureC', vitals?.temperatureC).cls">
+          {{ getVitalStatus('temperatureC', vitals?.temperatureC).label }}
+        </span>
+      </div>
+      <div class="vrow">
+        <div class="vdot" style="background:#16a34a;"></div>
+        <span class="vlbl">Blood glucose</span>
+        <span class="vval">{{ vitals?.bloodGlucoseMmol }} mmol/L</span>
+        <span class="vstatus" [ngClass]="getVitalStatus('bloodGlucoseMmol', vitals?.bloodGlucoseMmol).cls">
+          {{ getVitalStatus('bloodGlucoseMmol', vitals?.bloodGlucoseMmol).label }}
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Body metrics -->
+  <p class="sec-label">Body metrics</p>
+  <div class="body-grid">
+    <div class="bcard">
+      <div class="bcard-icon" style="color:#16a34a;">
+        <i class="ti ti-ruler-measure" aria-hidden="true"></i>
+      </div>
+      <div class="bval">{{ vitals?.heightCm }}</div>
+      <div class="bunit">cm</div>
+      <div class="blbl">Height</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-icon" style="color:#2563eb;">
+        <i class="ti ti-scale" aria-hidden="true"></i>
+      </div>
+      <div class="bval">{{ vitals?.weightKg }}</div>
+      <div class="bunit">kg</div>
+      <div class="blbl">Weight</div>
+    </div>
+    <div class="bcard">
+      <div class="bcard-icon" style="color:#d97706;">
+        <i class="ti ti-chart-pie" aria-hidden="true"></i>
+      </div>
+      <div class="bval">{{ vitals?.bmi }}</div>
+      <div class="bunit">kg/m²</div>
+      <div class="blbl">
+        BMI ·
+        <span [ngClass]="getVitalStatus('bmi', vitals?.bmi).cls" style="font-weight:500;">
+          {{ getBMILabel(vitals?.bmi) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>

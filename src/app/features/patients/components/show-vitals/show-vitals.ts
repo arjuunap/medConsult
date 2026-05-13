@@ -41,21 +41,30 @@ export class VitalsDetailComponent implements OnInit {
         this.loading = false;
         this.cd.detectChanges();
       },
-      // error: (err) => {
-      //   const msg: string = err?.error?.message ?? '';
+      error: (err) => {
+      console.log('Vitals Error:', err);
 
-      //   if (err.status === 500 && msg.toLowerCase().includes('no vitals found')) {
-      //     this.vitals = null;
-      //     this.error = null;
-      //   } else {
-      //     this.error = 'Failed to load vitals. Please try again.';
-      //     console.error('Error fetching vitals:', err);
-      //   }
+      const msg = err?.error?.message?.toLowerCase() || '';
 
-      //   this.loading = false;
-      //   this.cd.detectChanges();
-      // }
-    });
+      // No vitals available
+      if (
+        err.status === 404 ||
+        msg.includes('no vitals found') ||
+        msg.includes('vitals not found')
+      ) {
+        this.vitals = null;
+        this.error = null; // Empty state show cheyyum
+      }
+
+      // Other errors
+      else {
+        this.error = 'Could not load vitals';
+      }
+
+      this.loading = false;
+      this.cd.detectChanges();
+    }
+  });
   }
 
   onEdit(): void {
