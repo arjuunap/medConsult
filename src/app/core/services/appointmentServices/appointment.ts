@@ -33,6 +33,6 @@ updateAppointment(appointmentId: string, body: any): Observable<any> {
 }
 
 getLatestAppointments(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/patients/next-appointments`);
+  return this.http.get<any[]>(`${this.apiUrl}/patients/next-appointment`);
 }
 }

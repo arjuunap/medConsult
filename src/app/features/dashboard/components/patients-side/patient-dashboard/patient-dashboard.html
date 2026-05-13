@@ -80,39 +80,61 @@
 
     <!-- Next appointment -->
     <div class="card">
-      <div class="card-head">
-        <p class="sec-label" style="margin:0;">Next appointment</p>
-        <span class="appt-badge">Upcoming</span>
-      </div>
-      <div class="arow">
-        <div class="aicon"><i class="ti ti-calendar" aria-hidden="true"></i></div>
-        <div>
-          <p class="albl">Date</p>
-          <p class="aval">{{ patient?.nextAppointment?.date || '18 May 2026' }}</p>
-        </div>
-      </div>
-      <div class="arow">
-        <div class="aicon"><i class="ti ti-clock" aria-hidden="true"></i></div>
-        <div>
-          <p class="albl">Time</p>
-          <p class="aval">{{ patient?.nextAppointment?.time || '10:30 AM' }}</p>
-        </div>
-      </div>
-      <div class="arow">
-        <div class="aicon"><i class="ti ti-stethoscope" aria-hidden="true"></i></div>
-        <div>
-          <p class="albl">Doctor</p>
-          <p class="aval">{{ patient?.assignedDoctor?.doctorCode }} · {{ patient?.assignedDoctor?.specialization || 'General' }}</p>
-        </div>
-      </div>
-      <div class="arow">
-        <div class="aicon"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
-        <div>
-          <p class="albl">Location</p>
-          <p class="aval">Room 204, OPD</p>
-        </div>
-      </div>
+  <div class="card-head">
+    <p class="sec-label" style="margin:0;">Next appointment</p>
+    <span class="appt-badge">Upcoming</span>
+  </div>
+
+  <div class="arow">
+    <div class="aicon">
+      <i class="ti ti-calendar" aria-hidden="true"></i>
     </div>
+    <div>
+      <p class="albl">Date</p>
+      <p class="aval">
+        {{ patient?.scheduledAt | date: 'dd MMM yyyy' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="arow">
+    <div class="aicon">
+      <i class="ti ti-clock" aria-hidden="true"></i>
+    </div>
+    <div>
+      <p class="albl">Time</p>
+      <p class="aval">
+        {{ patient?.scheduledAt | date: 'hh:mm a' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="arow">
+    <div class="aicon">
+      <i class="ti ti-stethoscope" aria-hidden="true"></i>
+    </div>
+    <div>
+      <p class="albl">Doctor</p>
+
+      <p class="aval">
+        {{ patient?.doctor?.doctorCode }}
+        ·
+        {{ patient?.doctor?.specialization || 'General' }}
+      </p>
+
+    </div>
+  </div>
+
+  <div class="arow">
+    <div class="aicon">
+      <i class="ti ti-map-pin" aria-hidden="true"></i>
+    </div>
+    <div>
+      <p class="albl">Location</p>
+      <p class="aval">Room 204, OPD</p>
+    </div>
+  </div>
+</div>
 
     <!-- All vitals list -->
     <div class="card">

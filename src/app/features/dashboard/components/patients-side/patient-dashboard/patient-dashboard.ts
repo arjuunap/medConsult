@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../../core/services/appointmentServices/appointment';
 import { VitalsService } from '../../../../../core/services/vitalServices/vitals';
 
@@ -18,7 +18,8 @@ export class PatientDashboard implements OnInit {
   today: Date = new Date();
 
   constructor(private appointmentService: AppointmentService,
-    private vitalService: VitalsService
+    private vitalService: VitalsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +32,8 @@ export class PatientDashboard implements OnInit {
       next: (res) => {
         console.log('Vitals:', res);
         this.vitals = res;
+                this.cd.detectChanges();
+
       },
       error: (err) => {
         console.error('Vitals error:', err);
@@ -42,11 +45,13 @@ export class PatientDashboard implements OnInit {
     this.appointmentService.getLatestAppointments().subscribe({
       next: (res) => {
         console.log('Appointments:', res);
+        this.patient = res
 
         // assuming API returns array
         if (res && res.length > 0) {
           this.patient = res[0];
         }
+        this.cd.detectChanges();
       },
       error: (err) => {
         console.error('Appointment error:', err);
