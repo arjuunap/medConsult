@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { WebSocket } from '../../../../../core/services/webSocketServices/web-socket';
+import {  WebSocketService } from '../../../../../core/services/webSocketServices/web-socket';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,9 +7,10 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './chat.html',
-  styleUrl: './chat.css',
+  styleUrls: ['./chat.css'],
 
 })
 export class Chat {
@@ -18,14 +19,11 @@ export class Chat {
   message = '';
 
   constructor(
-    private websocketService: WebSocket
+    private websocketService: WebSocketService
   ) {}
 
   ngOnInit(): void {
-    this.websocketService.connect((message) => {
-      console.log(message);
-      this.messages.push(message);
-    });
+    this.websocketService.connect();
   }
 
   sendMessage() {

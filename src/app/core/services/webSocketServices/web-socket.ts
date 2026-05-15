@@ -1,31 +1,34 @@
 import { Injectable } from '@angular/core';
-import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+
 @Injectable({
   providedIn: 'root',
 })
-export class WebSocket {
+export class WebSocketService {
+
   private stompClient: Client | null = null;
 
-  connect(onMessageReceived: (message: any) => void) {
-
-    const socket = new SockJS('http://localhost:8080/ws');
+  connect() {
 
     this.stompClient = new Client({
-      webSocketFactory: () => socket,
-      reconnectDelay: 5000
+      brokerURL: 'ws://localhost:8080/ws',
+      reconnectDelay: 5000,
+      debug: (str) => {
+        console.log(str);
+      }
     });
 
     this.stompClient.onConnect = () => {
 
       console.log('Connected');
 
-      this.stompClient?.subscribe(
-        '/topic/public',
-        (message) => {
-          onMessageReceived(JSON.parse(message.body));
-        }
-      );
+      this.stompClient?.subscribe('/topic/public', (message) => {
+        console.log(JSON.parse(message.body));
+      });
+    };
+
+    this.stompClient.onStompError = (frame) => {
+      console.error('Broker error:', frame);
     };
 
     this.stompClient.activate();

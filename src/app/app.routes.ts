@@ -40,6 +40,7 @@ export const routes: Routes = [
   { path: 'patient-register', component: PatientRegisterComponent },
   { path: 'dr-register', component: DrRegister },
   {path : 'oauth-success', component : AuthSucessComponent},
+  
 
 
   {
@@ -50,7 +51,7 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent },
       {path :'patient-dashboard',component : PatientDashboard},
       {path : 'profile', component : ProfileComponent},
-      {path : 'chat', component : Chat},
+      {path : 'chat/:userId', component : Chat},
       { path: 'doctors', component: Drcard },
       { path: 'drprofile/:id', component: Drprofile },
       { path: 'schedule/:id', component: Schedul },

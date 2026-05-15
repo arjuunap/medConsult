@@ -1,4 +1,4 @@
-<div class="layout-wrapper">
+<div class="layout-wrapper" [class.sidebar-open]="sidebarOpen">
 
   <!-- ── Top Navbar ── -->
   <header class="navbar">
@@ -14,13 +14,16 @@
     <!-- Right Side Actions -->
     <div class="nav-actions">
 
+      <!-- Hamburger Button (mobile only) -->
+      <button class="hamburger-btn" (click)="toggleSidebar()" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
       <!-- Profile Button -->
       <button class="profile-btn" (click)="goToProfile()">
-
-        <!-- If profile image exists -->
         <img *ngIf="user?.profilePhoto; else defaultIcon" [src]="user.profilePhoto" alt="Profile" class="profile-img" />
-
-        <!-- Default icon -->
         <ng-template #defaultIcon>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -28,7 +31,6 @@
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </ng-template>
-
       </button>
 
       <!-- Logout Button -->
@@ -39,7 +41,7 @@
           <polyline points="16 17 21 12 16 7" />
           <line x1="21" y1="12" x2="9" y2="12" />
         </svg>
-        Logout
+        <span class="logout-text">Logout</span>
       </button>
 
     </div>
@@ -50,8 +52,9 @@
     <nav class="nav">
 
       <a routerLink="/layout/home"
-  [class.active]="isActive()"
-  class="nav-item">
+        [class.active]="isActive()"
+        class="nav-item"
+        (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -63,7 +66,8 @@
         <span class="active-bar"></span>
       </a>
 
-      <a *ngIf="role === 'PATIENT'" routerLink="/layout/doctors" routerLinkActive="active" class="nav-item">
+      <a *ngIf="role === 'PATIENT'" routerLink="/layout/doctors" routerLinkActive="active"
+        class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -77,7 +81,8 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/chat" routerLinkActive="active" class="nav-item">
+      <a routerLink="/layout/chat/8edfa69f-e696-4528-85fc-20336bed1299" routerLinkActive="active"
+        class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -88,11 +93,11 @@
         <span class="active-bar"></span>
       </a>
 
-      <a *ngIf="role === 'PATIENT'" routerLink="/layout/show-vitals" routerLinkActive="active" class="nav-item">
+      <a *ngIf="role === 'PATIENT'" routerLink="/layout/show-vitals" routerLinkActive="active"
+        class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
-            <!-- Heart pulse icon -->
             <path d="M12 21s-6-4.35-9-8a5.5 5.5 0 0 1 9-6 5.5 5.5 0 0 1 9 6c-3 3.65-9 8-9 8z" />
             <polyline points="3 12 7 12 9 8 11 16 13 12 17 12" />
           </svg>
@@ -101,12 +106,11 @@
         <span class="active-bar"></span>
       </a>
 
-
-      <a routerLink="/layout/lab-results" routerLinkActive="active" class="nav-item">
+      <a routerLink="/layout/lab-results" routerLinkActive="active"
+        class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
-            <!-- Test tube icon -->
             <path d="M14.5 3h-5" />
             <path d="M9 3v6l-5 9a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3l-5-9V3" />
           </svg>
@@ -115,9 +119,8 @@
         <span class="active-bar"></span>
       </a>
 
-
-
-      <a routerLink="/layout/settings" routerLinkActive="active" class="nav-item">
+      <a routerLink="/layout/settings" routerLinkActive="active"
+        class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -130,40 +133,31 @@
         <span class="active-bar"></span>
       </a>
 
-      <!-- Schedules -->
-      <a *ngIf="role === 'DOCTOR'" routerLink="/layout/schedules" routerLinkActive="active" class="nav-item">
+      <a *ngIf="role === 'DOCTOR'" routerLink="/layout/schedules" routerLinkActive="active"
+        class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
-
-            <!-- Calendar icon -->
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
-
           </svg>
         </span>
-
         <span class="nav-label">Schedules</span>
         <span class="active-bar"></span>
       </a>
 
-
-      <!-- Appointments -->
-      <a routerLink="/layout/appointments" routerLinkActive="active" class="nav-item">
+      <a routerLink="/layout/appointments" routerLinkActive="active"
+        class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
-
-            <!-- Clipboard / appointment icon -->
             <path d="M9 2h6"></path>
             <rect x="5" y="4" width="14" height="18" rx="2"></rect>
             <path d="M9 12l2 2 4-4"></path>
-
           </svg>
         </span>
-
         <span class="nav-label">Appointments</span>
         <span class="active-bar"></span>
       </a>
@@ -171,12 +165,12 @@
     </nav>
   </aside>
 
+  <!-- ── Sidebar Backdrop (mobile only) ── -->
+  <div class="sidebar-backdrop" (click)="closeSidebar()"></div>
+
   <!-- ── Main Content ── -->
   <main class="main-content">
-    <!-- <router-outlet /> -->
     <router-outlet></router-outlet>
-
-
   </main>
 
 </div>

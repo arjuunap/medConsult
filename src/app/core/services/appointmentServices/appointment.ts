@@ -22,7 +22,7 @@ export class AppointmentService {
   }
 
   showTodayAppointments(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/doctors/appointments`);
+    return this.http.get(`${this.apiUrl}/doctors/appointments/today`);
   }
   
   showAppointmentsById(doctorId: string, appointmentId: string): Observable<any> {

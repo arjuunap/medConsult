@@ -22,6 +22,16 @@ export class LayoutComponent {
   // logout() {
   //   localStorage.removeItem('token');
   //   window.location.href = '/login';
+
+  sidebarOpen = false;
+
+toggleSidebar() {
+  this.sidebarOpen = !this.sidebarOpen;
+}
+
+closeSidebar() {
+  this.sidebarOpen = false;
+}
   // }
   logout() {
 
