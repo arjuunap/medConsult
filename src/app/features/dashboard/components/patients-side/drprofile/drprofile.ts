@@ -46,4 +46,8 @@ export class Drprofile implements OnInit {
     console.log('Going back to doctor list');
     this.router.navigate(['/layout/doctors']);
   }
+  goToMessage() {
+    console.log('clicked')
+    this.router.navigate(['/layout/chat', this.doctor.id]);
+  }
 }
