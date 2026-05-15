@@ -100,30 +100,24 @@
     <div class="card__body">
 
       <div class="card__header">
+          <div class="patient-info">
+            <span class="patient-name">
+              {{ appt.patient.user.fullName }}
+            </span>
 
-        <span class="patient-name">
-          {{ appt.patient.user.fullName }}
-        </span>
+            <!-- TYPE -->
 
-        <!-- TYPE -->
+            <span class="appt-type" [ngClass]="getTypeClass(appt.appointmentType)">
+              {{ appt.appointmentType }}
+            </span>
+          </div>
 
-        <span
-          class="appt-type"
-          [ngClass]="getTypeClass(appt.appointmentType)"
-        >
-          {{ appt.appointmentType }}
-        </span>
+          <!-- STATUS -->
 
-        <!-- STATUS -->
-
-        <span
-          class="status-badge"
-          [ngClass]="getStatusClass(appt.status)"
-        >
-          {{ appt.status }}
-        </span>
-
-      </div>
+          <span class="status-badge" [ngClass]="getStatusClass(appt.status)">
+            {{ appt.status }}
+          </span>
+        </div>
 
       <!-- DOCTOR -->
 

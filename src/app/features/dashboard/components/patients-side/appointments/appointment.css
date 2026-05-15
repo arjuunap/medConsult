@@ -191,9 +191,13 @@
 .card__header {
   display: flex;
   align-items: center;
-  gap: 10px;
   margin-bottom: 4px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;justify-content: space-between;
+}
+.patient-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .patient-name {

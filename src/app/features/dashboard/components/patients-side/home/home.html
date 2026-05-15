@@ -1,139 +1,334 @@
 <div *ngIf="role === 'DOCTOR'">
+  <!-- DASHBOARD -->
+
   <div class="dash-header">
-  <h1 class="dash-title">Dashboard</h1>
-  <p class="dash-date">{{ today | date: 'EEEE, d MMMM yyyy' }}</p>
+    <h1 class="dash-title">Dashboard</h1>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <p class="stat-label">Active Patients</p>
-      <p class="stat-value">{{ totalPatients }}</p>
-      <p class="stat-sub sub-up">
-        <span class="arrow">↑</span> {{ stats.patientsDelta }} this week
-      </p>
-    </div>
+    <p class="dash-date">
+      {{ today | date: 'EEEE, d MMMM yyyy' }}
+    </p>
 
-    <div class="stat-card">
-      <p class="stat-label">Today's Consults</p>
-      <p class="stat-value">{{ stats.todayConsults }}</p>
-      <p class="stat-sub sub-warn">{{ stats.pendingConsults }} pending</p>
-    </div>
+    <!-- STATS -->
 
-    <div class="stat-card">
-      <p class="stat-label">Open Cases</p>
-      <p class="stat-value">{{ stats.openCases }}</p>
-      <p class="stat-sub sub-danger">{{ stats.criticalCases }} critical</p>
-    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Active Patients</p>
 
-    <div class="stat-card">
-      <p class="stat-label">Lab Results</p>
-      <p class="stat-value">{{ stats.labResults }}</p>
-      <p class="stat-sub sub-info">{{ stats.unreviewedLabs }} unreviewed</p>
+        <p class="stat-value">
+          {{ totalPatients }}
+        </p>
+
+        <p class="stat-sub sub-up">↑ {{ stats.patientsDelta }} this week</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="stat-label">Today's Consults</p>
+
+        <p class="stat-value">
+          {{ stats.todayConsults }}
+        </p>
+
+        <p class="stat-sub sub-warn">{{ stats.pendingConsults }} pending</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="stat-label">Open Cases</p>
+
+        <p class="stat-value">
+          {{ stats.openCases }}
+        </p>
+
+        <p class="stat-sub sub-danger">{{ stats.criticalCases }} critical</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="stat-label">Lab Results</p>
+
+        <p class="stat-value">
+          {{ stats.labResults }}
+        </p>
+
+        <p class="stat-sub sub-info">{{ stats.unreviewedLabs }} unreviewed</p>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="patients-section">
-  <div class="patients-header">
-    <p class="patients-title">Recent Patients</p>
-    <a class="view-all" routerLink="/patients">View all →</a>
+  <!-- RECENT PATIENTS -->
+
+  <div class="patients-section">
+    <div class="patients-header">
+      <p class="patients-title">Recent Patients</p>
+    </div>
+
+    <div class="patient-row" *ngFor="let patient of Patients" (click)="openModal(patient)">
+      <div class="avatar" [ngClass]="getAvatarColor(patient.user.fullName)">
+        {{ getInitials(patient.user.fullName) }}
+      </div>
+
+      <div class="patient-info">
+        <p class="patient-name">
+          {{ patient.user.fullName }}
+        </p>
+
+        <p class="patient-meta">
+          {{ patient.gender }},
+          {{ patient.age }}
+          ·
+          {{ patient.department }}
+        </p>
+      </div>
+    </div>
   </div>
 
-  <!-- Patient rows -->
-  <div class="patient-row" *ngFor="let patient of Patients" (click)="openModal(patient)">
-    <div class="avatar" [ngClass]="getAvatarColor(patient.user.fullName)">
-      {{ getInitials(patient.user.fullName) }}
+  <!-- TODAY APPOINTMENTS -->
+
+  <div class="appointments-section">
+    <div class="appointment-header">
+      <p class="appointment-title">Today's Appointments</p>
     </div>
-    <div class="patient-info">
-      <p class="patient-name">{{ patient.user.fullName }}</p>
-      <p class="patient-meta">{{ patient.gender }}, {{ patient.age }} · {{ patient.department }}</p>
+
+    <div
+      class="appointment-card"
+      *ngFor="let appt of appointments"
+      (click)="openAppointmentModal(appt)"
+    >
+      <div class="card__body">
+        <div class="card__header">
+          <div class="patient-info">
+            <span class="patient-name">
+              {{ appt.patient.user.fullName }}
+            </span>
+
+            <!-- TYPE -->
+
+            <span class="appt-type" [ngClass]="getTypeClass(appt.appointmentType)">
+              {{ appt.appointmentType }}
+            </span>
+          </div>
+
+          <!-- STATUS -->
+
+          <span class="status-badge" [ngClass]="getStatusClass(appt.status)">
+            {{ appt.status }}
+          </span>
+        </div>
+
+        <!-- DOCTOR -->
+
+        <div class="doctor-name">Dr. {{ appt.doctor.name }}</div>
+
+        <!-- META -->
+
+        <div class="card__meta">
+          <div class="meta-item">
+            <div class="meta-content">
+              <span class="meta-label"> Date & Time </span>
+
+              <span class="meta-value">
+                {{ appt.scheduledAt | date: 'dd MMM yyyy • hh:mm a' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <div class="meta-content">
+              <span class="meta-label"> Location </span>
+
+              <span class="meta-value">
+                {{ appt.location || 'Virtual' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <div class="meta-content">
+              <span class="meta-label"> Duration </span>
+
+              <span class="meta-value"> {{ appt.durationMinutes }} mins </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- PATIENT MODAL -->
+
   <div class="modal-overlay" *ngIf="selectedPatient" (click)="closeModal()">
     <div class="modal-card" (click)="$event.stopPropagation()">
-
       <div class="modal-header">
-        <div class="modal-avatar">{{ getInitials(selectedPatient.user.fullName) }}</div>
+        <div class="modal-avatar">
+          {{ getInitials(selectedPatient.user.fullName) }}
+        </div>
+
         <div class="modal-patient-info">
-          <h4 class="modal-name">{{ selectedPatient.user.fullName }}</h4>
+          <h4 class="modal-name">
+            {{ selectedPatient.user.fullName }}
+          </h4>
+
           <p class="modal-sub">
-            <span>{{ selectedPatient.patientCode }}</span>
-            <span class="badge">{{ selectedPatient.gender }}</span>
-            <span class="badge">{{ selectedPatient.bloodType }}</span>
+            <span>
+              {{ selectedPatient.patientCode }}
+            </span>
+
+            <span class="badge">
+              {{ selectedPatient.gender }}
+            </span>
+
+            <span class="badge">
+              {{ selectedPatient.bloodType }}
+            </span>
           </p>
         </div>
-        <!-- <button class="close-btn" (click)="closeModal()">✕</button> -->
       </div>
 
       <div class="modal-body">
         <p class="section-label">Basic info</p>
+
         <div class="info-grid">
           <div class="info-card">
             <p class="lbl">Date of birth</p>
-            <p class="val">{{ selectedPatient.dateOfBirth }}</p>
+
+            <p class="val">
+              {{ selectedPatient.dateOfBirth }}
+            </p>
           </div>
+
           <div class="info-card">
             <p class="lbl">National ID</p>
-            <p class="val">{{ selectedPatient.nationalId }}</p>
+
+            <p class="val">
+              {{ selectedPatient.nationalId }}
+            </p>
           </div>
-          <!-- <div class="info-card">
-          <p class="lbl">Consultation fee</p>
-          <p class="val">₹ {{ selectedPatient.assignedDoctor?.consultationFee }}</p>
-        </div>
-        <div class="info-card">
-          <p class="lbl">Doctor code</p>
-          <p class="val">{{ selectedPatient.assignedDoctor?.doctorCode }}</p>
-        </div> -->
         </div>
 
         <p class="section-label">Chronic conditions</p>
+
         <div class="tags-row">
-          <span class="tag" *ngFor="let c of selectedPatient.chronicConditions">{{ c }}</span>
-          <span class="tag" *ngIf="!selectedPatient.chronicConditions?.length">None</span>
+          <span class="tag" *ngFor="let c of selectedPatient.chronicConditions">
+            {{ c }}
+          </span>
         </div>
 
         <p class="section-label">Allergies</p>
+
         <div class="tags-row">
-          <span class="tag" *ngFor="let a of selectedPatient.allergies">{{ a }}</span>
-          <span class="tag" *ngIf="!selectedPatient.allergies?.length">None</span>
-        </div>
-
-
-
-        <p class="section-label">Emergency contact</p>
-        <div class="info-rows">
-          <div class="info-row">
-            <span class="r-lbl">Name</span>
-            <span class="r-val">{{ selectedPatient.emergencyContactName }}</span>
-          </div>
-          <div class="info-row">
-            <span class="r-lbl">Phone</span>
-            <span class="r-val">{{ selectedPatient.emergencyContactPhone }}</span>
-          </div>
-          <div class="info-row">
-            <span class="r-lbl">Status</span>
-            <span class="r-val status-available">{{ selectedPatient.assignedDoctor?.availabilityStatus }}</span>
-          </div>
+          <span class="tag" *ngFor="let a of selectedPatient.allergies">
+            {{ a }}
+          </span>
         </div>
       </div>
 
       <div class="modal-footer">
         <button class="btn-outline" (click)="closeModal()">Close</button>
-        <!-- <button class="btn-primary" (click)="getPatientDetails(selectedPatient.patientId)">
-        View full profile
-      </button> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- APPOINTMENT MODAL -->
+
+  <div class="modal-backdrop" *ngIf="selectedAppointment">
+    <div class="modal">
+      <h2>Appointment Details</h2>
+
+      <p>
+        <strong>Patient:</strong>
+        {{ selectedAppointment.patient.user.fullName }}
+      </p>
+
+      <p>
+        <strong>Doctor:</strong>
+        Dr. {{ selectedAppointment.doctor.name }}
+      </p>
+
+      <p>
+        <strong>Type:</strong>
+        {{ selectedAppointment.appointmentType }}
+      </p>
+
+      <p>
+        <strong>Status:</strong>
+        {{ selectedAppointment.status }}
+      </p>
+
+      <p>
+        <strong>Date:</strong>
+        {{ selectedAppointment.scheduledAt | date: 'dd MMM yyyy • hh:mm a' }}
+      </p>
+
+      <p>
+        <strong>Location:</strong>
+        {{ selectedAppointment.location || 'Virtual' }}
+      </p>
+
+      <p>
+        <strong>Duration:</strong>
+        {{ selectedAppointment.durationMinutes }} mins
+      </p>
+
+      <p>
+        <strong>Notes:</strong>
+        {{ selectedAppointment.notes || 'No notes available' }}
+      </p>
+
+      <!-- PRIORITY -->
+
+      <div class="form-group" *ngIf="role === 'DOCTOR'">
+        <label>
+          <strong>Priority</strong>
+        </label>
+
+        <select [(ngModel)]="priority">
+          <option value="NORMAL">NORMAL</option>
+
+          <option value="URGENT">URGENT</option>
+
+          <option value="CRITICAL">CRITICAL</option>
+        </select>
       </div>
 
+      <!-- ACTIONS -->
+
+      <div class="modal-actions">
+        <!-- CONFIRM -->
+
+        <button
+          class="confirm-btn"
+          (click)="updateStatus('CONFIRMED')"
+          *ngIf="selectedAppointment.status === 'SCHEDULED'"
+        >
+          Confirm
+        </button>
+
+        <!-- COMPLETE -->
+
+        <button
+          class="complete-btn"
+          (click)="updateStatus('COMPLETED')"
+          *ngIf="selectedAppointment.status === 'CONFIRMED'"
+        >
+          Complete
+        </button>
+
+        <!-- NO SHOW -->
+
+        <button
+          class="noshow-btn"
+          (click)="updateStatus('NO_SHOW')"
+          *ngIf="selectedAppointment.status === 'CONFIRMED'"
+        >
+          No Show
+        </button>
+
+        <!-- CANCEL -->
+
+        
+
+        <!-- CLOSE -->
+
+        <button class="close-btn" (click)="closeAppointmentModal()">Close</button>
+      </div>
     </div>
   </div>
 </div>
-
-
-</div>
-
-
-
-
-
-
