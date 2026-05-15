@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import {  WebSocketService } from '../../../../../core/services/webSocketServices/web-socket';
+import { WebSocketService } from '../../../../../core/services/webSocketServices/web-socket';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-
 
 @Component({
   selector: 'app-chat',
@@ -11,29 +9,48 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   templateUrl: './chat.html',
   styleUrls: ['./chat.css'],
-
 })
 export class Chat {
-    messages: any[] = [];
+  messages: any[] = [];
 
   message = '';
 
-  constructor(
-    private websocketService: WebSocketService
-  ) {}
+  consultationId = 'YOUR_CONSULTATION_UUID';
+
+  constructor(private websocketService: WebSocketService) {}
 
   ngOnInit(): void {
-    this.websocketService.connect();
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.websocketService.connect(token);
+    }
   }
 
   sendMessage() {
+    if (!this.message.trim()) {
+      return;
+    }
 
     const chatMessage = {
-      sender: 'Akshai',
+      consultationId: this.consultationId,
+
       content: this.message,
-      type: 'CHAT'
+
+      messageType: 'TEXT',
     };
+
     this.websocketService.sendMessage(chatMessage);
+
+    this.messages.push({
+      self: true,
+      content: this.message,
+    });
+
     this.message = '';
+  }
+
+  ngOnDestroy(): void {
+    this.websocketService.disconnect();
   }
 }
