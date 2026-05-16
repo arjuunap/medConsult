@@ -8,7 +8,9 @@ import SockJS from 'sockjs-client';
 export class WebSocketService {
   private stompClient!: Client;
 
-  connect(token: string) {
+  connect(token: string,
+    onConnected?: () => void
+  ) {
     this.stompClient = new Client({
       webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
 
@@ -24,10 +26,13 @@ export class WebSocketService {
 
       onConnect: () => {
         console.log('Connected');
+        if (onConnected) {
 
-        this.stompClient?.subscribe('/user/queue/messages', (message) => {
-          console.log('Received:', JSON.parse(message.body));
-        });
+          onConnected();
+        }
+        // this.stompClient?.subscribe('/user/queue/messages', (message) => {
+        //   console.log('Received:', JSON.parse(message.body));
+        // });
       },
 
       onStompError: (frame) => {
@@ -37,8 +42,25 @@ export class WebSocketService {
 
     this.stompClient.activate();
   }
+  subscribeToConsultation(
+    consultationId: string,
+    callback: (message: any) => void
+  ) {
 
-    sendMessage(message: any) {
+    this.stompClient.subscribe(
+
+      `/topic/chat/${consultationId}`,
+
+      (message) => {
+
+        callback(
+          JSON.parse(message.body)
+        );
+      }
+    );
+  }
+
+  sendMessage(message: any) {
 
     if (!this.stompClient.connected) {
       console.error(

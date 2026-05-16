@@ -25,7 +25,7 @@ import { WebSocketService } from '../../../../../core/services/webSocketServices
 export class Chat implements OnInit, OnDestroy {
  
 
-  consultationId: string = '';
+  consultationId: string = 'eef7c6bd-9f3a-4628-a772-8ec3fde3e044';
   
   messages: any[] = [];
  
@@ -33,6 +33,7 @@ export class Chat implements OnInit, OnDestroy {
   isTyping: boolean = false;
   isSending: boolean = false;
   MessageType = 'TEXT';
+  
 
   private typingTimer: any;
   private shouldScrollToBottom: boolean = false;
@@ -45,20 +46,51 @@ export class Chat implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private websocketService: WebSocketService
   ) {}
-
+currentUserId: string = localStorage.getItem('userId') || '';
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    console.log('Chat component initialized with consultation ID:', this.consultationId);
+     // const id = this.route.snapshot.paramMap.get('id');
     // if (id) {
       // this.consultationId = id;
-      this.loadMessages();
+      // this.loadMessages();
     // }
     const token = localStorage.getItem('token');
     if (token) {
-      this.websocketService.connect(token);
+      this.websocketService.connect(token, () => {
+
+        this.websocketService
+            .subscribeToConsultation(
+
+          this.consultationId,
+
+          (message: any) => {
+
+            console.log(
+              'Received:',
+              message
+            );
+
+            this.messages.push(
+              message
+            );
+
+            this.cd.detectChanges();
+
+            this.scrollToBottom();
+          }
+        );
+      });
     } else {
       console.error('No token found, cannot connect to WebSocket');
     }
   }
+
+  // Add your current user's senderId here
+
+
+isSelf(msg: any): boolean {
+  return msg.senderId === this.currentUserId;
+}
 
 
 
@@ -72,9 +104,12 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   sendMessage() {
+        console.log('Chat component initialized with consultation ID:', this.consultationId);
+
     if (!this.message.trim()) {
       return;
     }
+    console.log(this.messages);
 
     const chatMessage = {
       consultationId: this.consultationId,
@@ -84,10 +119,10 @@ export class Chat implements OnInit, OnDestroy {
 
     this.websocketService.sendMessage(chatMessage);
 
-    this.messages.push({
-      self: true,
-      content: this.message,
-    });
+    // this.messages.push({
+    //   self: true,
+    //   content: this.message,
+    // });
 
     this.message = '';
     this.scrollToBottom();

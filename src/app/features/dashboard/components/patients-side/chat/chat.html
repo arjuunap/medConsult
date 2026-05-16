@@ -2,32 +2,42 @@
 
   <!-- Header -->
   <div class="chat-header">
-    <button (click)="goBack()">Back</button>
-    <h2>Chat</h2>
+    <button (click)="goBack()" aria-label="Go back">&#8592;</button>
+    <div class="chat-header-info">
+      <p class="chat-header-name">Dr. Priya Sharma</p>
+      <p class="chat-header-status">
+        <span class="status-dot"></span>
+        Online · General Physician
+      </p>
+    </div>
+    <div class="chat-header-avatar">PS</div>
   </div>
 
   <!-- Messages -->
-  <div class="chat-messages">
+  <div class="chat-messages" id="chat-body">
     <div
       *ngFor="let msg of messages"
-      [class.self-message]="msg.self"
-      [class.other-message]="!msg.self"
-      class="message-box"
+      class="message-row"
+      [class.self-message]="isSelf(msg)"
+      [class.other-message]="!isSelf(msg)"
     >
-      {{ msg.content }}
+      <div class="message-box">{{ msg.content }}</div>
     </div>
   </div>
 
   <!-- Input -->
   <div class="chat-input">
-    <input
-      type="text"
-      [(ngModel)]="message"
-      placeholder="Type a message..."
-      (keyup.enter)="sendMessage()"
-    />
-
-    <button (click)="sendMessage()">Send</button>
+    <div class="chat-input-wrap">
+      <input
+        type="text"
+        [(ngModel)]="message"
+        placeholder="Type a message..."
+        (keyup.enter)="sendMessage()"
+      />
+    </div>
+    <button class="send-btn" (click)="sendMessage()" [disabled]="!message.trim()">
+      &#10148;
+    </button>
   </div>
 
 </div>

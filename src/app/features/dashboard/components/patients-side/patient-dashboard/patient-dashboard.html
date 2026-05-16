@@ -82,7 +82,9 @@
     <div class="card">
   <div class="card-head">
     <p class="sec-label" style="margin:0;">Next appointment</p>
-    <span class="appt-badge">Upcoming</span>
+    <span class="appt-badge">{{ patient?.status }}</span>
+    <button (click)="goToChat(patient.consultaionId)">Chat</button>
+
   </div>
 
   <div class="arow">

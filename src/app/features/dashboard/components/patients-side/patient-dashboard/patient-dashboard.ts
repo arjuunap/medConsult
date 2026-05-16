@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../../core/services/appointmentServices/appointment';
 import { VitalsService } from '../../../../../core/services/vitalServices/vitals';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -19,7 +20,8 @@ export class PatientDashboard implements OnInit {
 
   constructor(private appointmentService: AppointmentService,
     private vitalService: VitalsService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -113,4 +115,9 @@ export class PatientDashboard implements OnInit {
       .toUpperCase()
       .slice(0, 2);
   }
+  goToChat(consultationId: string): void {
+    // Implement navigation to chat component, passing consultationId
+    console.log('Navigating to chat with consultation ID:', consultationId);
+     this.router.navigate(['layout/chat', consultationId]);  
+}
 }
