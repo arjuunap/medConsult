@@ -4,32 +4,15 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  ViewChild,
-  ElementRef,
-  AfterViewChecked,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { WebSocketService } from '../../../../../core/services/webSocketServices/web-socket';
 
-export enum MessageType {
-  TEXT = 'TEXT',
-  FILE = 'FILE',
-  IMAGE = 'IMAGE',
-}
 
-export interface ChatMessage {
-  messageId: string;
-  consultationId: string;
-  senderId: string;
-  senderName: string;
-  content: string;
-  fileUrl?: string;
-  isRead: boolean;
-  messageType: MessageType;
-  createdAt: Date;
-}
+
 
 @Component({
   selector: 'app-chat',
@@ -39,35 +22,28 @@ export interface ChatMessage {
   styleUrl: './chat.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Chat implements OnInit, OnDestroy, AfterViewChecked {
-  @ViewChild('messageContainer') messageContainer!: ElementRef;
-  @ViewChild('messageInput') messageInput!: ElementRef;
+export class Chat implements OnInit, OnDestroy {
+ 
 
   consultationId: string = '';
-  currentUserId: string = 'user-001'; // Replace with actual auth user id
-  currentUserName: string = 'You';
-
-  doctorName: string = 'Dr. Meera Sharma';
-  doctorSpecialty: string = 'Cardiologist';
-  doctorAvatar: string = '';
-  isOnline: boolean = true;
-
-  messages: ChatMessage[] = [];
-  newMessage: string = '';
+  
+  messages: any[] = [];
+ 
+  message: string = '';
   isTyping: boolean = false;
   isSending: boolean = false;
-  showEmojiPicker: boolean = false;
-  MessageType = MessageType;
+  MessageType = 'TEXT';
 
   private typingTimer: any;
   private shouldScrollToBottom: boolean = false;
 
-  emojis: string[] = ['😊', '👍', '🙏', '❤️', '😔', '💊', '🩺', '✅', '⚠️', '📋'];
+  // emojis: string[] = ['😊', '👍', '🙏', '❤️', '😔', '💊', '🩺', '✅', '⚠️', '📋'];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private websocketService: WebSocketService
   ) {}
 
   ngOnInit(): void {
@@ -76,167 +52,73 @@ export class Chat implements OnInit, OnDestroy, AfterViewChecked {
       // this.consultationId = id;
       this.loadMessages();
     // }
-  }
-
-  ngAfterViewChecked(): void {
-    if (this.shouldScrollToBottom) {
-      this.scrollToBottom();
-      this.shouldScrollToBottom = false;
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.websocketService.connect(token);
+    } else {
+      console.error('No token found, cannot connect to WebSocket');
     }
   }
 
+
+
   ngOnDestroy(): void {
-    clearTimeout(this.typingTimer);
+    this.websocketService.disconnect();
   }
 
   loadMessages(): void {
-    // Mock messages — replace with actual service call
-    console.log('hello')
-    this.messages = [
-      {
-        messageId: '1',
-        consultationId: this.consultationId,
-        senderId: 'doctor-001',
-        senderName: this.doctorName,
-        content: 'Hello! How are you feeling today? Any updates since our last session?',
-        isRead: true,
-        messageType: MessageType.TEXT,
-        createdAt: new Date(Date.now() - 3600000 * 2),
-      },
-      {
-        messageId: '2',
-        consultationId: this.consultationId,
-        senderId: this.currentUserId,
-        senderName: this.currentUserName,
-        content: 'I have been feeling a bit better, but still experiencing some chest discomfort in the mornings.',
-        isRead: true,
-        messageType: MessageType.TEXT,
-        createdAt: new Date(Date.now() - 3600000),
-      },
-      {
-        messageId: '3',
-        consultationId: this.consultationId,
-        senderId: 'doctor-001',
-        senderName: this.doctorName,
-        content: 'I see. Please make sure to take your medication before breakfast. Also avoid caffeine for now.',
-        isRead: true,
-        messageType: MessageType.TEXT,
-        createdAt: new Date(Date.now() - 1800000),
-      },
-      {
-        messageId: '4',
-        consultationId: this.consultationId,
-        senderId: this.currentUserId,
-        senderName: this.currentUserName,
-        content: 'Understood, thank you doctor. Should I come in for a follow-up?',
-        isRead: true,
-        messageType: MessageType.TEXT,
-        createdAt: new Date(Date.now() - 600000),
-      },
-    ];
-    this.shouldScrollToBottom = true;
     this.cd.markForCheck();
     this.cd.detectChanges();
   }
 
-  sendMessage(): void {
-    console.log('Sending message:', this.newMessage);
-    const content = this.newMessage.trim();
-    if (!content || this.isSending) return;
+  sendMessage() {
+    if (!this.message.trim()) {
+      return;
+    }
 
-    this.isSending = true;
-    const msg: ChatMessage = {
-      messageId: Date.now().toString(),
+    const chatMessage = {
       consultationId: this.consultationId,
-      senderId: this.currentUserId,
-      senderName: this.currentUserName,
-      content,
-      isRead: false,
-      messageType: MessageType.TEXT,
-      createdAt: new Date(),
+      content: this.message,
+      messageType: 'TEXT',
     };
 
-    this.messages.push(msg);
-    this.newMessage = '';
-    this.shouldScrollToBottom = true;
-    this.isSending = false;
-    this.cd.markForCheck();
+    this.websocketService.sendMessage(chatMessage);
 
-    // TODO: Replace with actual service call
-    // this.chatService.sendMessage(msg).subscribe(...)
-  }
-
-  onKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      this.sendMessage();
-    }
-    this.simulateTyping();
-  }
-
-  simulateTyping(): void {
-    // For demo purposes only
-    clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(() => {}, 2000);
-  }
-
-  toggleEmojiPicker(): void {
-    this.showEmojiPicker = !this.showEmojiPicker;
-  }
-
-  addEmoji(emoji: string): void {
-    this.newMessage += emoji;
-    this.showEmojiPicker = false;
-    this.messageInput?.nativeElement?.focus();
-  }
-
-  isOwnMessage(msg: ChatMessage): boolean {
-    return msg.senderId === this.currentUserId;
-  }
-
-  getInitials(name: string): string {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  }
-
-  formatTime(date: Date): string {
-    return new Date(date).toLocaleTimeString('en-IN', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
+    this.messages.push({
+      self: true,
+      content: this.message,
     });
+
+    this.message = '';
+    this.scrollToBottom();
   }
 
-  formatDateGroup(date: Date): string {
-    const d = new Date(date);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+  scrollToBottom() {
 
-    if (d.toDateString() === today.toDateString()) return 'Today';
-    if (d.toDateString() === yesterday.toDateString()) return 'Yesterday';
-    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    setTimeout(() => {
+
+      const container =
+        document.getElementById(
+          'chat-body'
+        );
+
+      if (container) {
+
+        container.scrollTop =
+          container.scrollHeight;
+      }
+
+    }, 100);
   }
 
-  showDateSeparator(index: number): boolean {
-    if (index === 0) return true;
-    const curr = new Date(this.messages[index].createdAt).toDateString();
-    const prev = new Date(this.messages[index - 1].createdAt).toDateString();
-    return curr !== prev;
-  }
+ 
+
+ 
+
 
   goBack(): void {
     this.router.navigate(['/layout/doctors']);
   }
 
-  scrollToBottom(): void {
-    try {
-      const el = this.messageContainer.nativeElement;
-      el.scrollTop = el.scrollHeight;
-    } catch {}
-  }
+
 }
