@@ -115,9 +115,8 @@ export class PatientDashboard implements OnInit {
       .toUpperCase()
       .slice(0, 2);
   }
-  goToChat(consultationId: string): void {
-    // Implement navigation to chat component, passing consultationId
-    console.log('Navigating to chat with consultation ID:', consultationId);
-     this.router.navigate(['layout/chat', consultationId]);  
+  goToChat(id: string) {
+  this.router.navigate(['/layout/chat', id]);
+ 
 }
 }

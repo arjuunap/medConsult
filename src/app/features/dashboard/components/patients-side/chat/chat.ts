@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WebSocketService } from '../../../../../core/services/webSocketServices/web-socket';
 import { AuthService } from '../../../../../core/services/authServices/auth';
-
+import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -22,7 +22,9 @@ import { AuthService } from '../../../../../core/services/authServices/auth';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Chat implements OnInit, OnDestroy {
-  consultationId: string = 'eef7c6bd-9f3a-4628-a772-8ec3fde3e044';
+  @ViewChild('chatBody')
+  chatBody!: ElementRef;
+  consultationId!: string ;
 
   messages: any[] = [];
 
@@ -31,28 +33,19 @@ export class Chat implements OnInit, OnDestroy {
   isSending: boolean = false;
   MessageType = 'TEXT';
 
-  private typingTimer: any;
-  private shouldScrollToBottom: boolean = false;
-
-  // emojis: string[] = ['😊', '👍', '🙏', '❤️', '😔', '💊', '🩺', '✅', '⚠️', '📋'];
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
     private websocketService: WebSocketService,
     private authService: AuthService,
-   
   ) {}
   currentUserId: any;
   ngOnInit(): void {
-    console.log('Chat component initialized with consultation ID:', this.consultationId);
-    // const id = this.route.snapshot.paramMap.get('id');
-    // if (id) {
-    // this.consultationId = id;
-    // this.loadMessages();
-    // }
-
+    // const consultationId = this.route.snapshot.paramMap.get('id');
+    this.consultationId =
+  this.route.snapshot.paramMap.get('id') || '';
+    console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', this.consultationId);
     const token = localStorage.getItem('token');
     const currentUser = this.loadUser();
     if (token) {
@@ -90,11 +83,8 @@ export class Chat implements OnInit, OnDestroy {
         console.log('user:', res);
         // assuming API returns array
 
-        this.loadMessages();
         this.currentUserId = res.id;
-
-        console.log('shduhd', res.id);
-
+        this.loadMessages();
         this.cd.detectChanges();
       },
       error: (err) => {
@@ -113,6 +103,7 @@ export class Chat implements OnInit, OnDestroy {
 
           self: msg.senderId === this.currentUserId,
         }));
+        console.log(res);
 
         this.cd.detectChanges();
 
@@ -140,24 +131,17 @@ export class Chat implements OnInit, OnDestroy {
     };
 
     this.websocketService.sendMessage(chatMessage);
-
-    // this.messages.push({
-    //   self: true,
-    //   content: this.message,
-    // });
-
     this.message = '';
-    this.scrollToBottom();
   }
 
-  scrollToBottom() {
-    setTimeout(() => {
-      const container = document.getElementById('chat-body');
-
-      if (container) {
-        container.scrollTop = container.scrollHeight;
-      }
-    }, 100);
+  scrollToBottom(): void {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        if (this.chatBody) {
+          this.chatBody.nativeElement.scrollTop = this.chatBody.nativeElement.scrollHeight;
+        }
+      }, 0);
+    });
   }
 
   goBack(): void {

@@ -84,12 +84,22 @@
 
 /* ── Messages ── */
 .chat-messages {
+
   flex: 1;
+
   overflow-y: auto;
+
+  min-height: 0;
+
   padding: 16px 14px;
+
   display: flex;
+
   flex-direction: column;
+
   gap: 10px;
+
+  scroll-behavior: smooth;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -218,4 +228,23 @@
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+}
+
+.chat-container {
+
+  display: flex;
+
+  flex-direction: column;
+
+  height: 100vh;
+
+  max-width: 480px;
+
+  margin: 0 auto;
+
+  overflow: hidden;
+
+  font-family: 'Plus Jakarta Sans', sans-serif;
+
+  background: #f3f4f6;
 }

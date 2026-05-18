@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+
 import { AppointmentService } from '../../../../../core/services/appointmentServices/appointment';
 import { AuthService } from '../../../../../core/services/authServices/auth';
 import th from '@angular/common/locales/th';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-appointment',
@@ -43,7 +45,9 @@ export class Appointment implements OnInit {
   constructor(
     private appomentService: AppointmentService,
     private cd: ChangeDetectorRef,
-    private authservice: AuthService
+    private authservice: AuthService,
+    private router: Router
+
   ) {}
 
   ngOnInit(): void {
@@ -151,7 +155,7 @@ export class Appointment implements OnInit {
       .subscribe({
         next: (res) => {
           this.selectedAppointment = res;
-          console.log('Selected Appointment :', res);
+          console.log('Selected Appointmentss :', res);
 
           this.priority = res.priority || 'NORMAL';
 
@@ -163,6 +167,11 @@ export class Appointment implements OnInit {
         },
       });
   }
+
+  goToChat(id: string) {
+  this.router.navigate(['/layout/chat', id]);
+ 
+}
 
   closeModal() {
     this.selectedAppointment = null;

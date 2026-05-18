@@ -32,17 +32,9 @@
 
   <div class="filters">
 
-    <input
-      type="text"
-      placeholder="Search patient..."
-      [(ngModel)]="search"
-      (input)="applyFilters()"
-    />
+    <input type="text" placeholder="Search patient..." [(ngModel)]="search" (input)="applyFilters()" />
 
-    <select
-      [(ngModel)]="statusFilter"
-      (change)="applyFilters()"
-    >
+    <select [(ngModel)]="statusFilter" (change)="applyFilters()">
       <option value="">All Status</option>
 
       <option value="SCHEDULED">Scheduled</option>
@@ -67,57 +59,47 @@
 
   <!-- EMPTY -->
 
-  <div
-    class="empty-state"
-    *ngIf="!loading && filteredAppointments.length === 0"
-  >
+  <div class="empty-state" *ngIf="!loading && filteredAppointments.length === 0">
     <h3>No appointments found</h3>
     <p>No appointments available right now.</p>
   </div>
 
   <!-- LIST -->
 
-  <div
-    *ngFor="let appt of filteredAppointments"
-    class="card"
-    [class.card--cancelled]="appt.cancelReason"
-    (click)="openAppointment(appt)"
-  >
+  <div *ngFor="let appt of filteredAppointments" class="card" [class.card--cancelled]="appt.cancelReason"
+    (click)="openAppointment(appt)">
 
     <!-- ACCENT -->
 
-    <div
-      class="card__accent"
-      [ngClass]="{
+    <div class="card__accent" [ngClass]="{
         'accent-scheduled': appt.status === 'SCHEDULED',
         'accent-confirmed': appt.status === 'CONFIRMED',
         'accent-completed': appt.status === 'COMPLETED',
         'accent-cancelled': appt.status === 'CANCELLED',
         'accent-no-show': appt.status === 'NO_SHOW'
-      }"
-    ></div>
+      }"></div>
 
     <div class="card__body">
 
       <div class="card__header">
-          <div class="patient-info">
-            <span class="patient-name">
-              {{ appt.patient.user.fullName }}
-            </span>
+        <div class="patient-info">
+          <span class="patient-name">
+            {{ appt.patient.user.fullName }}
+          </span>
 
-            <!-- TYPE -->
+          <!-- TYPE -->
 
-            <span class="appt-type" [ngClass]="getTypeClass(appt.appointmentType)">
-              {{ appt.appointmentType }}
-            </span>
-          </div>
-
-          <!-- STATUS -->
-
-          <span class="status-badge" [ngClass]="getStatusClass(appt.status)">
-            {{ appt.status }}
+          <span class="appt-type" [ngClass]="getTypeClass(appt.appointmentType)">
+            {{ appt.appointmentType }}
           </span>
         </div>
+
+        <!-- STATUS -->
+
+        <span class="status-badge" [ngClass]="getStatusClass(appt.status)">
+          {{ appt.status }}
+        </span>
+      </div>
 
       <!-- DOCTOR -->
 
@@ -133,7 +115,7 @@
           <div class="meta-content">
 
             <span class="meta-label">
-              Date & Time 
+              Date & Time
             </span>
 
             <span class="meta-value">
@@ -142,6 +124,8 @@
 
           </div>
         </div>
+
+
 
         <div class="meta-item">
           <div class="meta-content">
@@ -191,7 +175,9 @@
       <strong>Patient:</strong>
       {{ selectedAppointment.patient.user.fullName }}
     </p>
-
+    <div>
+      <button (click)="goToChat(selectedAppointment.consultationId)">chat</button>
+    </div>
     <p>
       <strong>Doctor:</strong>
       Dr. {{ selectedAppointment.doctor.name }}
@@ -263,62 +249,43 @@
 
       <!-- CONFIRM -->
 
-      <button
-        class="confirm-btn"
-        (click)="updateStatus('CONFIRMED')"
-        *ngIf="
+      <button class="confirm-btn" (click)="updateStatus('CONFIRMED')" *ngIf="
           role === 'DOCTOR' &&
           selectedAppointment.status === 'SCHEDULED'
-        "
-      >
+        ">
         Confirm
       </button>
 
       <!-- COMPLETE -->
 
-      <button
-        class="complete-btn"
-        (click)="updateStatus('COMPLETED')"
-        *ngIf="
+      <button class="complete-btn" (click)="updateStatus('COMPLETED')" *ngIf="
           role === 'DOCTOR' &&
           selectedAppointment.status === 'CONFIRMED'
-        "
-      >
+        ">
         Complete
       </button>
 
       <!-- NO SHOW -->
 
-      <button
-        class="noshow-btn"
-        (click)="updateStatus('NO_SHOW')"
-        *ngIf="
+      <button class="noshow-btn" (click)="updateStatus('NO_SHOW')" *ngIf="
           role === 'DOCTOR' &&
           selectedAppointment.status === 'CONFIRMED'
-        "
-      >
+        ">
         No Show
       </button>
 
       <!-- CANCEL -->
 
-      <button
-        class="cancel-btn"
-        (click)="openCancelPopup()"
-        *ngIf="
+      <button class="cancel-btn" (click)="openCancelPopup()" *ngIf="
           selectedAppointment.status !== 'CANCELLED' &&
           selectedAppointment.status !== 'COMPLETED'
-        "
-      >
+        ">
         Cancel
       </button>
 
       <!-- CLOSE -->
 
-      <button
-        class="close-btn"
-        (click)="closeModal()"
-      >
+      <button class="close-btn" (click)="closeModal()">
         Close
       </button>
 
@@ -342,27 +309,17 @@
         <strong>Cancel Reason</strong>
       </label>
 
-      <textarea
-        rows="4"
-        [(ngModel)]="cancelReason"
-        placeholder="Enter reason..."
-      ></textarea>
+      <textarea rows="4" [(ngModel)]="cancelReason" placeholder="Enter reason..."></textarea>
 
     </div>
 
     <div class="modal-actions">
 
-      <button
-        class="cancel-btn"
-        (click)="confirmCancel()"
-      >
+      <button class="cancel-btn" (click)="confirmCancel()">
         Confirm Cancel
       </button>
 
-      <button
-        class="close-btn"
-        (click)="closeCancelPopup()"
-      >
+      <button class="close-btn" (click)="closeCancelPopup()">
         Close
       </button>
 

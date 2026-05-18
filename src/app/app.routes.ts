@@ -51,7 +51,7 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent },
       {path :'patient-dashboard',component : PatientDashboard},
       {path : 'profile', component : ProfileComponent},
-      {path : 'chat/:userId', component : Chat},
+      {path : 'chat/:id', component : Chat},
       { path: 'doctors', component: Drcard },
       { path: 'drprofile/:id', component: Drprofile },
       { path: 'schedule/:id', component: Schedul },
