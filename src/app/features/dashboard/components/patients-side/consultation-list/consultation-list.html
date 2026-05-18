@@ -1,0 +1,55 @@
+<div class="chat-list-container">
+
+  <div class="top-section">
+    <h2>Confirmed Patients</h2>
+    <p>
+      Patients available for consultation chat
+    </p>
+  </div>
+
+  <div
+    class="patient-card"
+    *ngFor="let appt of confirmedAppointments"
+  >
+
+    <div class="left">
+
+      <div class="avatar">
+  {{ getInitials(appt?.patient?.user?.fullName) }}
+</div>
+
+      <div class="details">
+
+        <h3>
+          {{ appt?.patient?.user?.fullName }}
+        </h3>
+
+        <p>
+          {{ appt?.appointmentType }}
+        </p>
+
+        <span class="time">
+          {{ appt?.scheduledAt | date:'dd MMM yyyy • hh:mm a' }}
+        </span>
+
+      </div>
+
+    </div>
+
+    <button
+      class="chat-btn"
+      (click)="goToChat(appt?.consultationId)"
+    >
+      Chat
+    </button>
+
+  </div>
+
+  <div
+    class="empty"
+    *ngIf="confirmedAppointments.length === 0"
+  >
+    No confirmed patients found
+  </div>
+
+</div>

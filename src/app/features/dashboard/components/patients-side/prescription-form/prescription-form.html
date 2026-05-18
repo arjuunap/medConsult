@@ -1,0 +1,248 @@
+<div class="prescription-wrapper">
+  <!-- HEADER -->
+
+  <div class="form-header">
+    <div class="header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8l-5-5z" />
+        <polyline points="9 3 9 8 14 8" />
+        <path d="M9 13h6" />
+        <path d="M9 17h6" />
+      </svg>
+    </div>
+
+    <div class="header-text">
+      <h2>Prescription Form</h2>
+      <p>Add medicines and prescription details</p>
+    </div>
+
+    <span class="header-badge"> New Prescription </span>
+  </div>
+
+  <!-- SUCCESS -->
+
+  <div class="toast toast--success" *ngIf="successMessage">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+
+    {{ successMessage }}
+  </div>
+
+  <!-- ERROR -->
+
+  <div class="toast toast--error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- FORM -->
+
+  <form [formGroup]="prescriptionForm" (ngSubmit)="submit()">
+    <!-- PATIENT DETAILS -->
+
+    <div class="form-section">
+      <div class="section-label">
+        <span class="section-bar"></span>
+
+        Patient & Doctor
+      </div>
+
+      <div class="grid-2">
+        <!-- PATIENT -->
+
+        <div class="field-group">
+          <label class="field-label">
+            Patient ID
+            <span class="req">*</span>
+          </label>
+
+          <input
+            class="form-input"
+            type="text"
+            formControlName="patientId"
+            placeholder="Enter patient ID"
+          />
+        </div>
+
+        <!-- DOCTOR -->
+
+        <div class="field-group">
+          <label class="field-label">
+            Doctor ID
+            <span class="req">*</span>
+          </label>
+
+          <input
+            class="form-input"
+            type="text"
+            formControlName="doctorId"
+            placeholder="Enter doctor ID"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDICINES -->
+
+    <div class="form-section">
+      <div class="section-label">
+        <span class="section-bar"></span>
+
+        Medications
+
+        <span class="item-count">
+          {{ prescriptions.length }}
+          item{{ prescriptions.length !== 1 ? 's' : '' }}
+        </span>
+      </div>
+
+      <!-- FORM ARRAY -->
+
+      <div formArrayName="prescriptions">
+        <div
+          class="medicine-card"
+          *ngFor="let item of prescriptions.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <!-- CARD HEADER -->
+
+          <div class="medicine-header">
+            <span class="medicine-number"> Medicine #{{ i + 1 }} </span>
+
+            <button
+              type="button"
+              class="remove-item-btn"
+              *ngIf="prescriptions.length > 1"
+              (click)="removePrescription(i)"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- GRID -->
+
+          <div class="medicine-grid">
+            <!-- NAME -->
+
+            <div class="field-group field-full">
+              <label class="field-label">
+                Medication Name
+                <span class="req">*</span>
+              </label>
+
+              <input
+                class="form-input"
+                type="text"
+                formControlName="medicationName"
+                placeholder="Paracetamol"
+              />
+            </div>
+
+            <!-- DOSAGE -->
+
+            <div class="field-group">
+              <label class="field-label">
+                Dosage
+                <span class="req">*</span>
+              </label>
+
+              <input class="form-input" type="text" formControlName="dosage" placeholder="500mg" />
+            </div>
+
+            <!-- FREQUENCY -->
+
+            <div class="field-group">
+              <label class="field-label">
+                Frequency
+                <span class="req">*</span>
+              </label>
+
+              <input
+                class="form-input"
+                type="text"
+                formControlName="frequency"
+                placeholder="Twice daily"
+              />
+            </div>
+
+            <!-- DURATION -->
+
+            <div class="field-group">
+              <label class="field-label"> Duration (Days) </label>
+
+              <input
+                class="form-input"
+                type="number"
+                formControlName="durationDays"
+                placeholder="7"
+              />
+            </div>
+
+            <!-- REFILL -->
+
+            <div class="field-group">
+              <label class="field-label"> Refills Allowed </label>
+
+              <input class="form-input" type="number" formControlName="refillsAllowed" />
+            </div>
+
+             
+          </div>
+          <!-- INSTRUCTIONS -->
+          <div class="introduction-section">
+              <div class="section-label">
+                <span class="section-bar"></span>
+
+                Instructions
+              </div>
+
+              <div class="field-group">
+                <label class="field-label"> Notes </label>
+
+                <textarea
+                  class="form-textarea"
+                  rows="5"
+                  formControlName="instructions"
+                  placeholder="Take after food..."
+                ></textarea>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- ADD BTN -->
+
+      <button type="button" class="add-item-btn" (click)="addPrescription()">
+        <span class="add-icon">+</span>
+
+        Add another medicine
+      </button>
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="form-footer">
+      <button type="button" class="btn btn--ghost" (click)="resetForm()">Clear Form</button>
+
+      <button type="submit" class="btn btn--primary" [disabled]="loading">
+        <span class="btn-spinner" *ngIf="loading"></span>
+
+        <svg
+          *ngIf="!loading"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M5 12l5 5L20 7" />
+        </svg>
+
+        {{ loading ? 'Saving...' : 'Save Prescription' }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -33,6 +33,8 @@ import { Addschedule } from './features/doctors/components/addschedule/addschedu
 import { ProfileComponent } from './features/dashboard/components/patients-side/profile/profile';
 import { PatientDashboard } from './features/dashboard/components/patients-side/patient-dashboard/patient-dashboard';
 import { Chat } from './features/dashboard/components/patients-side/chat/chat';
+import { ConsultationList } from './features/dashboard/components/patients-side/consultation-list/consultation-list';
+import { PrescriptionForm } from './features/dashboard/components/patients-side/prescription-form/prescription-form';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Userlogin },
@@ -65,6 +67,8 @@ export const routes: Routes = [
       {path : 'appointments', component : Appointment},
       {path : 'schedules',component : Drschedul},
       {path : 'add-schedule', component : Addschedule},
+      {path : 'chatlist',component : ConsultationList},
+      {path : 'prescription',component : PrescriptionForm},
       { path: '', redirectTo: 'home', pathMatch: 'full' } 
     ]
   },
