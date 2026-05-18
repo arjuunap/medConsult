@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -8,6 +9,10 @@ import SockJS from 'sockjs-client';
 export class WebSocketService {
   private stompClient!: Client;
 
+
+ constructor(private http: HttpClient) {}
+
+ 
   connect(token: string,
     onConnected?: () => void
   ) {
@@ -74,6 +79,16 @@ export class WebSocketService {
 
       body: JSON.stringify(message),
     });
+  }
+
+  getMessages(
+    consultationId: string
+  ) {
+
+    return this.http.get<any[]>(
+
+      `http://localhost:8080/api/chat/${consultationId}/messages`
+    );
   }
 
   disconnect() {
