@@ -17,7 +17,7 @@ export class HealthService {
     return this.http.get(`${this.apiUrl}/prescription/${patientId}`);
   }
   addAdherance(adherence : any) {
-    return this.http.get(`${this.apiUrl}/med-adherence`);
+    return this.http.post(`${this.apiUrl}/med-adherence`,adherence);
   }
   
   
