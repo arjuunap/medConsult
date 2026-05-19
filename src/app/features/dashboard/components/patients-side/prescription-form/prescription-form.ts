@@ -192,7 +192,7 @@ this.initializeForm();
 
   this.errorMessage = '';
 
-  const payload = this.prescriptionForm.value;
+  const payload = this.prescriptionForm.value.prescriptions;
 
   console.log('FINAL PAYLOAD:', payload);
 

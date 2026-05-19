@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: #f5f5f3;
@@ -33,19 +38,35 @@
       margin-bottom: 4px;
     }
 
-    .page-title { font-size: 22px; font-weight: 500; color: #111; }
-    .page-sub   { font-size: 13px; color: #888; margin-top: 4px; margin-bottom: 28px; }
+    .page-title {
+      font-size: 22px;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .page-sub {
+      font-size: 13px;
+      color: #888;
+      margin-top: 4px;
+      margin-bottom: 28px;
+    }
 
     .more-btn {
-      width: 30px; height: 30px;
+      width: 30px;
+      height: 30px;
       border-radius: 8px;
       border: 0.5px solid #e0ddd6;
       background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; gap: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      gap: 3px;
     }
+
     .more-btn span {
-      width: 3px; height: 3px;
+      width: 3px;
+      height: 3px;
       border-radius: 50%;
       background: #888;
       display: block;
@@ -63,7 +84,10 @@
       border-radius: 14px;
       padding: 20px 22px;
     }
-    .card.full { grid-column: 1 / -1; }
+
+    .card.full {
+      grid-column: 1 / -1;
+    }
 
     .sec-label {
       font-size: 10px;
@@ -81,22 +105,40 @@
       padding: 9px 0;
       border-bottom: 0.5px solid #f0ede8;
     }
-    .row:last-child  { border-bottom: none; padding-bottom: 0; }
-    .row:first-of-type { padding-top: 0; }
 
-    .rlabel { font-size: 13.5px; color: #444; }
+    .row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .row:first-of-type {
+      padding-top: 0;
+    }
+
+    .rlabel {
+      font-size: 13.5px;
+      color: #444;
+    }
 
     .rval {
       font-size: 13.5px;
       font-weight: 500;
       color: #1a8f66;
-      display: flex; align-items: center; gap: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
       cursor: pointer;
     }
-    .rval svg { width: 11px; height: 11px; opacity: 0.55; }
+
+    .rval svg {
+      width: 11px;
+      height: 11px;
+      opacity: 0.55;
+    }
 
     .badge-active {
-      font-size: 11px; font-weight: 500;
+      font-size: 11px;
+      font-weight: 500;
       padding: 3px 10px;
       border-radius: 20px;
       background: #e1f5ee;
@@ -111,7 +153,11 @@
       justify-content: space-between;
       margin-bottom: 14px;
     }
-    .rx-count { font-size: 12px; color: #999; }
+
+    .rx-count {
+      font-size: 12px;
+      color: #999;
+    }
 
     .rx-grid {
       display: grid;
@@ -120,37 +166,74 @@
     }
 
     .rx-item {
-      display: flex; align-items: flex-start; gap: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
       padding: 12px 0;
       border-bottom: 0.5px solid #f0ede8;
     }
-    .rx-item:last-child { border-bottom: none; }
+
+    .rx-item:last-child {
+      border-bottom: none;
+    }
 
     .dot {
-      width: 9px; height: 9px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       margin-top: 5px;
       flex-shrink: 0;
     }
-    .dot-blue { background: #378add; }
-    .dot-teal { background: #1a8f66; }
 
-    .rx-name { font-size: 14px; font-weight: 500; color: #111; }
-    .rx-meta { font-size: 11.5px; color: #999; margin-top: 2px; line-height: 1.5; }
+    .dot-blue {
+      background: #378add;
+    }
+
+    .dot-teal {
+      background: #1a8f66;
+    }
+
+    .rx-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .rx-meta {
+      font-size: 11.5px;
+      color: #999;
+      margin-top: 2px;
+      line-height: 1.5;
+    }
 
     .pill {
-      margin-left: auto; align-self: center;
-      font-size: 11px; font-weight: 500;
-      padding: 3px 10px; border-radius: 20px;
+      margin-left: auto;
+      align-self: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
       white-space: nowrap;
     }
-    .pill-green { background: #e1f5ee; color: #1a8f66; border: 0.5px solid #b0e4cf; }
-    .pill-amber { background: #faeeda; color: #ba7517; border: 0.5px solid rgba(245, 196, 117, 0.5); }
+
+    .pill-green {
+      background: #e1f5ee;
+      color: #1a8f66;
+      border: 0.5px solid #b0e4cf;
+    }
+
+    .pill-amber {
+      background: #faeeda;
+      color: #ba7517;
+      border: 0.5px solid rgba(245, 196, 117, 0.5);
+    }
 
     .add-btn {
-      margin-top: 14px; width: 100%;
+      margin-top: 14px;
+      width: 100%;
       padding: 10px;
-      font-size: 13px; font-weight: 500;
+      font-size: 13px;
+      font-weight: 500;
       color: #444;
       background: #f5f5f3;
       border: 0.5px solid #dddad4;
@@ -160,9 +243,224 @@
       letter-spacing: 0.01em;
       transition: background 0.15s;
     }
-    .add-btn:hover { background: #eceae6; }
+
+    .add-btn:hover {
+      background: #eceae6;
+    }
+    /* CLICKABLE PRESCRIPTION */
+
+.rx-item {
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.rx-item:hover {
+
+  background: #fafafa;
+}
+
+/* STATUS ICON */
+
+.status-icon {
+
+  width: 28px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  margin-right: 8px;
+}
+
+.completed-icon {
+
+  width: 22px;
+
+  height: 22px;
+
+  border-radius: 50%;
+
+  background: #1a8f66;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 13px;
+
+  font-weight: bold;
+}
+
+.missed-icon {
+
+  width: 22px;
+
+  height: 22px;
+
+  border-radius: 50%;
+
+  background: #d9534f;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 13px;
+
+  font-weight: bold;
+}
+
+/* MODAL */
+
+.modal-overlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0,0,0,0.35);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  z-index: 999;
+}
+
+.custom-modal {
+
+  width: 340px;
+
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 24px;
+
+  animation: popup 0.2s ease;
+}
+
+.modal-title {
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  color: #111;
+
+  margin-bottom: 20px;
+}
+
+.modal-btns {
+
+  display: flex;
+
+  gap: 12px;
+}
+
+.yes-btn,
+.no-btn {
+
+  flex: 1;
+
+  border: none;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.yes-btn {
+
+  background: #1a8f66;
+
+  color: white;
+}
+
+.no-btn {
+
+  background: #f2f2f2;
+
+  color: #444;
+}
+
+.reason-box {
+
+  width: 100%;
+
+  min-height: 100px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 12px;
+
+  padding: 12px;
+
+  resize: none;
+
+  outline: none;
+
+  font-family: inherit;
+
+  margin-bottom: 14px;
+}
+
+.submit-reason-btn {
+
+  width: 100%;
+
+  border: none;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background: #1a8f66;
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+@keyframes popup {
+
+  from {
+
+    transform: scale(0.92);
+
+    opacity: 0;
+  }
+
+  to {
+
+    transform: scale(1);
+
+    opacity: 1;
+  }
+}
   </style>
 </head>
+
 <body>
 
   <div class="wrap">
@@ -185,7 +483,7 @@
           <span class="rval">
             Doctors only
             <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
-              <path d="M4.5 3l3 3-3 3"/>
+              <path d="M4.5 3l3 3-3 3" />
             </svg>
           </span>
         </div>
@@ -194,7 +492,7 @@
           <span class="rval">
             Restricted
             <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
-              <path d="M4.5 3l3 3-3 3"/>
+              <path d="M4.5 3l3 3-3 3" />
             </svg>
           </span>
         </div>
@@ -203,7 +501,7 @@
           <span class="rval">
             Enabled
             <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
-              <path d="M4.5 3l3 3-3 3"/>
+              <path d="M4.5 3l3 3-3 3" />
             </svg>
           </span>
         </div>
@@ -217,7 +515,7 @@
           <span class="rval">
             On
             <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
-              <path d="M4.5 3l3 3-3 3"/>
+              <path d="M4.5 3l3 3-3 3" />
             </svg>
           </span>
         </div>
@@ -226,7 +524,7 @@
           <span class="rval">
             English
             <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">
-              <path d="M4.5 3l3 3-3 3"/>
+              <path d="M4.5 3l3 3-3 3" />
             </svg>
           </span>
         </div>
@@ -239,34 +537,178 @@
       </div>
 
       <!-- Prescriptions -->
-      <div class="card full">
-        <div class="rx-header">
-          <div class="sec-label" style="margin-bottom: 0;">Prescriptions</div>
-          <span class="rx-count">2 active</span>
+      <!-- Prescriptions -->
+<div class="card full">
+
+  <div class="rx-header">
+
+    <div
+      class="sec-label"
+      style="margin-bottom: 0;"
+    >
+      Prescriptions
+    </div>
+
+    <span class="rx-count">
+      {{ prescriptions.length }} active
+    </span>
+
+  </div>
+
+  <div class="rx-grid">
+
+    <div
+      class="rx-item"
+      *ngFor="
+        let prescription
+        of prescriptions
+      "
+      (click)="
+        openPrescriptionModal(
+          prescription
+        )
+      "
+    >
+
+      <!-- LEFT DOT -->
+
+      <div class="dot dot-blue"></div>
+
+      <!-- CENTER CONTENT -->
+
+      <div style="flex: 1;">
+
+        <div class="rx-name">
+
+          {{ prescription.medicationName }}
+
         </div>
-        <div class="rx-grid">
-          <div class="rx-item">
-            <div class="dot dot-blue"></div>
-            <div style="flex: 1;">
-              <div class="rx-name">Metformin 500mg</div>
-              <div class="rx-meta">2× / day · Morning &amp; Evening</div>
-            </div>
-            <span class="pill pill-green">90 days left</span>
-          </div>
-          <div class="rx-item">
-            <div class="dot dot-teal"></div>
-            <div style="flex: 1;">
-              <div class="rx-name">Atorvastatin 20mg</div>
-              <div class="rx-meta">1× / night · Before bed</div>
-            </div>
-            <span class="pill pill-amber">30 days left</span>
-          </div>
+
+        <div class="rx-meta">
+
+          {{ prescription.frequency }}
+
+          ·
+
+          {{ prescription.instructions }}
+
+          |
+
+          {{ prescription.durationDays }}
+          days
+
         </div>
-        <button class="add-btn">+ Add prescription</button>
+
       </div>
+
+      <!-- COMPLETED / MISSED ICON -->
+
+      <div class="status-icon">
+
+        <span
+          *ngIf="
+            prescription.completed
+            === true
+          "
+          class="completed-icon"
+        >
+          ✓
+        </span>
+
+        <span
+          *ngIf="
+            prescription.completed
+            === false
+          "
+          class="missed-icon"
+        >
+          ✕
+        </span>
+
+      </div>
+
+      <!-- STATUS -->
+
+      <span class="pill pill-green">
+
+        {{ prescription.status }}
+
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- CONFIRM MODAL -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showConfirmModal"
+>
+
+  <div class="custom-modal">
+
+    <h3 class="modal-title">
+      Completed today dose?
+    </h3>
+
+    <div class="modal-btns">
+
+      <button
+        class="yes-btn"
+        (click)="markCompleted()"
+      >
+        Yes
+      </button>
+
+      <button
+        class="no-btn"
+        (click)="openReasonModal()"
+      >
+        No
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- REASON MODAL -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showReasonModal"
+>
+
+  <div class="custom-modal">
+
+    <h3 class="modal-title">
+      Why missed the dose?
+    </h3>
+
+    <textarea
+      [(ngModel)]="skippedReason"
+      placeholder="Write reason..."
+      class="reason-box"
+    ></textarea>
+
+    <button
+      class="submit-reason-btn"
+      (click)="submitReason()"
+    >
+      OK
+    </button>
+
+  </div>
+
+</div>
 
     </div>
   </div>
 
 </body>
+
 </html>

@@ -13,4 +13,13 @@ export class HealthService {
     return this.http.post(`${this.apiUrl}/prescription/${consultationId}/add`, prescriptionData);
   }
 
+  getPrescriptions(patientId: string) {
+    return this.http.get(`${this.apiUrl}/prescription/${patientId}`);
+  }
+  addAdherance(adherence : any) {
+    return this.http.get(`${this.apiUrl}/med-adherence`);
+  }
+  
+  
+
 }

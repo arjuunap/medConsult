@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../../core/services/appointmentServices/appointment';
 import { VitalsService } from '../../../../../core/services/vitalServices/vitals';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../../core/services/authServices/auth'
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -21,12 +22,22 @@ export class PatientDashboard implements OnInit {
   constructor(private appointmentService: AppointmentService,
     private vitalService: VitalsService,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private authService : AuthService
   ) {}
+  //  user : any = [];
 
   ngOnInit(): void {
     this.loadVitals();
     this.loadAppointments();
+    // this.authService.UserDetails().subscribe({
+    //   next:(res)=>{
+    //     this.user = res;
+    //     console.log('user details',this.user)
+    //   }
+    //   })
+
+    
   }
 
   loadVitals(): void {
