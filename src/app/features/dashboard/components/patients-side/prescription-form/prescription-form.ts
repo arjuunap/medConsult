@@ -8,6 +8,8 @@ import {
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
+import { HealthService } from '../../../../../core/services/healthServices/health';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-prescription-form',
@@ -28,14 +30,19 @@ export class PrescriptionForm implements OnInit {
   successMessage = '';
 
   errorMessage = '';
+  consultationId!: string ;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private healthService: HealthService,
+private router: Router,
+ private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-
-    this.initializeForm();
+this.initializeForm();
+    this.consultationId = this.route.snapshot.paramMap.get('id') || '';
+    console.log('Prescription Form Consultation ID:', this.consultationId);
   }
 
   /* =========================================
@@ -44,26 +51,16 @@ export class PrescriptionForm implements OnInit {
 
   initializeForm(): void {
 
-    this.prescriptionForm = this.fb.group({
+  this.prescriptionForm = this.fb.group({
 
-      patientId: [
-        '',
-        Validators.required
-      ],
+    prescriptions: this.fb.array([
+      this.createPrescriptionItem()
+    ])
 
-      doctorId: [
-        '',
-        Validators.required
-      ],
+  });
 
-      
-
-      prescriptions: this.fb.array([
-        this.createPrescriptionItem()
-      ])
-
-    });
-  }
+}
+  
 
   /* =========================================
       CREATE MEDICINE ITEM
@@ -181,40 +178,57 @@ export class PrescriptionForm implements OnInit {
 
   submit(): void {
 
-    if (this.prescriptionForm.invalid) {
+  if (this.prescriptionForm.invalid) {
 
-      this.prescriptionForm.markAllAsTouched();
+    this.prescriptionForm.markAllAsTouched();
 
-      this.errorMessage =
-        'Please fill all required fields';
+    this.errorMessage =
+      'Please fill all required fields';
 
-      this.successMessage = '';
-
-      return;
-    }
-
-    this.loading = true;
-
-    this.errorMessage = '';
-
-    console.log(
-      this.prescriptionForm.value
-    );
-
-    // API call varumbo ivide add cheyyam
-
-    setTimeout(() => {
-
-      this.loading = false;
-
-      this.successMessage =
-        'Prescription saved successfully';
-
-      console.log(
-        'Prescription Saved:',
-        this.prescriptionForm.value
-      );
-
-    }, 1000);
+    return;
   }
+
+  this.loading = true;
+
+  this.errorMessage = '';
+
+  const payload = this.prescriptionForm.value;
+
+  console.log('FINAL PAYLOAD:', payload);
+
+  this.healthService
+    .prescriptionRegister(
+      payload,
+      this.consultationId
+    )
+    .subscribe({
+
+      next: (res) => {
+
+        console.log('SUCCESS:', res);
+
+        this.loading = false;
+
+        this.successMessage =
+          'Prescription saved successfully';
+
+        this.resetForm();
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        this.loading = false;
+
+        this.errorMessage =
+          'Failed to save prescription';
+
+      }
+
+    });
+}
+
+ 
 }

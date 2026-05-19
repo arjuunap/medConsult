@@ -41,47 +41,7 @@
   <form [formGroup]="prescriptionForm" (ngSubmit)="submit()">
     <!-- PATIENT DETAILS -->
 
-    <div class="form-section">
-      <div class="section-label">
-        <span class="section-bar"></span>
-
-        Patient & Doctor
-      </div>
-
-      <div class="grid-2">
-        <!-- PATIENT -->
-
-        <div class="field-group">
-          <label class="field-label">
-            Patient ID
-            <span class="req">*</span>
-          </label>
-
-          <input
-            class="form-input"
-            type="text"
-            formControlName="patientId"
-            placeholder="Enter patient ID"
-          />
-        </div>
-
-        <!-- DOCTOR -->
-
-        <div class="field-group">
-          <label class="field-label">
-            Doctor ID
-            <span class="req">*</span>
-          </label>
-
-          <input
-            class="form-input"
-            type="text"
-            formControlName="doctorId"
-            placeholder="Enter doctor ID"
-          />
-        </div>
-      </div>
-    </div>
+    
 
     <!-- MEDICINES -->
 

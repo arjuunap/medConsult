@@ -68,7 +68,7 @@ export const routes: Routes = [
       {path : 'schedules',component : Drschedul},
       {path : 'add-schedule', component : Addschedule},
       {path : 'chatlist',component : ConsultationList},
-      {path : 'prescription',component : PrescriptionForm},
+      {path : 'prescription/:id',component : PrescriptionForm},
       { path: '', redirectTo: 'home', pathMatch: 'full' } 
     ]
   },
