@@ -1,9 +1,24 @@
 <div class="form-shell">
   <div class="form-card">
-
     <div class="form-header">
       <div class="header-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+          <line x1="12" y1="14" x2="12" y2="18" />
+          <line x1="10" y1="16" x2="14" y2="16" />
+        </svg>
       </div>
       <div>
         <p class="form-title">Add Schedule</p>
@@ -12,7 +27,6 @@
     </div>
 
     <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()" class="form-body">
-
       <div class="field">
         <label class="field-label">Day of Week</label>
         <select formControlName="dayOfWeek" class="field-input">
@@ -29,6 +43,23 @@
         <div class="field">
           <label class="field-label">End Time</label>
           <input type="time" formControlName="endTime" class="field-input" />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Slot Duration (mins)</label>
+          <input
+            type="number"
+            formControlName="slotDuration"
+            class="field-input"
+            placeholder="30"
+          />
+        </div>
+
+        <div class="field">
+          <label class="field-label">Gap Between Slots (mins)</label>
+          <input type="number" formControlName="gapMinutes" class="field-input" placeholder="0" />
         </div>
       </div>
 
@@ -57,7 +88,6 @@
         <button type="button" class="btn-cancel" (click)="backToSchedules()">Cancel</button>
         <button type="submit" class="btn-submit">Submit</button>
       </div>
-
     </form>
   </div>
 </div>

@@ -607,7 +607,7 @@
 
         <span
           *ngIf="
-            prescription.completed
+            prescription.adherenceLogs[0].taken
             === true
           "
           class="completed-icon"
@@ -617,7 +617,7 @@
 
         <span
           *ngIf="
-            prescription.completed
+            prescription.adherenceLogs[0].taken
             === false
           "
           class="missed-icon"

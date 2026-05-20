@@ -1,14 +1,51 @@
+
+<!-- Date Filter Section -->
+<div class="filter-wrapper">
+
+  <div class="filter-header">
+    <h3>Select Appointment Date</h3>
+    <p>
+      Choose a date to view available doctor schedules and consultation timings.
+    </p>
+  </div>
+
+  <div class="date-filter">
+    <label for="scheduleDate">Filter by Date</label>
+
+    <input
+      id="scheduleDate"
+      type="date"
+      class="date-input"
+      (change)="filterSchedulesByDate($event.target.value)"
+    >
+  </div>
+
+  <div class="empty-state" *ngIf="filteredSchedules.length === 0">
+    <div class="empty-icon">📅</div>
+
+    <h4>No schedules available</h4>
+
+    <p>
+      There are no doctor schedules available for the selected date.
+      Please choose another date to continue.
+    </p>
+  </div>
+
+</div>
 <div class="schedule-wrapper" *ngIf="doctor?.length">
-  <div class="schedule-card" *ngFor="let d of doctor">
+  <div class="schedule-card" *ngFor="let d of filteredSchedules">
+     
+
     <div class="card-left">
       <div class="day-badge">{{ d.dayOfWeek }}</div>
     </div>
 
+   
     <div class="card-body">
       <div class="time-row">
         <div class="time-block">
           <span class="time-label">Start</span>
-          <span class="time-value">{{ d.startTime }}</span>
+          <span class="time-value">{{ ('1970-01-01T' + d.startTime) | date:'hh:mm a' }}</span>
         </div>
         <div class="time-arrow">
           <svg
@@ -24,7 +61,7 @@
         </div>
         <div class="time-block">
           <span class="time-label">End</span>
-          <span class="time-value">{{ d.endTime }}</span>
+          <span class="time-value">{{ ('1970-01-01T' + d.endTime) | date:'hh:mm a' }}</span>
         </div>
       </div>
       <div class="type-tag">{{ d.scheduleType }}</div>

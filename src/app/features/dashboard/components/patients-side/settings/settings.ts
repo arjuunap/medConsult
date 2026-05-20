@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { HealthService }
-from '../../../../../core/services/healthServices/health';
+  from '../../../../../core/services/healthServices/health';
 import { AuthService } from '../../../../../core/services/authServices/auth'
 
 
@@ -34,6 +34,7 @@ export class Settings implements OnInit {
   showReasonModal = false;
 
   skippedReason = '';
+  prescriptionId = '';
 
   taken = false;
 
@@ -41,36 +42,36 @@ export class Settings implements OnInit {
   constructor(
     private healthService: HealthService,
     private cd: ChangeDetectorRef,
-    private authService : AuthService
-  ) {}
-  user : any = [];
-  patientId : string = ''
+    private authService: AuthService
+  ) { }
+  user: any = [];
+  patientId: string = ''
 
   ngOnInit(): void {
 
-  this.authService.UserDetails().subscribe({
-    next: (res) => {
-      this.user = res;
+    this.authService.UserDetails().subscribe({
+      next: (res) => {
+        this.user = res;
 
-      console.log('user details', this.user);
+        console.log('user details', this.user);
 
-      this.patientId = this.user.patientId;
+        this.patientId = this.user.patientId;
 
-      
 
-      this.getAllPrescriptions();
-    },
-    error: (err) => {
-      console.log(err);
-    }
-  });
 
-}
-  
+        this.getAllPrescriptions();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+  }
+
 
   getAllPrescriptions(): void {
     this.patientId = this.user.patientId
-    console.log("Patient id",this.patientId)
+    console.log("Patient id", this.patientId)
 
     this.healthService
       .getPrescriptions(this.patientId)
@@ -84,9 +85,9 @@ export class Settings implements OnInit {
 
             ...p,
 
-            completed: null,
+            // completed: null,
 
-            reason: ''
+            // reason: ''
 
           }));
 
@@ -109,7 +110,7 @@ export class Settings implements OnInit {
 
     this.selectedPrescription =
       prescription;
-    console.log("res",prescription)
+    console.log("resee", prescription)
 
     this.showConfirmModal = true;
   }
@@ -117,19 +118,20 @@ export class Settings implements OnInit {
   markCompleted(): void {
 
     const adherance = {
-          skippedReason : null,
-          taken : true
-        }
-        console.log("tt",adherance)
+      skippedReason: null,
+      taken: true,
+      prescriptionId : this.selectedPrescription.prescriptionId
+    }
+    console.log("tt", adherance)
     this.healthService.addAdherance(adherance).subscribe({
-      next:(res)=>{
-        console.log("completed",res)
+      next: (res) => {
+        console.log("completed", res)
       },
-      error:(err)=>{
-        console.log('error')
+      error: (err) => {
+        console.log(err)
       }
     })
-  
+
 
     this.showConfirmModal = false;
   }
@@ -143,22 +145,24 @@ export class Settings implements OnInit {
 
 
   submitReason(): void {
-        const adherance = {
-          skippedReason : this.skippedReason,
-          taken : this.taken
-        }
+    const adherance = {
+      skippedReason: this.skippedReason,
+      taken: this.taken,
+      prescriptionId : this.selectedPrescription.prescriptionId
 
-        console.log('ad',adherance)
-    
-     
-    console.log("miss reason",this.skippedReason)
+    }
+
+    console.log('ad', adherance)
+
+
+    console.log("miss reason", this.skippedReason)
     this.healthService.addAdherance(adherance).subscribe({
-      next:(res)=>{
-        console.log('res',res)
+      next: (res) => {
+        console.log('res', res)
 
       },
-      error:(err)=>{
-        console.log('err',err)
+      error: (err) => {
+        console.log('err', err)
 
       }
     })

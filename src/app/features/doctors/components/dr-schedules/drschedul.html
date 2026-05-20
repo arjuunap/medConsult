@@ -13,12 +13,12 @@
       <div class="schedule-details">
         <div class="time-block">
           <span class="time-label">Start</span>
-          <span class="time-value">{{ d.startTime }}</span>
+          <span class="time-value">{{ ('1970-01-01T' + d.startTime) | date:'hh:mm a' }}</span>
         </div>
         <div class="divider">→</div>
         <div class="time-block">
           <span class="time-label">End</span>
-          <span class="time-value">{{ d.endTime }}</span>
+          <span class="time-value">{{ ('1970-01-01T' + d.endTime) | date:'hh:mm a' }}</span>
         </div>
       </div>
       <div class="type-tag">{{ d.scheduleType }}</div>

@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorService } from '../../../../core/services/doctorServices/doctor';
 
-
 @Component({
   selector: 'app-addschedule',
   standalone: true,
@@ -22,7 +21,7 @@ export class Addschedule {
 
     private doctorService: DoctorService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     this.scheduleForm = this.fb.group({
       dayOfWeek: ['', Validators.required],
@@ -31,6 +30,9 @@ export class Addschedule {
       scheduleType: ['', Validators.required],
       effectiveFrom: ['', Validators.required],
       effectiveUntil: [''],
+
+      slotDuration: [30, Validators.required],
+      gapMinutes: [0],
     });
   }
 
