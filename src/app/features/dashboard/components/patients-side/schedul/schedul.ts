@@ -61,7 +61,6 @@ export class Schedul implements OnInit {
     this.bookingForm = this.fb.group({
       location: ['', Validators.required],
       appointmentType: ['', Validators.required],
-      scheduledAt: ['', Validators.required],
       notes: ['', Validators.required]
     });
   }
@@ -85,10 +84,18 @@ export class Schedul implements OnInit {
       return;
     }
 
+    const formattedDate =
+      this.selectedDate.toISOString().split('T')[0];
+
+    const scheduledAt =
+      `${formattedDate}T${this.selectedSchedule.startTime}`;
+
     const payload = {
       location: this.bookingForm.value.location,
       appointmentType: this.bookingForm.value.appointmentType,
-      scheduledAt: this.bookingForm.value.scheduledAt + ':00',
+      // scheduledAt: this.bookingForm.value.scheduledAt + ':00',
+      scheduledAt: scheduledAt,
+
       notes: this.bookingForm.value.notes,
     };
     console.log("🔥 Sending payload:", payload);
@@ -123,6 +130,7 @@ export class Schedul implements OnInit {
 
   filterSchedulesByDate(selectedDate: Date | string) {
 
+    this.selectedDate = new Date(selectedDate);
 
     const currentDate = new Date(selectedDate);
 
