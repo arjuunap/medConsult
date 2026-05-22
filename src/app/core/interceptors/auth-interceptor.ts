@@ -2,6 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { EMPTY } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
@@ -23,7 +24,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       // Redirect login
       router.navigate(['/login']);
 
-      return next(req);
+      return EMPTY;
     }
 
     // Attach token

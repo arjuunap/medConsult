@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthResponse } from '../../models/auth-response';
 import { UserDetailsResponse } from '../../models/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router : Router) { }
 
   private apiUrl = 'http://localhost:8080/api/auth';
 
@@ -32,7 +33,8 @@ export class AuthService {
   logout() {
 
     localStorage.removeItem('token');
-    window.location.href = '/';
+    // window.location.href = '/login';
+    this.router.navigate(['/login']);
   }
   UserDetails(){
     return this.http.get<UserDetailsResponse>(this.apiUrl + '/me');

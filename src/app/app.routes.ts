@@ -35,43 +35,56 @@ import { PatientDashboard } from './features/dashboard/components/patients-side/
 import { Chat } from './features/dashboard/components/patients-side/chat/chat';
 import { ConsultationList } from './features/dashboard/components/patients-side/consultation-list/consultation-list';
 import { PrescriptionForm } from './features/dashboard/components/patients-side/prescription-form/prescription-form';
+import { loginGuard } from './core/guards/login-guard-guard';
+import { Logout } from './features/auth/components/logout/logout/logout';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: Userlogin },
+  // {
+  //   path: '',
+  //   redirectTo: localStorage.getItem('token')
+  //     ? 'layout/home'
+  //     : 'login',
+  //   pathMatch: 'full'
+  // },
+  { path: 'login', component: Userlogin, canActivate: [loginGuard] },
   { path: 'register', component: Register },
   { path: 'patient-register', component: PatientRegisterComponent },
   { path: 'dr-register', component: DrRegister },
-  {path : 'oauth-success', component : AuthSucessComponent},
-  
+  { path: 'oauth-success', component: AuthSucessComponent },
+  { path: 'logout', component: Logout },
+
 
 
   {
     path: 'layout',
     component: LayoutComponent,
-    canActivate: [authGuard], 
+    canActivate: [authGuard],
+    
     children: [
       { path: 'home', component: HomeComponent },
-      {path :'patient-dashboard',component : PatientDashboard},
-      {path : 'profile', component : ProfileComponent},
-      {path : 'chat/:id', component : Chat},
+      { path: 'patient-dashboard', component: PatientDashboard },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'chat/:id', component: Chat },
       { path: 'doctors', component: Drcard },
       { path: 'drprofile/:id', component: Drprofile },
       { path: 'schedule/:id', component: Schedul },
       { path: 'settings', component: Settings },
       { path: 'show-vitals', component: VitalsDetailComponent },
       { path: 'edit-vitals/:vitalId', component: VitalsEditComponent },
-      {path : 'add-lab-result', component : LabResultSubmissionComponent},
-      {path : 'lab-results',component : Alllabresults},
-      {path : 'all-lab-results/:patientId',component :Labresultlist },
-      {path : 'add-vitals', component : HealthVital},
-      {path : 'appointments', component : Appointment},
-      {path : 'schedules',component : Drschedul},
-      {path : 'add-schedule', component : Addschedule},
-      {path : 'chatlist',component : ConsultationList},
-      {path : 'prescription/:id',component : PrescriptionForm},
-      { path: '', redirectTo: 'home', pathMatch: 'full' } 
+      { path: 'add-lab-result', component: LabResultSubmissionComponent },
+      { path: 'lab-results', component: Alllabresults },
+      { path: 'all-lab-results/:patientId', component: Labresultlist },
+      { path: 'add-vitals', component: HealthVital },
+      { path: 'appointments', component: Appointment },
+      { path: 'schedules', component: Drschedul },
+      { path: 'add-schedule', component: Addschedule },
+      { path: 'chatlist', component: ConsultationList },
+      { path: 'prescription/:id', component: PrescriptionForm },
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
-  
+
+  { path: '**', redirectTo: 'login' }
+
 
 ];
