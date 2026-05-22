@@ -97,7 +97,7 @@ export class Schedul implements OnInit {
       scheduledAt: scheduledAt,
 
       notes: this.bookingForm.value.notes,
-    };
+    };``
     console.log("🔥 Sending payload:", payload);
 
     this.doctorService.bookConsultation(this.doctorId, payload).subscribe({

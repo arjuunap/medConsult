@@ -1,13 +1,32 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-export const authInterceptor:
-HttpInterceptorFn = (req, next) => {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
-  const token =
-    localStorage.getItem('token');
+  const token = localStorage.getItem('token');
+
+  const router = inject(Router);
+
+  const jwtHelper = new JwtHelperService();
 
   if (token) {
 
+    // Check token expired
+    if (jwtHelper.isTokenExpired(token)) {
+
+      // Remove session
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Redirect login
+      router.navigate(['/login']);
+
+      return next(req);
+    }
+
+    // Attach token
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
