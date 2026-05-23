@@ -1,100 +1,158 @@
-<div class="cl-shell">
+<div class="threads-panel">
 
   <!-- ── Header ── -->
-  <div class="cl-header">
-    <div class="cl-header-left">
-      <div class="cl-logo">
-        <span class="cl-logo-icon">🏥</span>
-        MedConsult
-      </div>
-      <div class="cl-divider"></div>
-      <div class="cl-heading">
-        <p class="cl-title">Consultations</p>
-        <p class="cl-sub">{{ confirmedAppointments.length }} confirmed today</p>
-      </div>
-    </div>
+  <div class="panel-header">
+    <span class="panel-title">Consultations</span>
+
+    <button
+      class="btn-icon"
+      title="New consultation"
+      style="width:28px;height:28px;font-size:14px;"
+    >
+      ＋
+    </button>
   </div>
 
-  <!-- ── Section label ── -->
-  <div class="cl-section-label">
-    <span>Confirmed Patients</span>
-    <span class="cl-count-pill">{{ confirmedAppointments.length }}</span>
+  <!-- ── Search ── -->
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+
+    <input
+      type="text"
+      placeholder="Search patients or complaints…"
+    />
   </div>
 
-  <!-- ── List ── -->
-  <div class="cl-list" *ngIf="confirmedAppointments.length > 0; else emptyState">
+  <!-- ── Threads List ── -->
+  <div
+    class="threads-list"
+    *ngIf="confirmedAppointments.length > 0; else emptyState"
+  >
 
     <div
-      class="cl-card"
+      class="thread-item"
       *ngFor="let appt of confirmedAppointments"
+      (click)="goToChat(appt?.consultationId, appt)"
     >
-      <!-- Active accent bar -->
-      <div class="cl-card-accent"></div>
 
-      <!-- Body -->
-      <div class="cl-card-body">
+      <!-- Row 1 -->
+      <div class="thread-row1">
 
-        <!-- Avatar -->
-        <div class="cl-card-avatar">
-          <!-- {{ getInitials(appt?.patient?.user?.fullName) }} -->
-          <img style="width: 100%; height: 100%; border-radius: 30%; object-fit: cover;" src="{{ appt?.patient?.user?.profilePhoto }}" alt="">
-        </div>
+        <div
+          style="display:flex; align-items:center; gap:12px;"
+        >
 
-        <!-- Details -->
-        <div class="cl-card-info">
+          <!-- Avatar -->
 
-          <div class="cl-card-row1">
-            <span class="cl-card-name">{{ appt?.patient?.user?.fullName }}</span>
-            <span class="cl-card-time">
-              {{ appt?.scheduledAt | date:'hh:mm a' }}
+          <div *ngIf="role === 'DOCTOR'" class="avatar" >
+            <img
+              [src]="appt?.patient?.user?.profilePhoto"
+              alt=""
+              style="
+                width:44px;
+                height:44px;
+                border-radius:50%;
+                object-fit:cover;
+              "
+            />
+            
+          </div>
+          <div *ngIf="role === 'PATIENT'" class="avatar" >
+            <img
+              [src]="appt?.doctor?.profilePhotoUrl"
+              alt=""
+              style="
+                width:44px;
+                height:44px;
+                border-radius:50%;
+                object-fit:cover;
+              "
+            />
+            
+          </div>
+
+          <!-- Name + type -->
+          <div style="display:flex; flex-direction:column;">
+            <span  *ngIf="role === 'PATIENT'" class="thread-name">
+              
+              Dr {{ appt?.doctor?.name }}
             </span>
-          </div>
-
-          <div class="cl-card-row2">
-            <span class="cl-card-type">{{ appt?.appointmentType }}</span>
-          </div>
-
-          <div class="cl-card-row3">
-            <span class="cl-card-date">
-              📅 {{ appt?.scheduledAt | date:'dd MMM yyyy' }}
+            <span  *ngIf="role === 'DOCTOR'" class="thread-name">
+              
+              {{ appt?.patient?.user?.fullName }}
             </span>
-          </div>
 
-          <div class="cl-card-badges">
-            <span class="cl-badge cl-badge--status-confirmed">✓ Confirmed</span>
             <span
-              class="cl-badge cl-badge--priority"
-              *ngIf="appt?.priority"
-              [ngClass]="'cl-badge--priority-' + (appt?.priority | lowercase)"
+              style="
+                font-size:12px;
+                color:#6b7280;
+                margin-top:2px;
+              "
             >
-              {{ appt?.priority }}
+              {{ appt?.appointmentType }}
             </span>
           </div>
 
         </div>
+
+        <!-- Time -->
+        <span class="thread-time">
+          {{ appt?.scheduledAt | date:'hh:mm a' }}
+        </span>
+
       </div>
 
-      <!-- Chat button -->
-      <button
-        class="cl-chat-btn"
-        (click)="goToChat(appt?.consultationId)"
-      >
-        Chat
-        <span class="cl-chat-arrow">→</span>
-      </button>
+      <!-- Row 2 -->
+      <div class="thread-row2">
+
+        <span class="thread-preview">
+          📅 {{ appt?.scheduledAt | date:'dd MMM yyyy' }}
+        </span>
+
+        <span
+          class="unread-dot"
+          *ngIf="appt?.priority === 'HIGH' || appt?.priority === 'CRITICAL'"
+        ></span>
+
+      </div>
+
+      <!-- Badges -->
+      <div class="thread-badges">
+
+        <span class="badge badge-status-active">
+          ✓ Confirmed
+        </span>
+
+        <span
+          class="badge badge-priority-critical"
+          *ngIf="appt?.priority"
+        >
+          {{ appt?.priority }}
+        </span>
+
+        <span class="badge badge-case">
+          {{ appt?.appointmentType }}
+        </span>
+
+      </div>
 
     </div>
 
   </div>
 
-  <!-- ── Empty state ── -->
+  <!-- ── Empty State ── -->
   <ng-template #emptyState>
+
     <div class="cl-empty">
       <span class="cl-empty-icon">💬</span>
+
       <p>No confirmed patients found</p>
-      <span>Confirmed appointments will appear here</span>
-    
+
+      <span>
+        Confirmed appointments will appear here
+      </span>
     </div>
+
   </ng-template>
 
 </div>

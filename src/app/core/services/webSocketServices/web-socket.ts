@@ -96,9 +96,3 @@ export class WebSocketService {
   }
 }
 
-// sendMessage(message: any) {
-//   this.stompClient?.publish({
-//     destination: '/app/chat.send',
-//     body: JSON.stringify(message),
-//   });
-// }

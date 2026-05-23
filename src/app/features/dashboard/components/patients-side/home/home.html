@@ -53,99 +53,102 @@
     </div>
   </div>
 
-  <!-- RECENT PATIENTS -->
-
-  <div class="patients-section">
-    <div class="patients-header">
-      <p class="patients-title">Recent Patients</p>
-    </div>
-
-    <div class="patient-row" *ngFor="let patient of Patients" (click)="openModal(patient)">
-      <div class="avatar" [ngClass]="getAvatarColor(patient.user.fullName)">
-        {{ getInitials(patient.user.fullName) }}
-      </div>
-
-      <div class="patient-info">
-        <p class="patient-name">
-          {{ patient.user.fullName }}
-        </p>
-
-        <p class="patient-meta">
-          {{ patient.gender }},
-          {{ patient.age }}
-          ·
-          {{ patient.department }}
-        </p>
-      </div>
-    </div>
-  </div>
-
   <!-- TODAY APPOINTMENTS -->
+  <div class="apt-and-pat">
+    <div class="appointments-section">
+      <div class="appointment-header">
+        <p class="appointment-title">Today's Appointments</p>
+      </div>
 
-  <div class="appointments-section">
-    <div class="appointment-header">
-      <p class="appointment-title">Today's Appointments</p>
+      <div
+        class="appointment-card"
+        *ngFor="let appt of appointments"
+        (click)="openAppointmentModal(appt)"
+      >
+        <div class="card__body">
+          <div class="card__header">
+            <div class="patient-info">
+              <span class="patient-name">
+                {{ appt.patient.user.fullName }}
+              </span>
+
+              <!-- TYPE -->
+
+              <span class="appt-type" [ngClass]="getTypeClass(appt.appointmentType)">
+                {{ appt.appointmentType }}
+              </span>
+            </div>
+
+            <!-- STATUS -->
+
+            <span class="status-badge" [ngClass]="getStatusClass(appt.status)">
+              {{ appt.status }}
+            </span>
+          </div>
+
+          <!-- DOCTOR -->
+
+          <div class="doctor-name">Dr. {{ appt.doctor.name }}</div>
+
+          <!-- META -->
+
+          <div class="card__meta">
+            <div class="meta-item">
+              <div class="meta-content">
+                <span class="meta-label"> Date & Time </span>
+
+                <span class="meta-value">
+                  {{ appt.scheduledAt | date: 'dd MMM yyyy • hh:mm a' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <div class="meta-content">
+                <span class="meta-label"> Location </span>
+
+                <span class="meta-value">
+                  {{ appt.location || 'Virtual' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <div class="meta-content">
+                <span class="meta-label"> Duration </span>
+
+                <span class="meta-value"> {{ appt.durationMinutes }} mins </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div
-      class="appointment-card"
-      *ngFor="let appt of appointments"
-      (click)="openAppointmentModal(appt)"
-    >
-      <div class="card__body">
-        <div class="card__header">
+    <!-- RECENT PATIENTS -->
+
+    <div class="patients-section">
+      <div class="patients-header">
+        <p class="patients-title">Recent Patients</p>
+      </div>
+
+      <div class="patient-card">
+        <div class="patient-row" *ngFor="let patient of Patients" (click)="openModal(patient)">
+          <div class="avatar">
+            <img [src]="patient.user.profilePhoto" alt="Profile" class="avatar-img" />
+          </div>
+
           <div class="patient-info">
-            <span class="patient-name">
-              {{ appt.patient.user.fullName }}
-            </span>
+            <p class="patient-name">
+              {{ patient.user.fullName }}
+            </p>
 
-            <!-- TYPE -->
-
-            <span class="appt-type" [ngClass]="getTypeClass(appt.appointmentType)">
-              {{ appt.appointmentType }}
-            </span>
-          </div>
-
-          <!-- STATUS -->
-
-          <span class="status-badge" [ngClass]="getStatusClass(appt.status)">
-            {{ appt.status }}
-          </span>
-        </div>
-
-        <!-- DOCTOR -->
-
-        <div class="doctor-name">Dr. {{ appt.doctor.name }}</div>
-
-        <!-- META -->
-
-        <div class="card__meta">
-          <div class="meta-item">
-            <div class="meta-content">
-              <span class="meta-label"> Date & Time </span>
-
-              <span class="meta-value">
-                {{ appt.scheduledAt | date: 'dd MMM yyyy • hh:mm a' }}
-              </span>
-            </div>
-          </div>
-
-          <div class="meta-item">
-            <div class="meta-content">
-              <span class="meta-label"> Location </span>
-
-              <span class="meta-value">
-                {{ appt.location || 'Virtual' }}
-              </span>
-            </div>
-          </div>
-
-          <div class="meta-item">
-            <div class="meta-content">
-              <span class="meta-label"> Duration </span>
-
-              <span class="meta-value"> {{ appt.durationMinutes }} mins </span>
-            </div>
+            <p class="patient-meta">
+              {{ patient.gender }},
+              {{ patient.age }}
+              ·
+              {{ patient.department }}
+            </p>
           </div>
         </div>
       </div>
@@ -322,8 +325,6 @@
         </button>
 
         <!-- CANCEL -->
-
-        
 
         <!-- CLOSE -->
 

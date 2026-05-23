@@ -27,7 +27,7 @@ import { AppointmentService } from '../../../../../core/services/appointmentServ
   standalone: true,
   imports: [
     CommonModule,
- 
+    RouterLink,
     FormsModule
   ],
   templateUrl: './home.html',
@@ -65,7 +65,7 @@ export class HomeComponent {
   totalPatients: number = 0;
 
   selectedPatient: any = null;
-  
+
   selectedAppointment: any = null;
 
   showCancelPopup: boolean = false;

@@ -1,48 +1,236 @@
 <div class="chat-container">
 
-  <!-- Header -->
+  <!-- ───────── HEADER ───────── -->
   <div class="chat-header">
-    <button (click)="goBack()" aria-label="Go back">&#8592;</button>
-    <div class="chat-header-info">
-      <p class="chat-header-name">Dr. Priya Sharma</p>
-      <p class="chat-header-status">
-        <span class="status-dot"></span>
-        Online · General Physician
-      </p>
-    </div>
-    <div class="chat-header-avatar">PS</div>
-  </div>
 
-  <!-- Messages -->
-  <div class="chat-messages" #chatBody id="chat-body">
-    <div
-      *ngFor="let msg of messages"
-      class="message-row"
-      [class.self-message]="isSelf(msg)"
-      [class.other-message]="!isSelf(msg)"
+    <button
+      class="back-btn"
+      (click)="goBack()"
+      aria-label="Go back"
     >
-      <div class="message-box">{{ msg.content }}</div>
-    </div>
-  </div>
-
-  <!-- Input -->
-  <div class="chat-input">
-    <div>
-      <button (click)="navigateToPrescription()">prescription</button>
-      <input type="file" >
-
-    </div>
-    <div class="chat-input-wrap">
-      <input
-        type="text"
-        [(ngModel)]="message"
-        placeholder="Type a message..."
-        (keyup.enter)="sendMessage()"
-      />
-    </div>
-    <button class="send-btn" (click)="sendMessage()" [disabled]="!message.trim()">
-      &#10148;
+      &#8592;
     </button>
+
+    <!-- Left -->
+    <div class="chat-header-left">
+
+      <!-- Avatar -->
+      <div class="chat-header-avatar">PS</div>
+
+      <!-- Info -->
+      <div class="chat-header-info">
+
+        <p class="chat-header-name">Dr. Priya Sharma</p>
+
+        <p class="chat-header-status">
+          <span class="status-dot"></span>
+          Online · General Physician
+        </p>
+
+        <!-- Badges -->
+        <div class="chat-header-badges">
+          <span class="badge badge-status-active">✓ Active</span>
+          <span class="badge badge-priority-critical">Critical</span>
+          <span class="badge badge-case">Case #CR-0041</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="chat-header-actions">
+      <button class="header-action-btn">📁 Case</button>
+      <button class="header-action-btn urgent">⛔ Critical</button>
+    </div>
+
   </div>
+
+  <!-- ───────── BODY ROW (messages + right panel) ───────── -->
+  <div class="chat-main">
+
+    <!-- ── Messages + Input column ── -->
+    <div class="chat-messages-col">
+
+      <!-- MESSAGES -->
+      <div
+        class="chat-messages"
+        #chatBody
+        id="chat-body"
+      >
+
+        <div class="date-divider">Today</div>
+
+        <ng-container *ngFor="let msg of messages">
+
+          <div
+            class="message-row"
+            [class.self-message]="isSelf(msg)"
+            [class.other-message]="!isSelf(msg)"
+          >
+
+            <div
+              class="message-sender"
+              *ngIf="!isSelf(msg)"
+            >
+              Patient
+            </div>
+
+            <div class="message-box">
+              {{ msg?.content }}
+            </div>
+
+            <div class="message-time">
+              {{ msg?.createdAt | date:'hh:mm a' }}
+            </div>
+
+          </div>
+
+        </ng-container>
+
+        <!-- Typing indicator -->
+        <div class="message-row other-message" *ngIf="isTyping">
+          <div class="message-sender">Patient</div>
+          <div class="message-box typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- INPUT -->
+      <div class="chat-input">
+
+        <div class="chat-toolbar">
+
+          <button
+            class="toolbar-btn rx"
+            (click)="navigateToPrescription()"
+          >
+            💊 Prescription
+          </button>
+
+          <label class="toolbar-btn">
+            📎 Attach
+            <input type="file" hidden />
+          </label>
+
+        </div>
+
+        <div class="chat-input-row">
+
+          <div class="chat-input-wrap">
+            <input
+              type="text"
+              [(ngModel)]="message"
+              placeholder="Type a message..."
+              (keyup.enter)="sendMessage()"
+            />
+          </div>
+
+          <button
+            type="button"
+            class="send-btn"
+            (click)="sendMessage()"
+            [disabled]="!message || !message.trim() || isSending"
+            [class.sending]="isSending"
+          >
+            &#10148;
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+    <!-- /chat-messages-col -->
+
+    <!-- ── RIGHT PANEL ── -->
+    <div class="chat-details">
+
+      <!-- Patient -->
+      <div class="details-card">
+
+        <div class="details-title">
+          <span class="title-icon icon-patient">👤</span>
+          Patient Details
+        </div>
+
+        <div class="details-row">
+          <span>Name</span>
+          <strong>Arjun Krishnan</strong>
+        </div>
+
+        <div class="details-row">
+          <span>Age / Gender</span>
+          <strong>34 / Male</strong>
+        </div>
+
+        <div class="details-row">
+          <span>Blood Group</span>
+          <strong>B+</strong>
+        </div>
+
+        <div class="details-row">
+          <span>Phone</span>
+          <strong>+91 9876543210</strong>
+        </div>
+
+      </div>
+
+      <!-- Vitals -->
+      <div class="details-card">
+
+        <div class="details-title">
+          <span class="title-icon icon-vitals">💓</span>
+          Latest Vitals
+        </div>
+
+        <div class="vitals-grid">
+
+          <div class="vital-box warn">
+            <span class="vital-label">BP</span>
+            <span class="vital-value">150/90</span>
+          </div>
+
+          <div class="vital-box warn">
+            <span class="vital-label">Pulse</span>
+            <span class="vital-value">108 bpm</span>
+          </div>
+
+          <div class="vital-box caution">
+            <span class="vital-label">SpO₂</span>
+            <span class="vital-value">94%</span>
+          </div>
+
+          <div class="vital-box">
+            <span class="vital-label">Temp</span>
+            <span class="vital-value">37°C</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Allergies -->
+      <div class="details-card">
+
+        <div class="details-title">
+          <span class="title-icon icon-allergy">⚠️</span>
+          Allergies
+        </div>
+
+        <div class="allergy-tags">
+          <span class="allergy-tag">Penicillin</span>
+          <span class="allergy-tag">Ibuprofen</span>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- /chat-details -->
+
+  </div>
+  <!-- /chat-main -->
 
 </div>

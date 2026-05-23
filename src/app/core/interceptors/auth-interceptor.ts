@@ -13,6 +13,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const jwtHelper = new JwtHelperService();
 
   if (token) {
+    const decodedToken = jwtHelper.decodeToken(token);
+  //   console.log("==============",decodedToken);
+
+  // console.log(decodedToken.role);
+
+  // console.log(decodedToken.userId);
+
+  // console.log(decodedToken.sub);
 
     // Check token expired
     if (jwtHelper.isTokenExpired(token)) {
@@ -25,6 +33,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       router.navigate(['/login']);
 
       return EMPTY;
+
     }
 
     // Attach token

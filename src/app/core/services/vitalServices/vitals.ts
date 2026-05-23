@@ -33,7 +33,7 @@ export class VitalsService {
       data
     );
   }
-//   showVitals(patientId: string): Observable<VitalsData> {
-//     return this.http.get<VitalsData>(`${this.apiUrl}/lab-result/${patientId}/vitals`);
-//   }
+  showVitals(patientId: string): Observable<VitalsData> {
+    return this.http.get<VitalsData>(`${this.apiUrl}/${patientId}/get-vitals`);
+  }
 }

@@ -87,7 +87,7 @@ export class Register {
   onSubmit() {
 
     if (this.registerForm.invalid) {
-      return;
+      return; 
     }
 
     const { confirmPassword, ...formData } = this.registerForm.value;

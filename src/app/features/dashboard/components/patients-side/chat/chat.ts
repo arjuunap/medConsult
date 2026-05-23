@@ -24,7 +24,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 export class Chat implements OnInit, OnDestroy {
   @ViewChild('chatBody')
   chatBody!: ElementRef;
-  consultationId!: string ;
+  consultationId!: string;
 
   messages: any[] = [];
 
@@ -39,12 +39,15 @@ export class Chat implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private websocketService: WebSocketService,
     private authService: AuthService,
-  ) {}
+
+  ) {
+
+  }
   currentUserId: any;
   ngOnInit(): void {
     // const consultationId = this.route.snapshot.paramMap.get('id');
     this.consultationId =
-  this.route.snapshot.paramMap.get('id') || '';
+      this.route.snapshot.paramMap.get('id') || '';
     console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', this.consultationId);
     const token = localStorage.getItem('token');
     const currentUser = this.loadUser();
@@ -145,8 +148,8 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['/layout/doctors']);
-    
+    this.router.navigate(['/layout/chatlist']);
+
   }
 
   navigateToPrescription(): void {

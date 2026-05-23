@@ -74,25 +74,34 @@ body {
   color: #2563eb;
 }
 
+
+.apt-and-pat{
+  display: flex;
+  width: 100%;
+  
+}
+
 /* =========================
    SECTIONS
 ========================= */
 
 .patients-section {
-  margin-left: 30px;
+  width: 30%;
+  margin-left: 5px;
   margin-right: 30px;
   margin-top: 24px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .appointments-section {
-  width: auto;
-  height: 365px;
+  
+  width: 70%;
+  height: 540px;
   margin-left: 30px;
-  margin-right: 30px;
+  margin-right: 5px;
   margin-top: 24px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -117,66 +126,62 @@ body {
   background: #fff;
 
   
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid #f3f4f6;
 
 }
 .appointment-title{
   font-size: 17px;
   font-weight: 600;
+  padding: 10px;
 }
 
 .patients-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #f3f4f6;
 }
 .patients-title {
   font-size: 17px;
   font-weight: 600;
+  padding: 10px;
+  
+  
 }
 
 /* =========================
    PATIENTS
 ========================= */
-
+.patient-card{
+transition: 0.2s;
+}
 .patient-row {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid #f3f4f6;
+  margin-top: 10px;
+  padding: 14px 10px;
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
   cursor: pointer;
+  
+}
+
+.patient-card :hover{
+  transform: translateY(-2px);
 }
 
 .avatar {
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 600;
+  overflow: hidden;
 }
 
-.av-blue {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.av-pink {
-  background: #fce7f3;
-  color: #be185d;
-}
-
-.av-amber {
-  background: #fef3c7;
-  color: #b45309;
-}
-
-.av-teal {
-  background: #ccfbf1;
-  color: #0f766e;
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .patient-name {
