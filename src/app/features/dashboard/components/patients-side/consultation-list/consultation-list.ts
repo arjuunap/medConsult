@@ -28,7 +28,7 @@ export class ConsultationList {
     this.fetchUser()
   }
   getAppointments() {
-    console.log('METHOD STARTED');
+    // console.log('METHOD STARTED');
     this.appomentService.showAppointments().subscribe({
       next: (res) => {
         console.log('API SUCCESS');

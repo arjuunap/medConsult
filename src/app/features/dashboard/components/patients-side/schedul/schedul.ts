@@ -19,6 +19,7 @@ export class Schedul implements OnInit {
   showBookingForm = false;
   showSuccessPopup = false;
   selectedSchedule: any;
+  selectedScheduleId : string=''
 
   // 🔥 Form
   bookingForm!: FormGroup;
@@ -68,6 +69,8 @@ export class Schedul implements OnInit {
   // 🔥 open popup
   openBooking(schedule: any) {
     this.selectedSchedule = schedule;
+    console.log(this.selectedSchedule)
+    this.selectedScheduleId = this.selectedSchedule.scheduleId
     this.showBookingForm = true;
     this.bookingForm.reset();
   }
@@ -95,6 +98,7 @@ export class Schedul implements OnInit {
       appointmentType: this.bookingForm.value.appointmentType,
       // scheduledAt: this.bookingForm.value.scheduledAt + ':00',
       scheduledAt: scheduledAt,
+      scheduleId : this.selectedScheduleId,
 
       notes: this.bookingForm.value.notes,
     };``

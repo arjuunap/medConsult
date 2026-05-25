@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { WebSocketService } from '../../../../../core/services/webSocketServices/web-socket';
 import { AuthService } from '../../../../../core/services/authServices/auth';
 import { ViewChild, ElementRef } from '@angular/core';
+import { DoctorService } from '../../../../../core/services/doctorServices/doctor';
 
 @Component({
   selector: 'app-chat',
@@ -39,6 +40,7 @@ export class Chat implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private websocketService: WebSocketService,
     private authService: AuthService,
+    private doctorService : DoctorService
 
   ) {
 
@@ -48,7 +50,7 @@ export class Chat implements OnInit, OnDestroy {
     // const consultationId = this.route.snapshot.paramMap.get('id');
     this.consultationId =
       this.route.snapshot.paramMap.get('id') || '';
-    console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', this.consultationId);
+    // console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', this.consultationId);
     const token = localStorage.getItem('token');
     const currentUser = this.loadUser();
     if (token) {
@@ -68,6 +70,22 @@ export class Chat implements OnInit, OnDestroy {
     } else {
       console.error('No token found, cannot connect to WebSocket');
     }
+    this.getConsultation();
+
+    
+
+  }
+
+  getConsultation(){
+    this.doctorService.getConsultationDetails(this.consultationId).subscribe({
+      next:(res)=>{
+        console.log('res',res)
+        this.cd.detectChanges()
+      },
+      error:(err)=>{
+        console.log('err',err)
+      }
+    })
   }
 
   // Add your current user's senderId here
@@ -93,7 +111,7 @@ export class Chat implements OnInit, OnDestroy {
       error: (err) => {
         console.error('user error:', err);
       },
-    });
+    }); 
   }
 
   loadMessages(): void {
@@ -155,4 +173,5 @@ export class Chat implements OnInit, OnDestroy {
   navigateToPrescription(): void {
     this.router.navigate(['/layout/prescription', this.consultationId]);
   }
+
 }

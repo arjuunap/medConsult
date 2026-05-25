@@ -57,6 +57,11 @@ export class DoctorService {
     );
   }
 
+  getConsultationDetails(consultationId : string):Observable<any>{
+    return this.http.get(`${this.apiUrl}/consultation/${consultationId}`)
+
+  }
+
 
 }
 
