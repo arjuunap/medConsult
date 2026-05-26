@@ -8,6 +8,7 @@ import SockJS from 'sockjs-client';
 })
 export class WebSocketService {
   private stompClient!: Client;
+  private apiUrl = 'http://localhost:8080/ws';
 
 
  constructor(private http: HttpClient) {}
@@ -94,5 +95,44 @@ export class WebSocketService {
   disconnect() {
     this.stompClient.deactivate();
   }
+
+  subscribeToCaseRoom(
+  caseId: string,
+  callback: (message: any) => void
+) {
+
+  this.stompClient.subscribe(
+
+    `/topic/case-room/${caseId}`,
+
+    (message) => {
+
+      callback(
+        JSON.parse(message.body)
+      );
+    }
+  );
+}
+
+
+sendCaseMessage(message: any) {
+
+  this.stompClient.publish({
+
+    destination:
+      '/app/case-chat.send',
+
+    body: JSON.stringify(message),
+  });
+}
+
+getCaseRoomMessages(caseId: string) {
+
+  return this.http.get(
+
+    `${this.apiUrl}/case-rooms/${caseId}/messages`
+
+  );
+}
 }
 

@@ -1,0 +1,81 @@
+<div class="chat-container">
+
+  <!-- HEADER -->
+
+  <div class="chat-header">
+
+    <button (click)="goBack()">
+      ←
+    </button>
+
+    <div class="chat-header-info">
+
+      <h3>Case Discussion</h3>
+
+      <p>
+        Multi Doctor Collaboration
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- MESSAGES -->
+
+  <div
+    class="chat-messages"
+    #chatBody
+  >
+
+    <div
+      *ngFor="let msg of messages"
+      class="message-row"
+      [class.self]="isSelf(msg)"
+    >
+
+      <div class="message-card">
+
+        <div class="doctor-name">
+
+          {{ msg.doctorName }}
+
+        </div>
+
+        <div class="message-content">
+
+          {{ msg.content }}
+
+        </div>
+
+        <div class="message-time">
+
+          {{ msg.createdAt | date:'shortTime' }}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- INPUT -->
+
+  <div class="chat-input">
+
+    <input
+      type="text"
+      [(ngModel)]="message"
+      placeholder="Type message..."
+      (keyup.enter)="sendMessage()"
+    />
+
+    <button
+      (click)="sendMessage()"
+    >
+      Send
+    </button>
+
+  </div>
+
+</div>

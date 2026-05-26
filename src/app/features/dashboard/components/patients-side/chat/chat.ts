@@ -173,5 +173,8 @@ export class Chat implements OnInit, OnDestroy {
   navigateToPrescription(): void {
     this.router.navigate(['/layout/prescription', this.consultationId]);
   }
+  goToCaseDiscussion(){
+    this.router.navigate(['/layout/case-discussion'])
+  }
 
 }

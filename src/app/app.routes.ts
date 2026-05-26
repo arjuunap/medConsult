@@ -37,6 +37,8 @@ import { ConsultationList } from './features/dashboard/components/patients-side/
 import { PrescriptionForm } from './features/dashboard/components/patients-side/prescription-form/prescription-form';
 import { loginGuard } from './core/guards/login-guard-guard';
 import { Logout } from './features/auth/components/logout/logout/logout';
+import { CaseRoomChatComponent } from './features/dashboard/components/patients-side/case-room/case-room';
+
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   // {
@@ -80,6 +82,7 @@ export const routes: Routes = [
       { path: 'add-schedule', component: Addschedule },
       { path: 'chatlist', component: ConsultationList },
       { path: 'prescription/:id', component: PrescriptionForm },
+      {path : 'case-discussion',component : CaseRoomChatComponent},
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
