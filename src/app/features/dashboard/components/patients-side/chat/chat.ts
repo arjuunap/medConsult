@@ -26,6 +26,7 @@ export class Chat implements OnInit, OnDestroy {
   @ViewChild('chatBody')
   chatBody!: ElementRef;
   consultationId!: string;
+  patientId!: string;
 
   messages: any[] = [];
 
@@ -79,7 +80,8 @@ export class Chat implements OnInit, OnDestroy {
   getConsultation(){
     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
       next:(res)=>{
-        console.log('res',res)
+        console.log('resPPPPPP',res)
+        this.patientId = res.appointment.patientId
         this.cd.detectChanges()
       },
       error:(err)=>{
@@ -176,5 +178,40 @@ export class Chat implements OnInit, OnDestroy {
   goToCaseDiscussion(){
     this.router.navigate(['/layout/case-discussion'])
   }
+
+
+  createCaseRoom() {
+
+  const payload = {
+    patientId: this.patientId,
+    specialty: 'Cardiology',
+    title: 'Heart Failure Discussion',
+    description: 'Need second opinion',
+    doctorIds: [
+      '3c9b0248-dfab-4e33-aac6-3eeed3ce7ae8',
+      'c1637157-3426-4028-a46f-91a4e86e8c56'
+    ]
+  };
+
+  this.websocketService
+      .createRoom(payload)
+      .subscribe({
+        next: (res: any) => {
+
+          console.log(res);
+
+          // THIS IS YOUR GROUP CHAT ROOM ID
+          const caseId = res.caseId;
+
+          // navigate to chat
+          this.router.navigate([
+            '/case-chat',
+            caseId
+          ]);
+        }
+      });
+}
+
+
 
 }

@@ -134,5 +134,13 @@ getCaseRoomMessages(caseId: string) {
 
   );
 }
+
+
+createRoom(data: any) {
+  return this.http.post(
+    'http://localhost:8080/api/consultation/create',
+    data
+  );
+}
 }
 
