@@ -82,7 +82,7 @@ export const routes: Routes = [
       { path: 'add-schedule', component: Addschedule },
       { path: 'chatlist', component: ConsultationList },
       { path: 'prescription/:id', component: PrescriptionForm },
-      {path : 'case-discussion',component : CaseRoomChatComponent},
+      {path : 'case-discussion/:caseId',component : CaseRoomChatComponent},
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },

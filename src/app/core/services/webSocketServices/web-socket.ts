@@ -10,13 +10,9 @@ export class WebSocketService {
   private stompClient!: Client;
   private apiUrl = 'http://localhost:8080/ws';
 
+  constructor(private http: HttpClient) {}
 
- constructor(private http: HttpClient) {}
-
- 
-  connect(token: string,
-    onConnected?: () => void
-  ) {
+  connect(token: string, onConnected?: () => void) {
     this.stompClient = new Client({
       webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
 
@@ -26,14 +22,13 @@ export class WebSocketService {
         Authorization: `Bearer ${token}`,
       },
 
-      debug: (str) => {
-        console.log(str);
-      },
+      // debug: (str) => {
+      //   console.log(str);
+      // },
 
       onConnect: () => {
-        console.log('Connected');
+        console.log('Connected to websocket');
         if (onConnected) {
-
           onConnected();
         }
         // this.stompClient?.subscribe('/user/queue/messages', (message) => {
@@ -48,30 +43,19 @@ export class WebSocketService {
 
     this.stompClient.activate();
   }
-  subscribeToConsultation(
-    consultationId: string,
-    callback: (message: any) => void
-  ) {
-
+  subscribeToConsultation(consultationId: string, callback: (message: any) => void) {
     this.stompClient.subscribe(
-
       `/topic/chat/${consultationId}`,
 
       (message) => {
-
-        callback(
-          JSON.parse(message.body)
-        );
-      }
+        callback(JSON.parse(message.body));
+      },
     );
   }
 
   sendMessage(message: any) {
-
     if (!this.stompClient.connected) {
-      console.error(
-        'WebSocket not connected'
-      );
+      console.error('WebSocket not connected');
       return;
     }
 
@@ -82,65 +66,43 @@ export class WebSocketService {
     });
   }
 
-  getMessages(
-    consultationId: string
-  ) {
-
-    return this.http.get<any[]>(
-
-      `http://localhost:8080/api/chat/${consultationId}/messages`
-    );
+  getMessages(consultationId: string) {
+    return this.http.get<any[]>(`http://localhost:8080/api/chat/${consultationId}/messages`);
   }
 
   disconnect() {
     this.stompClient.deactivate();
   }
 
-  subscribeToCaseRoom(
-  caseId: string,
-  callback: (message: any) => void
-) {
 
-  this.stompClient.subscribe(
 
-    `/topic/case-room/${caseId}`,
+  subscribeToCaseRoom(caseRoomId: string, callback: (message: any) => void) {
+    this.stompClient.subscribe(
+      `/topic/case-room/${caseRoomId}`,
 
-    (message) => {
+      (message) => {
+        callback(JSON.parse(message.body));
+      },
+    );
+  }
 
-      callback(
-        JSON.parse(message.body)
-      );
+  sendCaseMessage(message: any) {
+    if (!this.stompClient.connected) {
+      console.error('WebSocket not connected');
+      return;
     }
-  );
+    this.stompClient.publish({
+      destination: '/app/case-chat.send',
+
+      body: JSON.stringify(message),
+    });
+  }
+
+  getCaseRoomMessages(caseRoomId: string) {
+    return this.http.get(`http://localhost:8080/api/consultation/case/${caseRoomId}/load-messages`);
+  }
+
+  createRoom(data: any) {
+    return this.http.post('http://localhost:8080/api/consultation/create', data);
+  }
 }
-
-
-sendCaseMessage(message: any) {
-
-  this.stompClient.publish({
-
-    destination:
-      '/app/case-chat.send',
-
-    body: JSON.stringify(message),
-  });
-}
-
-getCaseRoomMessages(caseId: string) {
-
-  return this.http.get(
-
-    `${this.apiUrl}/case-rooms/${caseId}/messages`
-
-  );
-}
-
-
-createRoom(data: any) {
-  return this.http.post(
-    'http://localhost:8080/api/consultation/create',
-    data
-  );
-}
-}
-

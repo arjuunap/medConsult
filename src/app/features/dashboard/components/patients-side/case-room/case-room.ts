@@ -23,9 +23,7 @@ import { AuthService } from '../../../../../core/services/authServices/auth';
   styleUrl: './case-room.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaseRoomChatComponent
-  implements OnInit, OnDestroy
-{
+export class CaseRoomChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatBody')
   chatBody!: ElementRef;
 
@@ -44,20 +42,15 @@ export class CaseRoomChatComponent
     private router: Router,
     private websocketService: WebSocketService,
     private authService: AuthService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-
-    this.caseId =
-      this.route.snapshot.paramMap.get('caseId') || '';
-
-    console.log('Case Room:', this.caseId);
+    this.caseId = this.route.snapshot.paramMap.get('caseId') || '';
 
     this.loadCurrentUser();
 
-    const token =
-      localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
     if (!token) {
       console.error('No token found');
@@ -68,26 +61,17 @@ export class CaseRoomChatComponent
       token,
 
       () => {
-
-        console.log('Connected to websocket');
-
         this.subscribeToRoom();
-
         this.loadOldMessages();
-      }
+      },
     );
   }
 
   loadCurrentUser(): void {
-
     this.authService.UserDetails().subscribe({
-
       next: (res: any) => {
-
+        console.log('dfff', res);
         this.currentUserId = res.id;
-
-        console.log('Current User:', this.currentUserId);
-
         this.cd.detectChanges();
       },
 
@@ -98,71 +82,59 @@ export class CaseRoomChatComponent
   }
 
   subscribeToRoom(): void {
-
     this.websocketService.subscribeToCaseRoom(
-
       this.caseId,
 
       (message: any) => {
-
         console.log('Incoming Message:', message);
 
-        message.self =
-          message.authorId === this.currentUserId;
+        message.self = message.authorId === this.currentUserId;
+
+        console.log('user idd ', this.currentUserId);
 
         this.messages.push(message);
 
         this.cd.detectChanges();
 
         this.scrollToBottom();
-      }
+      },
     );
   }
 
   loadOldMessages(): void {
+    this.websocketService.getCaseRoomMessages(this.caseId).subscribe({
+      next: (res: any) => {
+        this.messages = res.map((msg: any) => ({
+          ...msg,
 
-    this.websocketService
-      .getCaseRoomMessages(this.caseId)
-      .subscribe({
+          self: msg.authorId === this.currentUserId,
+        }));
 
-        next: (res: any) => {
+        console.log('Loaded Messages:', this.messages);
 
-          this.messages = res.map((msg: any) => ({
+        this.cd.detectChanges();
 
-            ...msg,
+        this.scrollToBottom();
+      },
 
-            self:
-              msg.authorId === this.currentUserId,
-          }));
-
-          console.log('Loaded Messages:', this.messages);
-
-          this.cd.detectChanges();
-
-          this.scrollToBottom();
-        },
-
-        error: (err) => {
-          console.error(err);
-        },
-      });
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   sendMessage(): void {
-
     if (!this.message.trim()) {
       return;
     }
 
     const payload = {
-
       caseId: this.caseId,
 
       content: this.message,
     };
 
-    this.websocketService
-      .sendCaseMessage(payload);
+    this.websocketService.sendCaseMessage(payload);
 
     this.message = '';
 
@@ -170,41 +142,24 @@ export class CaseRoomChatComponent
   }
 
   isSelf(message: any): boolean {
-
-    return (
-      message.authorId ===
-      this.currentUserId
-    );
+    return message.senderId === this.currentUserId;
   }
 
   scrollToBottom(): void {
-
     requestAnimationFrame(() => {
-
       setTimeout(() => {
-
         if (this.chatBody) {
-
-          this.chatBody.nativeElement
-              .scrollTop =
-
-            this.chatBody.nativeElement
-                .scrollHeight;
+          this.chatBody.nativeElement.scrollTop = this.chatBody.nativeElement.scrollHeight;
         }
-
       }, 50);
     });
   }
 
   goBack(): void {
-
-    this.router.navigate([
-      '/layout/case-rooms',
-    ]);
+    this.router.navigate(['/layout/case-rooms']);
   }
 
   ngOnDestroy(): void {
-
     this.websocketService.disconnect();
   }
 }

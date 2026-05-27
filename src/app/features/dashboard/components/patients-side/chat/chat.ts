@@ -41,17 +41,11 @@ export class Chat implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private websocketService: WebSocketService,
     private authService: AuthService,
-    private doctorService : DoctorService
-
-  ) {
-
-  }
+    private doctorService: DoctorService,
+  ) {}
   currentUserId: any;
   ngOnInit(): void {
-    // const consultationId = this.route.snapshot.paramMap.get('id');
-    this.consultationId =
-      this.route.snapshot.paramMap.get('id') || '';
-    // console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', this.consultationId);
+    this.consultationId = this.route.snapshot.paramMap.get('id') || '';
     const token = localStorage.getItem('token');
     const currentUser = this.loadUser();
     if (token) {
@@ -72,22 +66,19 @@ export class Chat implements OnInit, OnDestroy {
       console.error('No token found, cannot connect to WebSocket');
     }
     this.getConsultation();
-
-    
-
   }
 
-  getConsultation(){
+  getConsultation() {
     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
-      next:(res)=>{
-        console.log('resPPPPPP',res)
-        this.patientId = res.appointment.patientId
-        this.cd.detectChanges()
+      next: (res) => {
+        console.log('resPPPPPP', res);
+        this.patientId = res.appointment.patientId;
+        this.cd.detectChanges();
       },
-      error:(err)=>{
-        console.log('err',err)
-      }
-    })
+      error: (err) => {
+        console.log('err', err);
+      },
+    });
   }
 
   // Add your current user's senderId here
@@ -113,7 +104,7 @@ export class Chat implements OnInit, OnDestroy {
       error: (err) => {
         console.error('user error:', err);
       },
-    }); 
+    });
   }
 
   loadMessages(): void {
@@ -169,49 +160,34 @@ export class Chat implements OnInit, OnDestroy {
 
   goBack(): void {
     this.router.navigate(['/layout/chatlist']);
-
   }
 
   navigateToPrescription(): void {
     this.router.navigate(['/layout/prescription', this.consultationId]);
   }
-  goToCaseDiscussion(){
-    this.router.navigate(['/layout/case-discussion'])
+  goToCaseDiscussion(caseId: string) {
+    this.router.navigate(['/layout/case-discussion', caseId]);
   }
 
-
   createCaseRoom() {
+    const payload = {
+      patientId: this.patientId,
+      specialty: 'Cardiology',
+      title: 'Heart Failure Discussion',
+      description: 'Need second opinion',
+      doctorIds: ['3c9b0248-dfab-4e33-aac6-3eeed3ce7ae8', 'c1637157-3426-4028-a46f-91a4e86e8c56'],
+    };
 
-  const payload = {
-    patientId: this.patientId,
-    specialty: 'Cardiology',
-    title: 'Heart Failure Discussion',
-    description: 'Need second opinion',
-    doctorIds: [
-      '3c9b0248-dfab-4e33-aac6-3eeed3ce7ae8',
-      'c1637157-3426-4028-a46f-91a4e86e8c56'
-    ]
-  };
+    this.websocketService.createRoom(payload).subscribe({
+      next: (res: any) => {
+        console.log(res);
 
-  this.websocketService
-      .createRoom(payload)
-      .subscribe({
-        next: (res: any) => {
+        // THIS IS YOUR GROUP CHAT ROOM ID
+        const caseId = res.caseId;
 
-          console.log(res);
-
-          // THIS IS YOUR GROUP CHAT ROOM ID
-          const caseId = res.caseId;
-
-          // navigate to chat
-          this.router.navigate([
-            '/case-chat',
-            caseId
-          ]);
-        }
-      });
-}
-
-
-
+        // navigate to chat
+        this.goToCaseDiscussion(caseId);
+      },
+    });
+  }
 }
