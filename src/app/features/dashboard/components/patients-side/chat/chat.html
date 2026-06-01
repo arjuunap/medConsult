@@ -3,11 +3,7 @@
   <!-- ───────── HEADER ───────── -->
   <div class="chat-header">
 
-    <button
-      class="back-btn"
-      (click)="goBack()"
-      aria-label="Go back"
-    >
+    <button class="back-btn" (click)="goBack()" aria-label="Go back">
       &#8592;
     </button>
 
@@ -53,26 +49,15 @@
     <div class="chat-messages-col">
 
       <!-- MESSAGES -->
-      <div
-        class="chat-messages"
-        #chatBody
-        id="chat-body"
-      >
+      <div class="chat-messages" #chatBody id="chat-body">
 
         <div class="date-divider">Today</div>
 
         <ng-container *ngFor="let msg of messages">
 
-          <div
-            class="message-row"
-            [class.self-message]="isSelf(msg)"
-            [class.other-message]="!isSelf(msg)"
-          >
+          <div class="message-row" [class.self-message]="isSelf(msg)" [class.other-message]="!isSelf(msg)">
 
-            <div
-              class="message-sender"
-              *ngIf="!isSelf(msg)"
-            >
+            <div class="message-sender" *ngIf="!isSelf(msg)">
               Patient
             </div>
 
@@ -103,10 +88,7 @@
 
         <div class="chat-toolbar">
 
-          <button
-            class="toolbar-btn rx"
-            (click)="navigateToPrescription()"
-          >
+          <button class="toolbar-btn rx" (click)="navigateToPrescription()">
             💊 Prescription
           </button>
 
@@ -120,21 +102,11 @@
         <div class="chat-input-row">
 
           <div class="chat-input-wrap">
-            <input
-              type="text"
-              [(ngModel)]="message"
-              placeholder="Type a message..."
-              (keyup.enter)="sendMessage()"
-            />
+            <input type="text" [(ngModel)]="message" placeholder="Type a message..." (keyup.enter)="sendMessage()" />
           </div>
 
-          <button
-            type="button"
-            class="send-btn"
-            (click)="sendMessage()"
-            [disabled]="!message || !message.trim() || isSending"
-            [class.sending]="isSending"
-          >
+          <button type="button" class="send-btn" (click)="sendMessage()"
+            [disabled]="!message || !message.trim() || isSending" [class.sending]="isSending">
             &#10148;
           </button>
 
@@ -158,22 +130,22 @@
 
         <div class="details-row">
           <span>Name</span>
-          <strong>Arjun Krishnan</strong>
+          <strong>{{patientUser.fullName}}</strong>
         </div>
 
         <div class="details-row">
           <span>Age / Gender</span>
-          <strong>34 / Male</strong>
+          <strong>34 / {{patientDetails.gender}}</strong>
         </div>
 
         <div class="details-row">
           <span>Blood Group</span>
-          <strong>B+</strong>
+          <strong>{{patientDetails.bloodType}}</strong>
         </div>
 
         <div class="details-row">
           <span>Phone</span>
-          <strong>+91 9876543210</strong>
+          <strong>{{patientUser.phone}}</strong>
         </div>
 
       </div>
@@ -188,24 +160,44 @@
 
         <div class="vitals-grid">
 
-          <div class="vital-box warn">
+          <div class="vital-box">
             <span class="vital-label">BP</span>
-            <span class="vital-value">150/90</span>
+            <span class="vital-value">{{ vitals.bpSystolic }}/{{ vitals.bpDiastolic }}</span>
           </div>
 
-          <div class="vital-box warn">
+          <div class="vital-box">
             <span class="vital-label">Pulse</span>
-            <span class="vital-value">108 bpm</span>
+            <span class="vital-value">{{ vitals.heartRateBpm }} bpm</span>
           </div>
 
-          <div class="vital-box caution">
+          <div class="vital-box">
             <span class="vital-label">SpO₂</span>
-            <span class="vital-value">94%</span>
+            <span class="vital-value"> {{ vitals.spo2Percent }}%</span>
           </div>
 
           <div class="vital-box">
             <span class="vital-label">Temp</span>
-            <span class="vital-value">37°C</span>
+            <span class="vital-value">{{ vitals.temperatureC }}°C</span>
+          </div>
+
+          <div class="vital-box caution">
+            <span class="vital-label">BMI</span>
+            <span class="vital-value">{{ vitals.bmi }}</span>
+          </div>
+
+          <div class="vital-box">
+            <span class="vital-label">Glucose</span>
+            <span class="vital-value"> {{ vitals.bloodGlucoseMmol }} mmol/L</span>
+          </div>
+
+          <div class="vital-box">
+            <span class="vital-label">Height</span>
+            <span class="vital-value"> {{ vitals.heightCm }} cm</span>
+          </div>
+
+          <div class="vital-box">
+            <span class="vital-label">Weight</span>
+            <span class="vital-value">{{ vitals.weightKg }} kg</span>
           </div>
 
         </div>
@@ -220,10 +212,15 @@
           Allergies
         </div>
 
-        <div class="allergy-tags">
-          <span class="allergy-tag">Penicillin</span>
-          <span class="allergy-tag">Ibuprofen</span>
+        <div class="allergy-tags" *ngIf="patientDetails?.allergies?.length; else noAllergies">
+          <span class="allergy-tag" *ngFor="let allergy of patientDetails.allergies">
+            {{ allergy }}
+          </span>
         </div>
+
+        <ng-template #noAllergies>
+          <span>No known allergies</span>
+        </ng-template>
 
       </div>
 

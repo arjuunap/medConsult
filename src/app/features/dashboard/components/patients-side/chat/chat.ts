@@ -34,6 +34,9 @@ export class Chat implements OnInit, OnDestroy {
   isTyping: boolean = false;
   isSending: boolean = false;
   MessageType = 'TEXT';
+  vitals:any = '';
+  patientDetails:any = '';
+  patientUser:any = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -72,7 +75,12 @@ export class Chat implements OnInit, OnDestroy {
     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
       next: (res) => {
         console.log('resPPPPPP', res);
+
         this.patientId = res.appointment.patientId;
+        this.vitals = res.vitals
+        this.patientDetails = res.appointment.patient
+        this.patientUser = res.appointment.patient.user
+        
         this.cd.detectChanges();
       },
       error: (err) => {
