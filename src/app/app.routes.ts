@@ -88,6 +88,7 @@ export const routes: Routes = [
   },
 
   { path: '**', redirectTo: 'login' }
+  //fixed bug 
 
 
 ];
