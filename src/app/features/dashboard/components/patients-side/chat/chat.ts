@@ -34,9 +34,27 @@ export class Chat implements OnInit, OnDestroy {
   isTyping: boolean = false;
   isSending: boolean = false;
   MessageType = 'TEXT';
-  vitals:any = '';
-  patientDetails:any = '';
-  patientUser:any = '';
+  vitals: any = '';
+  patientDetails: any = '';
+  patientUser: any = '';
+  modalShow: boolean = false;
+
+doctors: any[] = [];
+filteredDoctors: any[] = [];
+
+selectedDoctorIds: string[] = [];
+
+searchTerm: string = '';
+
+specialities: string[] = [];
+
+caseRoomForm = {
+  specialty: '',
+  title: '',
+  description: '',
+  priority: 'NORMAL'
+};
+
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +63,7 @@ export class Chat implements OnInit, OnDestroy {
     private websocketService: WebSocketService,
     private authService: AuthService,
     private doctorService: DoctorService,
-  ) {}
+  ) { }
   currentUserId: any;
   ngOnInit(): void {
     this.consultationId = this.route.snapshot.paramMap.get('id') || '';
@@ -80,7 +98,7 @@ export class Chat implements OnInit, OnDestroy {
         this.vitals = res.vitals
         this.patientDetails = res.appointment.patient
         this.patientUser = res.appointment.patient.user
-        
+
         this.cd.detectChanges();
       },
       error: (err) => {
@@ -177,25 +195,141 @@ export class Chat implements OnInit, OnDestroy {
     this.router.navigate(['/layout/case-discussion', caseId]);
   }
 
-  createCaseRoom() {
-    const payload = {
-      patientId: this.patientId,
-      specialty: 'Cardiology',
-      title: 'Heart Failure Discussion',
-      description: 'Need second opinion',
-      doctorIds: ['3c9b0248-dfab-4e33-aac6-3eeed3ce7ae8', 'c1637157-3426-4028-a46f-91a4e86e8c56'],
-    };
+  showModal() {
 
-    this.websocketService.createRoom(payload).subscribe({
-      next: (res: any) => {
-        console.log(res);
+  this.modalShow = true;
 
-        // THIS IS YOUR GROUP CHAT ROOM ID
-        const caseId = res.caseId;
+  this.doctorService.getDoctors().subscribe({
+    next: (res: any) => {
 
-        // navigate to chat
-        this.goToCaseDiscussion(caseId);
-      },
-    });
+      console.log('Doctors loaded:', res);
+
+      this.doctors = res;
+      this.filteredDoctors = [...res];
+
+      this.specialities = Array.from(
+  new Set(
+    res.map((doctor: any) => doctor.specialization)
+  )
+) as string[];
+
+      this.cd.detectChanges();
+    },
+
+    error: (err) => {
+      console.error('Error:', err);
+    }
+  });
+}
+
+closeModal() {
+
+  this.modalShow = false;
+
+  this.selectedDoctorIds = [];
+
+  this.searchTerm = '';
+
+  this.caseRoomForm = {
+    specialty: '',
+    title: '',
+    description: '',
+    priority: 'NORMAL'
+  };
+
+  this.filteredDoctors = [...this.doctors];
+
+  this.cd.detectChanges();
+}
+
+toggleDoctor(event: any, doctorId: string) {
+
+  if (event.target.checked) {
+
+    if (!this.selectedDoctorIds.includes(doctorId)) {
+      this.selectedDoctorIds.push(doctorId);
+    }
+
+  } else {
+
+    this.selectedDoctorIds =
+      this.selectedDoctorIds.filter(id => id !== doctorId);
   }
+
+  this.cd.detectChanges();
+}
+
+filterDoctors() {
+
+  this.filteredDoctors = this.doctors.filter((doctor: any) => {
+
+    const matchesSearch =
+
+      doctor.name?.toLowerCase()
+        .includes(this.searchTerm.toLowerCase())
+
+      ||
+
+      doctor.specialization?.toLowerCase()
+        .includes(this.searchTerm.toLowerCase());
+
+    const matchesSpeciality =
+
+      !this.caseRoomForm.specialty ||
+
+      doctor.specialization === this.caseRoomForm.specialty;
+
+    return matchesSearch && matchesSpeciality;
+  });
+
+  this.cd.detectChanges();
+}
+
+createCaseRoom() {
+
+  if (!this.caseRoomForm.title.trim()) {
+    alert('Please enter title');
+    return;
+  }
+
+  if (!this.caseRoomForm.description.trim()) {
+    alert('Please enter description');
+    return;
+  }
+
+  if (this.selectedDoctorIds.length === 0) {
+    alert('Please select at least one doctor');
+    return;
+  }
+
+  const payload = {
+    patientId: this.patientId,
+    specialty: this.caseRoomForm.specialty,
+    title: this.caseRoomForm.title,
+    description: this.caseRoomForm.description,
+    priority: this.caseRoomForm.priority,
+    doctorIds: this.selectedDoctorIds
+  };
+
+  console.log('Case Room Payload:', payload);
+
+  this.websocketService.createRoom(payload).subscribe({
+    next: (res: any) => {
+
+      console.log('Case room created:', res);
+
+      const caseId = res.caseId;
+
+      this.closeModal();
+
+      this.goToCaseDiscussion(caseId);
+
+      this.cd.detectChanges();
+    },
+
+    error: (err) => {
+      console.error('Create room error:', err);
+    }
+  });
+}
 }

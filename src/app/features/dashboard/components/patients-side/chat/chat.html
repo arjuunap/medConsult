@@ -36,7 +36,7 @@
 
     <!-- Actions -->
     <div class="chat-header-actions">
-      <button (click)="createCaseRoom()" class="header-action-btn">📁 Case</button>
+      <button (click)="showModal()" class="header-action-btn">📁 Case</button>
       <button class="header-action-btn urgent">⛔ Critical</button>
     </div>
 
@@ -230,4 +230,173 @@
   </div>
   <!-- /chat-main -->
 
+</div>
+
+
+
+
+
+
+
+<!-- Replace your existing modal block (the part after /chat-main) with this -->
+
+<div class="modal-overlay" *ngIf="modalShow" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        <i class="ti ti-stethoscope"></i>
+        Create Case Discussion
+      </h2>
+
+      <button
+        class="modal-close-btn"
+        (click)="closeModal()">
+
+        <i class="ti ti-x"></i>
+      </button>
+    </div>
+
+    <!-- Title -->
+    <div class="form-group">
+      <label>Discussion Title</label>
+
+      <input
+        type="text"
+        [(ngModel)]="caseRoomForm.title"
+        placeholder="Enter discussion title">
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label>Description</label>
+
+      <textarea
+        rows="4"
+        [(ngModel)]="caseRoomForm.description"
+        placeholder="Enter case discussion description">
+      </textarea>
+    </div>
+
+    <!-- Priority -->
+    <div class="form-group">
+      <label>Priority</label>
+
+      <select [(ngModel)]="caseRoomForm.priority">
+        <option value="CRITICAL">🔴 Critical</option>
+        <option value="URGENT">🟠 Urgent</option>
+        <option value="NORMAL">🟢 Normal</option>
+      </select>
+    </div>
+
+    <!-- Specialty Filter -->
+    <div class="form-group">
+      <label>Specialty</label>
+
+      <select
+        [(ngModel)]="caseRoomForm.specialty"
+        (change)="filterDoctors()">
+
+        <option value="">All Specialties</option>
+
+        <option
+          *ngFor="let speciality of specialities"
+          [value]="speciality">
+
+          {{ speciality }}
+
+        </option>
+
+      </select>
+    </div>
+
+    <!-- Search -->
+    <div class="modal-search">
+      <div class="modal-search-wrap">
+
+        <i class="ti ti-search"></i>
+
+        <input
+          type="text"
+          placeholder="Search doctor by name or specialty..."
+          [(ngModel)]="searchTerm"
+          (input)="filterDoctors()">
+
+      </div>
+    </div>
+
+    <!-- Doctor List -->
+    <div class="modal-doctor-list">
+
+      <label
+        class="doctor-item"
+        *ngFor="let doctor of filteredDoctors">
+
+        <input
+          type="checkbox"
+          [checked]="selectedDoctorIds.includes(doctor.id)"
+          (change)="toggleDoctor($event, doctor.id)">
+
+        <span class="check-box">
+          <i class="ti ti-check"></i>
+        </span>
+
+        <div class="doc-avatar">
+          <img
+            [src]="doctor.profilePhotoUrl"
+            [alt]="doctor.name">
+        </div>
+
+        <div class="doc-info">
+          <p class="doc-name">{{ doctor.name }}</p>
+          <p class="doc-meta">
+            {{ doctor.specialization }}
+          </p>
+        </div>
+
+      </label>
+
+      <div
+        *ngIf="filteredDoctors.length === 0"
+        class="no-doctors">
+
+        No doctors found
+
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+
+      <div class="modal-sel-count">
+        {{ selectedDoctorIds.length }} doctor(s) selected
+      </div>
+
+      <div class="modal-footer-actions">
+
+        <button
+          class="btn-cancel"
+          (click)="closeModal()">
+
+          Cancel
+
+        </button>
+
+        <button
+          class="btn-caseroom"
+          [disabled]="selectedDoctorIds.length === 0"
+          (click)="createCaseRoom()">
+
+          <i class="ti ti-plus"></i>
+          Create Case Room
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
 </div>
