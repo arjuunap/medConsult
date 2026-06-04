@@ -105,4 +105,12 @@ export class WebSocketService {
   createRoom(data: any) {
     return this.http.post('http://localhost:8080/api/consultation/create', data);
   }
+
+  markConsultationAsRead(consultationId: string) {
+    return this.http.post(`http://localhost:8080/api/chat/${consultationId}/read`, {});
+  }
+
+  markMessageRead(messageId: string) {
+    return this.http.post(`http://localhost:8080/api/chat/message/${messageId}/read`, {});
+  }
 }

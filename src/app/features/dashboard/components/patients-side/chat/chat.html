@@ -1,21 +1,15 @@
 <div class="chat-container">
-
   <!-- ───────── HEADER ───────── -->
   <div class="chat-header">
-
-    <button class="back-btn" (click)="goBack()" aria-label="Go back">
-      &#8592;
-    </button>
+    <button class="back-btn" (click)="goBack()" aria-label="Go back">&#8592;</button>
 
     <!-- Left -->
     <div class="chat-header-left">
-
       <!-- Avatar -->
       <div class="chat-header-avatar">PS</div>
 
       <!-- Info -->
       <div class="chat-header-info">
-
         <p class="chat-header-name">Dr. Priya Sharma</p>
 
         <p class="chat-header-status">
@@ -29,100 +23,93 @@
           <span class="badge badge-priority-critical">Critical</span>
           <span class="badge badge-case">Case #CR-0041</span>
         </div>
-
       </div>
-
     </div>
 
     <!-- Actions -->
     <div class="chat-header-actions">
       <button (click)="showModal()" class="header-action-btn">📁 Case</button>
+
       <button class="header-action-btn urgent">⛔ Critical</button>
     </div>
-
   </div>
 
   <!-- ───────── BODY ROW (messages + right panel) ───────── -->
   <div class="chat-main">
-
     <!-- ── Messages + Input column ── -->
     <div class="chat-messages-col">
-
       <!-- MESSAGES -->
       <div class="chat-messages" #chatBody id="chat-body">
-
         <div class="date-divider">Today</div>
 
         <ng-container *ngFor="let msg of messages">
-
-          <div class="message-row" [class.self-message]="isSelf(msg)" [class.other-message]="!isSelf(msg)">
-
-            <div class="message-sender" *ngIf="!isSelf(msg)">
-              Patient
-            </div>
+          <div
+            class="message-row"
+            [class.self-message]="isSelf(msg)"
+            [class.other-message]="!isSelf(msg)"
+          >
+            <div class="message-sender" *ngIf="!isSelf(msg)">Patient</div>
 
             <div class="message-box">
               {{ msg?.content }}
             </div>
 
-            <div class="message-time">
-              {{ msg?.createdAt | date:'hh:mm a' }}
+            <div *ngIf="isSelf(msg)" class="message-status">
+              {{ msg.isRead ? 'Seen' : 'Delivered' }}
             </div>
 
+            <div class="message-time">
+              {{ msg?.createdAt | date: 'hh:mm a' }}
+            </div>
           </div>
-
         </ng-container>
 
         <!-- Typing indicator -->
         <div class="message-row other-message" *ngIf="isTyping">
           <div class="message-sender">Patient</div>
-          <div class="message-box typing-indicator">
-            <span></span><span></span><span></span>
-          </div>
+          <div class="message-box typing-indicator"><span></span><span></span><span></span></div>
         </div>
-
       </div>
 
       <!-- INPUT -->
       <div class="chat-input">
-
         <div class="chat-toolbar">
-
-          <button class="toolbar-btn rx" (click)="navigateToPrescription()">
-            💊 Prescription
-          </button>
+          <button class="toolbar-btn rx" (click)="navigateToPrescription()">💊 Prescription</button>
 
           <label class="toolbar-btn">
             📎 Attach
             <input type="file" hidden />
           </label>
-
         </div>
 
         <div class="chat-input-row">
-
           <div class="chat-input-wrap">
-            <input type="text" [(ngModel)]="message" placeholder="Type a message..." (keyup.enter)="sendMessage()" />
+            <input
+              type="text"
+              [(ngModel)]="message"
+              placeholder="Type a message..."
+              (keyup.enter)="sendMessage()"
+            />
           </div>
 
-          <button type="button" class="send-btn" (click)="sendMessage()"
-            [disabled]="!message || !message.trim() || isSending" [class.sending]="isSending">
+          <button
+            type="button"
+            class="send-btn"
+            (click)="sendMessage()"
+            [disabled]="!message || !message.trim() || isSending"
+            [class.sending]="isSending"
+          >
             &#10148;
           </button>
-
         </div>
-
       </div>
-
     </div>
     <!-- /chat-messages-col -->
 
     <!-- ── RIGHT PANEL ── -->
     <div class="chat-details">
-
       <!-- Patient -->
       <div class="details-card">
-
         <div class="details-title">
           <span class="title-icon icon-patient">👤</span>
           Patient Details
@@ -130,36 +117,33 @@
 
         <div class="details-row">
           <span>Name</span>
-          <strong>{{patientUser.fullName}}</strong>
+          <strong>{{ patientUser.fullName }}</strong>
         </div>
 
         <div class="details-row">
           <span>Age / Gender</span>
-          <strong>34 / {{patientDetails.gender}}</strong>
+          <strong>34 / {{ patientDetails.gender }}</strong>
         </div>
 
         <div class="details-row">
           <span>Blood Group</span>
-          <strong>{{patientDetails.bloodType}}</strong>
+          <strong>{{ patientDetails.bloodType }}</strong>
         </div>
 
         <div class="details-row">
           <span>Phone</span>
-          <strong>{{patientUser.phone}}</strong>
+          <strong>{{ patientUser.phone }}</strong>
         </div>
-
       </div>
 
       <!-- Vitals -->
       <div class="details-card">
-
         <div class="details-title">
           <span class="title-icon icon-vitals">💓</span>
           Latest Vitals
         </div>
 
         <div class="vitals-grid">
-
           <div class="vital-box">
             <span class="vital-label">BP</span>
             <span class="vital-value">{{ vitals.bpSystolic }}/{{ vitals.bpDiastolic }}</span>
@@ -199,14 +183,11 @@
             <span class="vital-label">Weight</span>
             <span class="vital-value">{{ vitals.weightKg }} kg</span>
           </div>
-
         </div>
-
       </div>
 
       <!-- Allergies -->
       <div class="details-card">
-
         <div class="details-title">
           <span class="title-icon icon-allergy">⚠️</span>
           Allergies
@@ -221,182 +202,130 @@
         <ng-template #noAllergies>
           <span>No known allergies</span>
         </ng-template>
-
       </div>
-
     </div>
     <!-- /chat-details -->
-
   </div>
-  <!-- /chat-main -->
 
-</div>
+  <div class="modal-overlay" *ngIf="modalShow" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="modal-header">
+        <h2>
+          <i class="ti ti-stethoscope"></i>
+          Create Case Discussion
+        </h2>
 
-
-
-
-
-
-
-<!-- Replace your existing modal block (the part after /chat-main) with this -->
-
-<div class="modal-overlay" *ngIf="modalShow" (click)="closeModal()">
-  <div class="modal" (click)="$event.stopPropagation()">
-
-    <!-- Header -->
-    <div class="modal-header">
-      <h2>
-        <i class="ti ti-stethoscope"></i>
-        Create Case Discussion
-      </h2>
-
-      <button
-        class="modal-close-btn"
-        (click)="closeModal()">
-
-        <i class="ti ti-x"></i>
-      </button>
-    </div>
-
-    <!-- Title -->
-    <div class="form-group">
-      <label>Discussion Title</label>
-
-      <input
-        type="text"
-        [(ngModel)]="caseRoomForm.title"
-        placeholder="Enter discussion title">
-    </div>
-
-    <!-- Description -->
-    <div class="form-group">
-      <label>Description</label>
-
-      <textarea
-        rows="4"
-        [(ngModel)]="caseRoomForm.description"
-        placeholder="Enter case discussion description">
-      </textarea>
-    </div>
-
-    <!-- Priority -->
-    <div class="form-group">
-      <label>Priority</label>
-
-      <select [(ngModel)]="caseRoomForm.priority">
-        <option value="CRITICAL">🔴 Critical</option>
-        <option value="URGENT">🟠 Urgent</option>
-        <option value="NORMAL">🟢 Normal</option>
-      </select>
-    </div>
-
-    <!-- Specialty Filter -->
-    <div class="form-group">
-      <label>Specialty</label>
-
-      <select
-        [(ngModel)]="caseRoomForm.specialty"
-        (change)="filterDoctors()">
-
-        <option value="">All Specialties</option>
-
-        <option
-          *ngFor="let speciality of specialities"
-          [value]="speciality">
-
-          {{ speciality }}
-
-        </option>
-
-      </select>
-    </div>
-
-    <!-- Search -->
-    <div class="modal-search">
-      <div class="modal-search-wrap">
-
-        <i class="ti ti-search"></i>
-
-        <input
-          type="text"
-          placeholder="Search doctor by name or specialty..."
-          [(ngModel)]="searchTerm"
-          (input)="filterDoctors()">
-
-      </div>
-    </div>
-
-    <!-- Doctor List -->
-    <div class="modal-doctor-list">
-
-      <label
-        class="doctor-item"
-        *ngFor="let doctor of filteredDoctors">
-
-        <input
-          type="checkbox"
-          [checked]="selectedDoctorIds.includes(doctor.id)"
-          (change)="toggleDoctor($event, doctor.id)">
-
-        <span class="check-box">
-          <i class="ti ti-check"></i>
-        </span>
-
-        <div class="doc-avatar">
-          <img
-            [src]="doctor.profilePhotoUrl"
-            [alt]="doctor.name">
-        </div>
-
-        <div class="doc-info">
-          <p class="doc-name">{{ doctor.name }}</p>
-          <p class="doc-meta">
-            {{ doctor.specialization }}
-          </p>
-        </div>
-
-      </label>
-
-      <div
-        *ngIf="filteredDoctors.length === 0"
-        class="no-doctors">
-
-        No doctors found
-
-      </div>
-
-    </div>
-
-    <!-- Footer -->
-    <div class="modal-footer">
-
-      <div class="modal-sel-count">
-        {{ selectedDoctorIds.length }} doctor(s) selected
-      </div>
-
-      <div class="modal-footer-actions">
-
-        <button
-          class="btn-cancel"
-          (click)="closeModal()">
-
-          Cancel
-
+        <button class="modal-close-btn" (click)="closeModal()">
+          <i class="ti ti-x"></i>
         </button>
-
-        <button
-          class="btn-caseroom"
-          [disabled]="selectedDoctorIds.length === 0"
-          (click)="createCaseRoom()">
-
-          <i class="ti ti-plus"></i>
-          Create Case Room
-
-        </button>
-
       </div>
 
-    </div>
+      <div class="modal-body">
+        <!-- Title -->
+      <div class="form-group">
+        <label>Discussion Title</label>
 
+        <input type="text" [(ngModel)]="caseRoomForm.title" placeholder="Enter discussion title" />
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label>Description</label>
+
+        <textarea
+          rows="4"
+          [(ngModel)]="caseRoomForm.description"
+          placeholder="Enter case discussion description"
+        >
+        </textarea>
+      </div>
+
+      <!-- Priority -->
+      <div class="form-group">
+        <label>Priority</label>
+
+        <select [(ngModel)]="caseRoomForm.priority">
+          <option value="CRITICAL">🔴 Critical</option>
+          <option value="URGENT">🟠 Urgent</option>
+          <option value="NORMAL">🟢 Normal</option>
+        </select>
+      </div>
+
+      <!-- Specialty Filter -->
+      <div class="form-group">
+        <label>Specialty</label>
+
+        <select [(ngModel)]="caseRoomForm.specialty" (change)="filterDoctors()">
+          <option value="">All Specialties</option>
+
+          <option *ngFor="let speciality of specialities" [value]="speciality">
+            {{ speciality }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Search -->
+      <div class="modal-search">
+        <div class="modal-search-wrap">
+          <i class="ti ti-search"></i>
+
+          <input
+            type="text"
+            placeholder="Search doctor by name or specialty..."
+            [(ngModel)]="searchTerm"
+            (input)="filterDoctors()"
+          />
+        </div>
+      </div>
+
+      <!-- Doctor List -->
+      <div class="modal-doctor-list">
+        <label class="doctor-item" *ngFor="let doctor of filteredDoctors">
+          <input
+            type="checkbox"
+            [checked]="selectedDoctorIds.includes(doctor.id)"
+            (change)="toggleDoctor($event, doctor.id)"
+          />
+
+          <span class="check-box">
+            <i class="ti ti-check"></i>
+          </span>
+
+          <div class="doc-avatar">
+            <img [src]="doctor.profilePhotoUrl" [alt]="doctor.name" />
+          </div>
+
+          <div class="doc-info">
+            <p class="doc-name">{{ doctor.name }}</p>
+            <p class="doc-meta">
+              {{ doctor.specialization }}
+            </p>
+          </div>
+        </label>
+
+        <div *ngIf="filteredDoctors.length === 0" class="no-doctors">No doctors found</div>
+      </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <div class="modal-sel-count">{{ selectedDoctorIds.length }} doctor(s) selected</div>
+
+        <div class="modal-footer-actions">
+          <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+
+          <button
+            class="btn-caseroom"
+            [disabled]="selectedDoctorIds.length === 0"
+            (click)="createCaseRoom()"
+          >
+            <i class="ti ti-plus"></i>
+            Create Case Room
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /chat-main -->
   </div>
 </div>

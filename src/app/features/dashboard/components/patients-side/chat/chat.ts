@@ -27,9 +27,8 @@ export class Chat implements OnInit, OnDestroy {
   chatBody!: ElementRef;
   consultationId!: string;
   patientId!: string;
-
+  currentUserId: any;
   messages: any[] = [];
-
   message: string = '';
   isTyping: boolean = false;
   isSending: boolean = false;
@@ -38,23 +37,17 @@ export class Chat implements OnInit, OnDestroy {
   patientDetails: any = '';
   patientUser: any = '';
   modalShow: boolean = false;
-
-doctors: any[] = [];
-filteredDoctors: any[] = [];
-
-selectedDoctorIds: string[] = [];
-
-searchTerm: string = '';
-
-specialities: string[] = [];
-
-caseRoomForm = {
-  specialty: '',
-  title: '',
-  description: '',
-  priority: 'NORMAL'
-};
-
+  doctors: any[] = [];
+  filteredDoctors: any[] = [];
+  selectedDoctorIds: string[] = [];
+  searchTerm: string = '';
+  specialities: string[] = [];
+  caseRoomForm = {
+    specialty: '',
+    title: '',
+    description: '',
+    priority: 'NORMAL',
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -63,20 +56,26 @@ caseRoomForm = {
     private websocketService: WebSocketService,
     private authService: AuthService,
     private doctorService: DoctorService,
-  ) { }
-  currentUserId: any;
+  ) {}
+
+  
   ngOnInit(): void {
     this.consultationId = this.route.snapshot.paramMap.get('id') || '';
+
     const token = localStorage.getItem('token');
+
     const currentUser = this.loadUser();
+
     if (token) {
       this.websocketService.connect(token, () => {
         this.websocketService.subscribeToConsultation(this.consultationId, (message: any) => {
-          console.log('Received:', message);
-
           message.self = message.senderId === this.currentUserId;
 
           this.messages.push(message);
+
+          if (!message.self) {
+            this.websocketService.markMessageRead(message.messageId).subscribe();
+          }
 
           this.cd.detectChanges();
 
@@ -89,15 +88,17 @@ caseRoomForm = {
     this.getConsultation();
   }
 
+
   getConsultation() {
     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
       next: (res) => {
         console.log('resPPPPPP', res);
 
-        this.patientId = res.appointment.patientId;
-        this.vitals = res.vitals
-        this.patientDetails = res.appointment.patient
-        this.patientUser = res.appointment.patient.user
+        this.patientId = res.appointment.patient.patientId;
+        
+        this.vitals = res.vitals;
+        this.patientDetails = res.appointment.patient;
+        this.patientUser = res.appointment.patient.user;
 
         this.cd.detectChanges();
       },
@@ -145,6 +146,8 @@ caseRoomForm = {
         }));
         console.log(res);
 
+        this.markConsultationAsRead(this.consultationId);
+
         this.cd.detectChanges();
 
         this.scrollToBottom();
@@ -153,6 +156,12 @@ caseRoomForm = {
       error: (err) => {
         console.error(err);
       },
+    });
+  }
+
+  markConsultationAsRead(consultationId: string) {
+    this.websocketService.markConsultationAsRead(consultationId).subscribe({
+      next: () => console.log('Messages marked as read'),
     });
   }
 
@@ -196,140 +205,116 @@ caseRoomForm = {
   }
 
   showModal() {
+    this.modalShow = true;
+    this.doctorService.getDoctors().subscribe({
+      next: (res: any) => {
+        console.log('Doctors loaded:', res);
 
-  this.modalShow = true;
+        this.doctors = res;
+        this.filteredDoctors = [...res];
 
-  this.doctorService.getDoctors().subscribe({
-    next: (res: any) => {
+        this.specialities = Array.from(
+          new Set(res.map((doctor: any) => doctor.specialization)),
+        ) as string[];
 
-      console.log('Doctors loaded:', res);
+        this.cd.detectChanges();
+      },
 
-      this.doctors = res;
-      this.filteredDoctors = [...res];
+      error: (err) => {
+        console.error('Error:', err);
+      },
+    });
+  }
 
-      this.specialities = Array.from(
-  new Set(
-    res.map((doctor: any) => doctor.specialization)
-  )
-) as string[];
+  closeModal() {
+    this.modalShow = false;
 
-      this.cd.detectChanges();
-    },
+    this.selectedDoctorIds = [];
 
-    error: (err) => {
-      console.error('Error:', err);
-    }
-  });
-}
+    this.searchTerm = '';
 
-closeModal() {
+    this.caseRoomForm = {
+      specialty: '',
+      title: '',
+      description: '',
+      priority: 'NORMAL',
+    };
 
-  this.modalShow = false;
+    this.filteredDoctors = [...this.doctors];
 
-  this.selectedDoctorIds = [];
+    this.cd.detectChanges();
+  }
 
-  this.searchTerm = '';
-
-  this.caseRoomForm = {
-    specialty: '',
-    title: '',
-    description: '',
-    priority: 'NORMAL'
-  };
-
-  this.filteredDoctors = [...this.doctors];
-
-  this.cd.detectChanges();
-}
-
-toggleDoctor(event: any, doctorId: string) {
-
-  if (event.target.checked) {
-
-    if (!this.selectedDoctorIds.includes(doctorId)) {
-      this.selectedDoctorIds.push(doctorId);
+  toggleDoctor(event: any, doctorId: string) {
+    if (event.target.checked) {
+      if (!this.selectedDoctorIds.includes(doctorId)) {
+        this.selectedDoctorIds.push(doctorId);
+      }
+    } else {
+      this.selectedDoctorIds = this.selectedDoctorIds.filter((id) => id !== doctorId);
     }
 
-  } else {
-
-    this.selectedDoctorIds =
-      this.selectedDoctorIds.filter(id => id !== doctorId);
+    this.cd.detectChanges();
   }
 
-  this.cd.detectChanges();
-}
+  filterDoctors() {
+    this.filteredDoctors = this.doctors.filter((doctor: any) => {
+      const matchesSearch =
+        doctor.name?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        doctor.specialization?.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-filterDoctors() {
+      const matchesSpeciality =
+        !this.caseRoomForm.specialty || doctor.specialization === this.caseRoomForm.specialty;
 
-  this.filteredDoctors = this.doctors.filter((doctor: any) => {
+      return matchesSearch && matchesSpeciality;
+    });
 
-    const matchesSearch =
-
-      doctor.name?.toLowerCase()
-        .includes(this.searchTerm.toLowerCase())
-
-      ||
-
-      doctor.specialization?.toLowerCase()
-        .includes(this.searchTerm.toLowerCase());
-
-    const matchesSpeciality =
-
-      !this.caseRoomForm.specialty ||
-
-      doctor.specialization === this.caseRoomForm.specialty;
-
-    return matchesSearch && matchesSpeciality;
-  });
-
-  this.cd.detectChanges();
-}
-
-createCaseRoom() {
-
-  if (!this.caseRoomForm.title.trim()) {
-    alert('Please enter title');
-    return;
+    this.cd.detectChanges();
   }
 
-  if (!this.caseRoomForm.description.trim()) {
-    alert('Please enter description');
-    return;
-  }
-
-  if (this.selectedDoctorIds.length === 0) {
-    alert('Please select at least one doctor');
-    return;
-  }
-
-  const payload = {
-    patientId: this.patientId,
-    specialty: this.caseRoomForm.specialty,
-    title: this.caseRoomForm.title,
-    description: this.caseRoomForm.description,
-    priority: this.caseRoomForm.priority,
-    doctorIds: this.selectedDoctorIds
-  };
-
-  console.log('Case Room Payload:', payload);
-
-  this.websocketService.createRoom(payload).subscribe({
-    next: (res: any) => {
-
-      console.log('Case room created:', res);
-
-      const caseId = res.caseId;
-
-      this.closeModal();
-
-      this.goToCaseDiscussion(caseId);
-
-      this.cd.detectChanges();
-    },
-
-    error: (err) => {
-      console.error('Create room error:', err);
+  createCaseRoom() {
+    if (!this.caseRoomForm.title.trim()) {
+      alert('Please enter title');
+      return;
     }
-  });
-}
+
+    if (!this.caseRoomForm.description.trim()) {
+      alert('Please enter description');
+      return;
+    }
+
+    if (this.selectedDoctorIds.length === 0) {
+      alert('Please select at least one doctor');
+      return;
+    }
+    const payload = {
+      patientId: this.patientId,
+
+      specialty: this.caseRoomForm.specialty,
+      title: this.caseRoomForm.title,
+      description: this.caseRoomForm.description,
+      priority: this.caseRoomForm.priority,
+      doctorIds: this.selectedDoctorIds,
+    };
+    console.log('Case Room Payload:', payload);
+
+    this.websocketService.createRoom(payload).subscribe({
+      next: (res: any) => {
+        console.log('Case room created: ', res);
+
+        // THIS IS YOUR GROUP CHAT ROOM ID
+        const caseId = res.caseId;
+
+        this.closeModal();
+
+        // navigate to chat
+        this.goToCaseDiscussion(caseId);
+
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error('Create room error:', err);
+      },
+    });
+  }
 }
