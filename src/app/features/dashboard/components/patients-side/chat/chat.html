@@ -10,33 +10,25 @@
 
       <!-- Info -->
       <div class="chat-header-info">
-        <p class="chat-header-name" *ngIf="role === 'PATIENT'; else showPatient">
-  {{ doctorName }}
-</p>
+        <p class="chat-header-name">Dr. Priya Sharma</p>
 
-<ng-template #showPatient>
-  <p class="chat-header-name">
-    {{ patientName }}
-  </p>
-</ng-template>
-
-      <p class="chat-header-status" *ngIf="role == 'PATIENT'">
+        <p class="chat-header-status">
           <span class="status-dot"></span>
-          Online · {{ specailiaztion }}
+          Online · General Physician
         </p>
 
         <!-- Badges -->
         <div class="chat-header-badges">
           <span class="badge badge-status-active">✓ Active</span>
           <span class="badge badge-priority-critical">Critical</span>
-          <!-- <span class="badge badge-case">Case #CR-0041</span> -->
+          <span class="badge badge-case">Case #CR-0041</span>
         </div>
       </div>
     </div>
 
     <!-- Actions -->
-    <div class="chat-header-actions" *ngIf="role == 'DOCTOR'">
-      <button (click)="showModal()" class="header-action-btn" >📁 Case</button>
+    <div class="chat-header-actions">
+      <button (click)="showModal()" class="header-action-btn">📁 Case</button>
 
       <button class="header-action-btn urgent">⛔ Critical</button>
     </div>
@@ -58,8 +50,14 @@
           >
             <div class="message-sender" *ngIf="!isSelf(msg)">Patient</div>
 
-            <div class="message-box">
+            <div *ngIf="msg.messageType === 'TEXT'" class="message-box">
               {{ msg?.content }}
+            </div>
+
+            <div class="message-box" *ngIf="msg.messageType === 'FILE'">
+              <a [href]="msg.fileUrl" target="_blank"> 
+                <img src="{{ msg.fileUrl }}" alt="{{ msg.fileName }}"> </a>
+              
             </div>
 
             <div *ngIf="isSelf(msg)" class="message-status">
@@ -86,8 +84,12 @@
 
           <label class="toolbar-btn">
             📎 Attach
-            <input type="file" hidden />
+            <input type="file" (change)="onFileSelected($event)" hidden />
           </label>
+
+          <p *ngIf="selectedFile" class="selected-file">
+  📄 {{ selectedFile.name }}
+</p>
         </div>
 
         <div class="chat-input-row">
@@ -101,12 +103,12 @@
           </div>
 
           <button
-            type="button"
-            class="send-btn"
-            (click)="sendMessage()"
-            [disabled]="!message || !message.trim() || isSending"
-            [class.sending]="isSending"
-          >
+  type="button"
+  class="send-btn"
+  (click)="sendMessage()"
+  [disabled]="(!message?.trim() && !selectedFile) || isSending"
+  [class.sending]="isSending"
+>
             &#10148;
           </button>
         </div>
@@ -231,89 +233,93 @@
 
       <div class="modal-body">
         <!-- Title -->
-      <div class="form-group">
-        <label>Discussion Title</label>
-
-        <input type="text" [(ngModel)]="caseRoomForm.title" placeholder="Enter discussion title" />
-      </div>
-
-      <!-- Description -->
-      <div class="form-group">
-        <label>Description</label>
-
-        <textarea
-          rows="4"
-          [(ngModel)]="caseRoomForm.description"
-          placeholder="Enter case discussion description"
-        >
-        </textarea>
-      </div>
-
-      <!-- Priority -->
-      <div class="form-group">
-        <label>Priority</label>
-
-        <select [(ngModel)]="caseRoomForm.priority">
-          <option value="CRITICAL">🔴 Critical</option>
-          <option value="URGENT">🟠 Urgent</option>
-          <option value="NORMAL">🟢 Normal</option>
-        </select>
-      </div>
-
-      <!-- Specialty Filter -->
-      <div class="form-group">
-        <label>Specialty</label>
-
-        <select [(ngModel)]="caseRoomForm.specialty" (change)="filterDoctors()">
-          <option value="">All Specialties</option>
-
-          <option *ngFor="let speciality of specialities" [value]="speciality">
-            {{ speciality }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Search -->
-      <div class="modal-search">
-        <div class="modal-search-wrap">
-          <i class="ti ti-search"></i>
+        <div class="form-group">
+          <label>Discussion Title</label>
 
           <input
             type="text"
-            placeholder="Search doctor by name or specialty..."
-            [(ngModel)]="searchTerm"
-            (input)="filterDoctors()"
+            [(ngModel)]="caseRoomForm.title"
+            placeholder="Enter discussion title"
           />
         </div>
-      </div>
 
-      <!-- Doctor List -->
-      <div class="modal-doctor-list">
-        <label class="doctor-item" *ngFor="let doctor of filteredDoctors">
-          <input
-            type="checkbox"
-            [checked]="selectedDoctorIds.includes(doctor.id)"
-            (change)="toggleDoctor($event, doctor.id)"
-          />
+        <!-- Description -->
+        <div class="form-group">
+          <label>Description</label>
 
-          <span class="check-box">
-            <i class="ti ti-check"></i>
-          </span>
+          <textarea
+            rows="4"
+            [(ngModel)]="caseRoomForm.description"
+            placeholder="Enter case discussion description"
+          >
+          </textarea>
+        </div>
 
-          <div class="doc-avatar">
-            <img [src]="doctor.profilePhotoUrl" [alt]="doctor.name" />
+        <!-- Priority -->
+        <div class="form-group">
+          <label>Priority</label>
+
+          <select [(ngModel)]="caseRoomForm.priority">
+            <option value="CRITICAL">🔴 Critical</option>
+            <option value="URGENT">🟠 Urgent</option>
+            <option value="NORMAL">🟢 Normal</option>
+          </select>
+        </div>
+
+        <!-- Specialty Filter -->
+        <div class="form-group">
+          <label>Specialty</label>
+
+          <select [(ngModel)]="caseRoomForm.specialty" (change)="filterDoctors()">
+            <option value="">All Specialties</option>
+
+            <option *ngFor="let speciality of specialities" [value]="speciality">
+              {{ speciality }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Search -->
+        <div class="modal-search">
+          <div class="modal-search-wrap">
+            <i class="ti ti-search"></i>
+
+            <input
+              type="text"
+              placeholder="Search doctor by name or specialty..."
+              [(ngModel)]="searchTerm"
+              (input)="filterDoctors()"
+            />
           </div>
+        </div>
 
-          <div class="doc-info">
-            <p class="doc-name">{{ doctor.name }}</p>
-            <p class="doc-meta">
-              {{ doctor.specialization }}
-            </p>
-          </div>
-        </label>
+        <!-- Doctor List -->
+        <div class="modal-doctor-list">
+          <label class="doctor-item" *ngFor="let doctor of filteredDoctors">
+            <input
+              type="checkbox"
+              [checked]="selectedDoctorIds.includes(doctor.id)"
+              (change)="toggleDoctor($event, doctor.id)"
+            />
 
-        <div *ngIf="filteredDoctors.length === 0" class="no-doctors">No doctors found</div>
-      </div>
+            <span class="check-box">
+              <i class="ti ti-check"></i>
+            </span>
+
+            <div class="doc-avatar">
+              <img [src]="doctor.profilePhotoUrl" [alt]="doctor.name" />
+            </div>
+
+            <div class="doc-info">
+              <p class="doc-name">{{ doctor.name }}</p>
+              <p class="doc-meta">
+                {{ doctor.specialization }}
+              </p>
+            </div>
+          </label>
+
+          <div *ngIf="filteredDoctors.length === 0" class="no-doctors">No doctors found</div>
+        </div>
       </div>
 
       <!-- Footer -->

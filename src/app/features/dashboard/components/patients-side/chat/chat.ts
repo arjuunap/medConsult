@@ -25,11 +25,6 @@ import { DoctorService } from '../../../../../core/services/doctorServices/docto
 export class Chat implements OnInit, OnDestroy {
   @ViewChild('chatBody')
   chatBody!: ElementRef;
-  user: any;
-  doctorName: any;
-  patientName: string = '';
-  specailiaztion: string = '';
-  role: string | null = '';
   consultationId!: string;
   patientId!: string;
   currentUserId: any;
@@ -53,6 +48,7 @@ export class Chat implements OnInit, OnDestroy {
     description: '',
     priority: 'NORMAL',
   };
+  selectedFile: File | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -63,7 +59,15 @@ export class Chat implements OnInit, OnDestroy {
     private doctorService: DoctorService,
   ) {}
 
-  
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.selectedFile = file;
+      console.log('Selected:', file);
+    }
+  }
+
   ngOnInit(): void {
     this.consultationId = this.route.snapshot.paramMap.get('id') || '';
 
@@ -93,18 +97,14 @@ export class Chat implements OnInit, OnDestroy {
     this.getConsultation();
   }
 
-
+  
   getConsultation() {
     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
       next: (res) => {
         console.log('resPPPPPP', res);
 
         this.patientId = res.appointment.patient.patientId;
-        this.patientName = res.appointment.patient.user.fullName;
-        this.doctorName = res.appointment.doctor.name;
-        this.specailiaztion = res.appointment.doctor.specialization;
-        
-        
+
         this.vitals = res.vitals;
         this.patientDetails = res.appointment.patient;
         this.patientUser = res.appointment.patient.user;
@@ -131,11 +131,7 @@ export class Chat implements OnInit, OnDestroy {
     this.authService.UserDetails().subscribe({
       next: (res) => {
         console.log('user:', res);
-        this.user = res;
         // assuming API returns array
-        
-        this.role = res.role;
-        console.log('Role in chat:', this.role);
 
         this.currentUserId = res.id;
         this.loadMessages();
@@ -181,10 +177,39 @@ export class Chat implements OnInit, OnDestroy {
   sendMessage() {
     console.log('Chat component initialized with consultation ID:', this.consultationId);
 
-    if (!this.message.trim()) {
+    if ((!this.message?.trim() && !this.selectedFile) || this.isSending) {
       return;
     }
     console.log(this.messages);
+
+    //FILE
+    if (this.selectedFile) {
+      this.websocketService.uploadFile(this.selectedFile, this.consultationId).subscribe({
+        next: (fileResponse) => {
+          const chatMessage = {
+            consultationId: this.consultationId,
+
+            content: this.message || this.selectedFile!.name,
+
+            messageType: 'FILE',
+
+            fileUrl: fileResponse.fileUrl,
+            fileName: fileResponse.fileName,
+          };
+
+          this.websocketService.sendMessage(chatMessage);
+
+          this.message = '';
+          this.selectedFile = null;
+        },
+
+        error: (err) => {
+          console.error(err);
+        },
+      });
+
+      return;
+    }
 
     const chatMessage = {
       consultationId: this.consultationId,

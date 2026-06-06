@@ -113,4 +113,13 @@ export class WebSocketService {
   markMessageRead(messageId: string) {
     return this.http.post(`http://localhost:8080/api/chat/message/${messageId}/read`, {});
   }
+
+  uploadFile(file: File, consultationId: string) {
+    const formData = new FormData();
+
+    formData.append('file', file);
+    formData.append('consultationId', consultationId);
+
+    return this.http.post<any>(`http://localhost:8080/api/chat/upload`, formData);
+  }
 }

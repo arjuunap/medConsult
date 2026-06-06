@@ -97,10 +97,7 @@
 
 .chat-header-badges {
   display: flex;
-  
-
-
-  gap: 18px;
+  gap: 8px;
   margin-top: 7px;
   flex-wrap: wrap;
 }
