@@ -67,6 +67,9 @@ export class Chat implements OnInit, OnDestroy {
       console.log('Selected:', file);
     }
   }
+  isImage(fileName: string): boolean {
+  return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileName ?? '');
+}
 
   ngOnInit(): void {
     this.consultationId = this.route.snapshot.paramMap.get('id') || '';
@@ -333,6 +336,7 @@ export class Chat implements OnInit, OnDestroy {
       description: this.caseRoomForm.description,
       priority: this.caseRoomForm.priority,
       doctorIds: this.selectedDoctorIds,
+      consultationId: this.consultationId,
     };
     console.log('Case Room Payload:', payload);
 

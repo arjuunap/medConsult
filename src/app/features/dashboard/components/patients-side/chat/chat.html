@@ -3,21 +3,14 @@
   <div class="chat-header">
     <button class="back-btn" (click)="goBack()" aria-label="Go back">&#8592;</button>
 
-    <!-- Left -->
     <div class="chat-header-left">
-      <!-- Avatar -->
       <div class="chat-header-avatar">PS</div>
-
-      <!-- Info -->
       <div class="chat-header-info">
         <p class="chat-header-name">Dr. Priya Sharma</p>
-
         <p class="chat-header-status">
           <span class="status-dot"></span>
           Online · General Physician
         </p>
-
-        <!-- Badges -->
         <div class="chat-header-badges">
           <span class="badge badge-status-active">✓ Active</span>
           <span class="badge badge-priority-critical">Critical</span>
@@ -26,19 +19,17 @@
       </div>
     </div>
 
-    <!-- Actions -->
     <div class="chat-header-actions">
       <button (click)="showModal()" class="header-action-btn">📁 Case</button>
-
       <button class="header-action-btn urgent">⛔ Critical</button>
     </div>
   </div>
 
-  <!-- ───────── BODY ROW (messages + right panel) ───────── -->
+  <!-- ───────── BODY ROW ───────── -->
   <div class="chat-main">
-    <!-- ── Messages + Input column ── -->
+
+    <!-- Messages + Input -->
     <div class="chat-messages-col">
-      <!-- MESSAGES -->
       <div class="chat-messages" #chatBody id="chat-body">
         <div class="date-divider">Today</div>
 
@@ -50,20 +41,39 @@
           >
             <div class="message-sender" *ngIf="!isSelf(msg)">Patient</div>
 
+            <!-- TEXT -->
             <div *ngIf="msg.messageType === 'TEXT'" class="message-box">
               {{ msg?.content }}
             </div>
 
-            <div class="message-box" *ngIf="msg.messageType === 'FILE'">
-              <a [href]="msg.fileUrl" target="_blank"> 
-                <img src="{{ msg.fileUrl }}" alt="{{ msg.fileName }}"> </a>
-              
+            <!-- FILE: image -->
+            <div
+              *ngIf="msg.messageType === 'FILE' && isImage(msg.fileName)"
+              class="message-box file-message"
+            >
+              <a [href]="msg.fileUrl" target="_blank" rel="noopener">
+                <img [src]="msg.fileUrl" [alt]="msg.fileName" loading="lazy" />
+              </a>
+            </div>
+
+            <!-- FILE: non-image (PDF, DOCX, etc.) -->
+            <div
+              *ngIf="msg.messageType === 'FILE' && !isImage(msg.fileName)"
+              class="message-box"
+              style="padding:0; background:transparent; box-shadow:none;"
+            >
+              <a [href]="msg.fileUrl" target="_blank" rel="noopener" class="file-attachment-pill">
+                <div class="file-pill-icon">📄</div>
+                <div class="file-pill-info">
+                  <p class="file-pill-name">{{ msg.fileName }}</p>
+                  <p class="file-pill-meta">Tap to open</p>
+                </div>
+              </a>
             </div>
 
             <div *ngIf="isSelf(msg)" class="message-status">
               {{ msg.isRead ? 'Seen' : 'Delivered' }}
             </div>
-
             <div class="message-time">
               {{ msg?.createdAt | date: 'hh:mm a' }}
             </div>
@@ -73,7 +83,9 @@
         <!-- Typing indicator -->
         <div class="message-row other-message" *ngIf="isTyping">
           <div class="message-sender">Patient</div>
-          <div class="message-box typing-indicator"><span></span><span></span><span></span></div>
+          <div class="message-box typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
         </div>
       </div>
 
@@ -81,15 +93,11 @@
       <div class="chat-input">
         <div class="chat-toolbar">
           <button class="toolbar-btn rx" (click)="navigateToPrescription()">💊 Prescription</button>
-
           <label class="toolbar-btn">
             📎 Attach
             <input type="file" (change)="onFileSelected($event)" hidden />
           </label>
-
-          <p *ngIf="selectedFile" class="selected-file">
-  📄 {{ selectedFile.name }}
-</p>
+          <p *ngIf="selectedFile" class="selected-file">📄 {{ selectedFile.name }}</p>
         </div>
 
         <div class="chat-input-row">
@@ -101,22 +109,18 @@
               (keyup.enter)="sendMessage()"
             />
           </div>
-
           <button
-  type="button"
-  class="send-btn"
-  (click)="sendMessage()"
-  [disabled]="(!message?.trim() && !selectedFile) || isSending"
-  [class.sending]="isSending"
->
-            &#10148;
-          </button>
+            type="button"
+            class="send-btn"
+            (click)="sendMessage()"
+            [disabled]="(!message?.trim() && !selectedFile) || isSending"
+            [class.sending]="isSending"
+          >&#10148;</button>
         </div>
       </div>
     </div>
-    <!-- /chat-messages-col -->
 
-    <!-- ── RIGHT PANEL ── -->
+    <!-- RIGHT PANEL -->
     <div class="chat-details">
       <!-- Patient -->
       <div class="details-card">
@@ -124,22 +128,18 @@
           <span class="title-icon icon-patient">👤</span>
           Patient Details
         </div>
-
         <div class="details-row">
           <span>Name</span>
           <strong>{{ patientUser.fullName }}</strong>
         </div>
-
         <div class="details-row">
           <span>Age / Gender</span>
           <strong>34 / {{ patientDetails.gender }}</strong>
         </div>
-
         <div class="details-row">
           <span>Blood Group</span>
           <strong>{{ patientDetails.bloodType }}</strong>
         </div>
-
         <div class="details-row">
           <span>Phone</span>
           <strong>{{ patientUser.phone }}</strong>
@@ -152,43 +152,35 @@
           <span class="title-icon icon-vitals">💓</span>
           Latest Vitals
         </div>
-
         <div class="vitals-grid">
           <div class="vital-box">
             <span class="vital-label">BP</span>
             <span class="vital-value">{{ vitals.bpSystolic }}/{{ vitals.bpDiastolic }}</span>
           </div>
-
           <div class="vital-box">
             <span class="vital-label">Pulse</span>
             <span class="vital-value">{{ vitals.heartRateBpm }} bpm</span>
           </div>
-
           <div class="vital-box">
             <span class="vital-label">SpO₂</span>
-            <span class="vital-value"> {{ vitals.spo2Percent }}%</span>
+            <span class="vital-value">{{ vitals.spo2Percent }}%</span>
           </div>
-
           <div class="vital-box">
             <span class="vital-label">Temp</span>
             <span class="vital-value">{{ vitals.temperatureC }}°C</span>
           </div>
-
           <div class="vital-box caution">
             <span class="vital-label">BMI</span>
             <span class="vital-value">{{ vitals.bmi }}</span>
           </div>
-
           <div class="vital-box">
             <span class="vital-label">Glucose</span>
-            <span class="vital-value"> {{ vitals.bloodGlucoseMmol }} mmol/L</span>
+            <span class="vital-value">{{ vitals.bloodGlucoseMmol }} mmol/L</span>
           </div>
-
           <div class="vital-box">
             <span class="vital-label">Height</span>
-            <span class="vital-value"> {{ vitals.heightCm }} cm</span>
+            <span class="vital-value">{{ vitals.heightCm }} cm</span>
           </div>
-
           <div class="vital-box">
             <span class="vital-label">Weight</span>
             <span class="vital-value">{{ vitals.weightKg }} kg</span>
@@ -202,63 +194,44 @@
           <span class="title-icon icon-allergy">⚠️</span>
           Allergies
         </div>
-
         <div class="allergy-tags" *ngIf="patientDetails?.allergies?.length; else noAllergies">
           <span class="allergy-tag" *ngFor="let allergy of patientDetails.allergies">
             {{ allergy }}
           </span>
         </div>
-
         <ng-template #noAllergies>
-          <span>No known allergies</span>
+          <span style="font-size:13px; color:#9ca3af;">No known allergies</span>
         </ng-template>
       </div>
     </div>
-    <!-- /chat-details -->
   </div>
 
+  <!-- ───────── MODAL ───────── -->
   <div class="modal-overlay" *ngIf="modalShow" (click)="closeModal()">
     <div class="modal" (click)="$event.stopPropagation()">
-      <!-- Header -->
       <div class="modal-header">
         <h2>
           <i class="ti ti-stethoscope"></i>
           Create Case Discussion
         </h2>
-
         <button class="modal-close-btn" (click)="closeModal()">
           <i class="ti ti-x"></i>
         </button>
       </div>
 
       <div class="modal-body">
-        <!-- Title -->
         <div class="form-group">
           <label>Discussion Title</label>
-
-          <input
-            type="text"
-            [(ngModel)]="caseRoomForm.title"
-            placeholder="Enter discussion title"
-          />
+          <input type="text" [(ngModel)]="caseRoomForm.title" placeholder="Enter discussion title" />
         </div>
 
-        <!-- Description -->
         <div class="form-group">
           <label>Description</label>
-
-          <textarea
-            rows="4"
-            [(ngModel)]="caseRoomForm.description"
-            placeholder="Enter case discussion description"
-          >
-          </textarea>
+          <textarea rows="4" [(ngModel)]="caseRoomForm.description" placeholder="Enter case discussion description"></textarea>
         </div>
 
-        <!-- Priority -->
         <div class="form-group">
           <label>Priority</label>
-
           <select [(ngModel)]="caseRoomForm.priority">
             <option value="CRITICAL">🔴 Critical</option>
             <option value="URGENT">🟠 Urgent</option>
@@ -266,34 +239,26 @@
           </select>
         </div>
 
-        <!-- Specialty Filter -->
         <div class="form-group">
           <label>Specialty</label>
-
           <select [(ngModel)]="caseRoomForm.specialty" (change)="filterDoctors()">
             <option value="">All Specialties</option>
-
-            <option *ngFor="let speciality of specialities" [value]="speciality">
-              {{ speciality }}
-            </option>
+            <option *ngFor="let speciality of specialities" [value]="speciality">{{ speciality }}</option>
           </select>
         </div>
 
-        <!-- Search -->
         <div class="modal-search">
           <div class="modal-search-wrap">
             <i class="ti ti-search"></i>
-
             <input
               type="text"
-              placeholder="Search doctor by name or specialty..."
+              placeholder="Search by name or specialty..."
               [(ngModel)]="searchTerm"
               (input)="filterDoctors()"
             />
           </div>
         </div>
 
-        <!-- Doctor List -->
         <div class="modal-doctor-list">
           <label class="doctor-item" *ngFor="let doctor of filteredDoctors">
             <input
@@ -301,34 +266,23 @@
               [checked]="selectedDoctorIds.includes(doctor.id)"
               (change)="toggleDoctor($event, doctor.id)"
             />
-
-            <span class="check-box">
-              <i class="ti ti-check"></i>
-            </span>
-
+            <span class="check-box"><i class="ti ti-check"></i></span>
             <div class="doc-avatar">
               <img [src]="doctor.profilePhotoUrl" [alt]="doctor.name" />
             </div>
-
             <div class="doc-info">
               <p class="doc-name">{{ doctor.name }}</p>
-              <p class="doc-meta">
-                {{ doctor.specialization }}
-              </p>
+              <p class="doc-meta">{{ doctor.specialization }}</p>
             </div>
           </label>
-
           <div *ngIf="filteredDoctors.length === 0" class="no-doctors">No doctors found</div>
         </div>
       </div>
 
-      <!-- Footer -->
       <div class="modal-footer">
-        <div class="modal-sel-count">{{ selectedDoctorIds.length }} doctor(s) selected</div>
-
+        <div class="modal-sel-count">{{ selectedDoctorIds.length }} selected</div>
         <div class="modal-footer-actions">
           <button class="btn-cancel" (click)="closeModal()">Cancel</button>
-
           <button
             class="btn-caseroom"
             [disabled]="selectedDoctorIds.length === 0"
@@ -340,6 +294,5 @@
         </div>
       </div>
     </div>
-    <!-- /chat-main -->
   </div>
 </div>

@@ -51,10 +51,7 @@
   <aside class="sidebar">
     <nav class="nav">
 
-      <a routerLink="/layout/home"
-        [class.active]="isActive()"
-        class="nav-item"
-        (click)="closeSidebar()">
+      <a routerLink="/layout/home" [class.active]="isActive()" class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -66,10 +63,10 @@
         <span class="active-bar"></span>
       </a>
 
-      
 
-      <a *ngIf="role === 'PATIENT'" routerLink="/layout/doctors" routerLinkActive="active"
-        class="nav-item" (click)="closeSidebar()">
+
+      <a *ngIf="role === 'PATIENT'" routerLink="/layout/doctors" routerLinkActive="active" class="nav-item"
+        (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -83,8 +80,7 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/layout/chatlist" routerLinkActive="active" 
-        class="nav-item" (click)="closeSidebar()">
+      <a routerLink="/layout/chatlist" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -96,29 +92,23 @@
       </a>
 
 
-      <a routerLink="/layout/case-room-list" *ngIf="role === 'DOCTOR'"
-   routerLinkActive="active"
-   class="nav-item"
-   (click)="closeSidebar()">
+      <a routerLink="/layout/case-room-list" *ngIf="role === 'DOCTOR'" routerLinkActive="active" class="nav-item"
+        (click)="closeSidebar()">
 
-  <span class="nav-icon">
-    <svg viewBox="0 0 24 24"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="2"
-         stroke-linecap="round"
-         stroke-linejoin="round">
-      <path d="M3 7h5l2 2h11v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
-    </svg>
-  </span>
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M3 7h5l2 2h11v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+          </svg>
+        </span>
 
-  <span class="nav-label">Case Rooms</span>
-  <span class="active-bar"></span>
+        <span class="nav-label">Case Rooms</span>
+        <span class="active-bar"></span>
 
-</a>
+      </a>
 
-      <a *ngIf="role === 'PATIENT'" routerLink="/layout/show-vitals" routerLinkActive="active"
-        class="nav-item" (click)="closeSidebar()">
+      <a *ngIf="role === 'PATIENT'" routerLink="/layout/show-vitals" routerLinkActive="active" class="nav-item"
+        (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -130,8 +120,7 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/layout/lab-results" routerLinkActive="active"
-        class="nav-item" (click)="closeSidebar()">
+      <a routerLink="/layout/lab-results" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -143,8 +132,7 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/layout/settings" routerLinkActive="active"
-        class="nav-item" (click)="closeSidebar()">
+      <a routerLink="/layout/settings" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -157,8 +145,8 @@
         <span class="active-bar"></span>
       </a>
 
-      <a *ngIf="role === 'DOCTOR'" routerLink="/layout/schedules" routerLinkActive="active"
-        class="nav-item" (click)="closeSidebar()">
+      <a *ngIf="role === 'DOCTOR'" routerLink="/layout/schedules" routerLinkActive="active" class="nav-item"
+        (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
@@ -172,8 +160,7 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/layout/appointments" routerLinkActive="active"
-        class="nav-item" (click)="closeSidebar()">
+      <a routerLink="/layout/appointments" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">

@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { WebSocketService } from '../../../../../core/services/webSocketServices/web-socket';
 import { AuthService } from '../../../../../core/services/authServices/auth';
+import { DoctorService } from '../../../../../core/services/doctorServices/doctor';
 
 @Component({
   selector: 'app-case-room-chat',
@@ -43,9 +44,12 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
     private websocketService: WebSocketService,
     private authService: AuthService,
     private cd: ChangeDetectorRef,
+    private doctorService: DoctorService,
   ) {}
 
   ngOnInit(): void {
+    // this.getConsultationDetails();  
+
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '';
 
     this.loadCurrentUser();
@@ -57,6 +61,8 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // this is a comment .
+
     this.websocketService.connect(
       token,
 
@@ -66,6 +72,20 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
       },
     );
   }
+// getConsultationDetails() {
+//     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
+//       next: (res) => {
+//         console.log('resPPPPPP', res);
+
+
+//         this.cd.detectChanges();
+//       },
+//       error: (err) => {
+//         console.log('err', err);
+//       },
+//     });
+//   }
+  
 
   loadCurrentUser(): void {
     this.authService.UserDetails().subscribe({
