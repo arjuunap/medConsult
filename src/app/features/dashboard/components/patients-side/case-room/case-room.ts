@@ -156,7 +156,7 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['/layout/case-rooms']);
+    this.router.navigate(['/layout/case-room-list']);
   }
 
   ngOnDestroy(): void {

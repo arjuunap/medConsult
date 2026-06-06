@@ -10,25 +10,33 @@
 
       <!-- Info -->
       <div class="chat-header-info">
-        <p class="chat-header-name">Dr. Priya Sharma</p>
+        <p class="chat-header-name" *ngIf="role === 'PATIENT'; else showPatient">
+  {{ doctorName }}
+</p>
 
-        <p class="chat-header-status">
+<ng-template #showPatient>
+  <p class="chat-header-name">
+    {{ patientName }}
+  </p>
+</ng-template>
+
+      <p class="chat-header-status" *ngIf="role == 'PATIENT'">
           <span class="status-dot"></span>
-          Online · General Physician
+          Online · {{ specailiaztion }}
         </p>
 
         <!-- Badges -->
         <div class="chat-header-badges">
           <span class="badge badge-status-active">✓ Active</span>
           <span class="badge badge-priority-critical">Critical</span>
-          <span class="badge badge-case">Case #CR-0041</span>
+          <!-- <span class="badge badge-case">Case #CR-0041</span> -->
         </div>
       </div>
     </div>
 
     <!-- Actions -->
-    <div class="chat-header-actions">
-      <button (click)="showModal()" class="header-action-btn">📁 Case</button>
+    <div class="chat-header-actions" *ngIf="role == 'DOCTOR'">
+      <button (click)="showModal()" class="header-action-btn" >📁 Case</button>
 
       <button class="header-action-btn urgent">⛔ Critical</button>
     </div>

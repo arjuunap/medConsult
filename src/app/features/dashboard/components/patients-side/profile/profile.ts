@@ -24,6 +24,7 @@ export class ProfileComponent {
   language = '';
   profilePhoto = '';
   selectedFile: File | null = null;
+  role: string | null = '';
   ngOnInit(): void {
     this.authService.UserDetails().subscribe({
       next: (res) => {
@@ -35,6 +36,7 @@ export class ProfileComponent {
         this.phone = res.phone || '';
         this.language = res.language || '';
         this.profilePhoto = res.profilePhoto || '';
+        this.role = res.role || '';
         this.cd.detectChanges()
       },
       error: (err) => {

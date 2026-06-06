@@ -37,6 +37,8 @@
       <div class="patient-section">
         <div class="patient-avatar">
           {{ c.patient?.firstName?.charAt(0) }}
+          <img src="{{c.patient?.user?.profilePhoto
+}}" alt="Patient Image">
         </div>
 
         <div class="patient-info">
@@ -46,7 +48,7 @@
           </div>
 
           <div class="patient-id">
-            Patient ID: {{ c.patientId }}
+            Patient : {{ c.patient?.user?.fullName }}
           </div>
         </div>
       </div>   
