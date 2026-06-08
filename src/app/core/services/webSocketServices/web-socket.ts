@@ -122,11 +122,11 @@ export class WebSocketService {
     return this.http.post<any>(`http://localhost:8080/api/chat/upload`, formData);
   }
   
-  uploadCaseFile(file: File, caseId: string) {
+  uploadCaseFile(file: File, caseRoomId: string) {
     const formData = new FormData();
 
     formData.append('file', file);
-    formData.append('caseId', caseId);
+    formData.append('caseId', caseRoomId);
 
     return this.http.post<any>(`http://localhost:8080/api/chat/case/upload`, formData);
   }

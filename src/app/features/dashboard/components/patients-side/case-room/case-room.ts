@@ -171,6 +171,17 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
       this.websocketService.uploadCaseFile(this.selectedFile, this.caseId).subscribe({
         next: (fileResponse) => {
           console.log('File Upload Response:', fileResponse);
+
+          const payload = {
+            caseId: this.caseId,
+            content: this.message,
+            fileId: fileResponse.id,
+            fileName: fileResponse.fileName,
+            fileUrl: fileResponse.fileUrl,
+            messageType: 'FILE'
+          };
+          this.websocketService.sendCaseMessage(payload);
+
           this.message = '';
           this.selectedFile = null;
         },
