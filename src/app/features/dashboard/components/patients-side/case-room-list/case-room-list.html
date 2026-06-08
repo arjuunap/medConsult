@@ -1,71 +1,55 @@
-<div class="cases-grid">
-  <div
-    *ngFor="let c of cases"
-    class="case-card"
-  >
-    <div class="card-inner" (click)="goToCaseDiscussion(c.caseId)">
+<div class="cases-grid" *ngIf="cases?.length; else noCases">
+  <div *ngFor="let c of cases" class="case-card">
+    <div class="card-inner" (click)="goToCaseDiscussion(c.consultationId,c.caseId)">
 
-      <!-- Top -->
       <div class="card-top">
         <span class="case-code">{{ c.caseCode }}</span>
-
         <div class="badges">
-          <span
-            class="badge"
-            [ngClass]="{
-              'open': c.status === 'OPEN',
-              'closed': c.status === 'CLOSED',
-              'pending': c.status === 'PENDING'
-            }"
-          >
+          <span class="badge" [ngClass]="{
+            'open': c.status === 'OPEN',
+            'closed': c.status === 'CLOSED',
+            'pending': c.status === 'PENDING'
+          }">
             {{ c.status }}
           </span>
         </div>
       </div>
 
-      <!-- Title -->
-      <div class="case-title">
-        {{ c.title }}
-      </div>
+      <div class="case-title">{{ c.title }}</div>
 
-      <!-- Description -->
-      <div class="case-description">
-        {{ c.description }}
-      </div>
+      <div class="case-description">{{ c.description }}</div>
 
-      <!-- Patient -->
       <div class="patient-section">
         <div class="patient-avatar">
           {{ c.patient?.firstName?.charAt(0) }}
-          <img src="{{c.patient?.user?.profilePhoto
-}}" alt="Patient Image">
+          <img [src]="c.patient?.user?.profilePhoto" alt="Patient Image">
         </div>
-
         <div class="patient-info">
-          <div class="patient-name">
-            {{ c.patient?.firstName }}
-            {{ c.patient?.lastName }}
-          </div>
-
-          <div class="patient-id">
-            Patient : {{ c.patient?.user?.fullName }}
-          </div>
+          <div class="patient-name">{{ c.patient?.firstName }} {{ c.patient?.lastName }}</div>
+          <div class="patient-id">Patient : {{ c.patient?.user?.fullName }}</div>
         </div>
-      </div>   
+      </div>
 
-      <!-- Footer -->
       <div class="card-footer">
         <div class="members">
           <i class="ti ti-users"></i>
           {{ c.roomMembers?.length || 0 }} Members
         </div>
-
         <div class="card-action">
-          Open Room
-          <i class="ti ti-arrow-right"></i>
+          Open Room <i class="ti ti-arrow-right"></i>
         </div>
       </div>
 
     </div>
   </div>
 </div>
+
+<ng-template #noCases>
+  <div class="empty-state">
+    <div class="empty-icon">
+      <i class="ti ti-folder-off"></i>
+    </div>
+    <p class="empty-title">No case rooms yet</p>
+    <p class="empty-sub">Case rooms created from the chat will appear here.</p>
+  </div>
+</ng-template>

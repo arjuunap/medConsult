@@ -27,7 +27,6 @@ export class WebSocketService {
       // },
 
       onConnect: () => {
-        console.log('Connected to websocket');
         if (onConnected) {
           onConnected();
         }
@@ -114,7 +113,7 @@ export class WebSocketService {
     return this.http.post(`http://localhost:8080/api/chat/message/${messageId}/read`, {});
   }
 
-  uploadFile(file: File, consultationId: string) {
+  uploadConsultationFile(file: File, consultationId: string) {
     const formData = new FormData();
 
     formData.append('file', file);

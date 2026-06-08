@@ -63,19 +63,33 @@
 
   <div class="chat-input">
 
-    <input
-      type="text"
-      [(ngModel)]="message"
-      placeholder="Type message..."
-      (keyup.enter)="sendMessage()"
-    />
+  <!-- Hidden file input -->
+  <input
+    #fileInput
+    type="file"
+    hidden
+    (change)="onFileSelected($event)"
+  />
 
-    <button
-      (click)="sendMessage()"
-    >
-      Send
-    </button>
+  <button
+    type="button"
+    class="attach-btn"
+    (click)="fileInput.click()"
+  >
+    📎
+  </button>
 
-  </div>
+  <input
+    type="text"
+    [(ngModel)]="message"
+    placeholder="Type message..."
+    (keyup.enter)="sendMessage()"
+  />
+
+  <button (click)="sendMessage()">
+    Send
+  </button>
+
+</div>
 
 </div>

@@ -860,6 +860,7 @@
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 768px) {
+  
   .chat-details      { display: none; }
   .header-action-btn { display: none; }
 

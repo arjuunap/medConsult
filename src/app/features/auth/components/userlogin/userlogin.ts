@@ -41,13 +41,10 @@ export class Userlogin {
 
     this.authService.userLogin({ email, password }).subscribe({
       next: (res: any) => {
-        console.log('Login success:', res);
         this.successMsg = 'Logged in successfully!';
         localStorage.setItem('token', res.token);
         this.router.navigate(['/layout']);
-        console.log('res token:', res.token);
         console.log('Token stored in localStorage:', localStorage.getItem('token'));
-        this.errorMsg = '';
       },
       error: (err) => {
         console.error('Login error:', err);

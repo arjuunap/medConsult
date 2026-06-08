@@ -26,20 +26,21 @@ export class CaseSidebarComponent {
   ) {}
 
   cases: any[] = []
-
+  consultationId: string = '';
   
 
   ngOnInit(): void {
     this.caseService.getCaseList().subscribe({
       next: (res: any) => {
         this.cases = res;
+        this.consultationId = res.consultationId;
         this.cd.detectChanges();
         console.log("cases", this.cases);
       }
     })
   }
-    goToCaseDiscussion(caseId: string) {
-    this.router.navigate(['/layout/case-discussion', caseId]);
+    goToCaseDiscussion(consultationId: string, caseId: string) {
+    this.router.navigate(['/layout/case-discussion', consultationId,caseId]);
   }
   
 

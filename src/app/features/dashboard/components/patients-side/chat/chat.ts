@@ -25,6 +25,11 @@ import { DoctorService } from '../../../../../core/services/doctorServices/docto
 export class Chat implements OnInit, OnDestroy {
   @ViewChild('chatBody')
   chatBody!: ElementRef;
+  user: any;
+  doctorName: any;
+  patientName: string = '';
+  specialization: string = '';
+  role: string | null = '';
   consultationId!: string;
   patientId!: string;
   currentUserId: any;
@@ -42,12 +47,14 @@ export class Chat implements OnInit, OnDestroy {
   selectedDoctorIds: string[] = [];
   searchTerm: string = '';
   specialities: string[] = [];
+  appointment: any = {};
   caseRoomForm = {
     specialty: '',
     title: '',
     description: '',
     priority: 'NORMAL',
   };
+  data: any = {};
   selectedFile: File | null = null;
 
   constructor(
@@ -57,7 +64,7 @@ export class Chat implements OnInit, OnDestroy {
     private websocketService: WebSocketService,
     private authService: AuthService,
     private doctorService: DoctorService,
-  ) {}
+  ) { }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -68,8 +75,8 @@ export class Chat implements OnInit, OnDestroy {
     }
   }
   isImage(fileName: string): boolean {
-  return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileName ?? '');
-}
+    return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileName ?? '');
+  }
 
   ngOnInit(): void {
     this.consultationId = this.route.snapshot.paramMap.get('id') || '';
@@ -100,14 +107,19 @@ export class Chat implements OnInit, OnDestroy {
     this.getConsultation();
   }
 
-  
+
   getConsultation() {
     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
       next: (res) => {
         console.log('resPPPPPP', res);
+        this.data = res;
 
         this.patientId = res.appointment.patient.patientId;
+        this.appointment = res.appointment;
 
+        this.patientName = res.appointment.patient.user.fullName;
+        this.doctorName = res.appointment.doctor.name;
+        this.specialization = res.appointment.doctor.specialization;
         this.vitals = res.vitals;
         this.patientDetails = res.appointment.patient;
         this.patientUser = res.appointment.patient.user;
@@ -133,7 +145,7 @@ export class Chat implements OnInit, OnDestroy {
   loadUser(): void {
     this.authService.UserDetails().subscribe({
       next: (res) => {
-        console.log('user:', res);
+        this.role = res.role;
         // assuming API returns array
 
         this.currentUserId = res.id;
@@ -156,7 +168,7 @@ export class Chat implements OnInit, OnDestroy {
 
           self: msg.senderId === this.currentUserId,
         }));
-        console.log(res);
+        console.log("messages:", res);
 
         this.markConsultationAsRead(this.consultationId);
 
@@ -173,7 +185,7 @@ export class Chat implements OnInit, OnDestroy {
 
   markConsultationAsRead(consultationId: string) {
     this.websocketService.markConsultationAsRead(consultationId).subscribe({
-      next: () => console.log('Messages marked as read'),
+      // next: () => console.log('Messages marked as read'),
     });
   }
 
@@ -187,7 +199,7 @@ export class Chat implements OnInit, OnDestroy {
 
     //FILE
     if (this.selectedFile) {
-      this.websocketService.uploadFile(this.selectedFile, this.consultationId).subscribe({
+      this.websocketService.uploadConsultationFile(this.selectedFile, this.consultationId).subscribe({
         next: (fileResponse) => {
           const chatMessage = {
             consultationId: this.consultationId,
@@ -344,12 +356,10 @@ export class Chat implements OnInit, OnDestroy {
       next: (res: any) => {
         console.log('Case room created: ', res);
 
-        // THIS IS YOUR GROUP CHAT ROOM ID
         const caseId = res.caseId;
 
         this.closeModal();
 
-        // navigate to chat
         this.goToCaseDiscussion(caseId);
 
         this.cd.detectChanges();
@@ -358,5 +368,24 @@ export class Chat implements OnInit, OnDestroy {
         console.error('Create room error:', err);
       },
     });
+  }
+
+
+  calculateAge(dateOfBirth: string): number {
+    const dob = new Date(dateOfBirth);
+    const today = new Date();
+
+    let age = today.getFullYear() - dob.getFullYear();
+
+    const monthDiff = today.getMonth() - dob.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < dob.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
   }
 }

@@ -84,7 +84,10 @@ export const routes: Routes = [
       { path: 'chatlist', component: ConsultationList },
       { path: 'prescription/:id', component: PrescriptionForm },
       {path : 'case-room-list', component : CaseSidebarComponent},
-      {path : 'case-discussion/:caseId',component : CaseRoomChatComponent},
+      {
+  path: 'case-discussion/:consultationId/:caseId',
+  component: CaseRoomChatComponent
+},
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },

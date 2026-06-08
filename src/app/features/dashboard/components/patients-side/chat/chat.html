@@ -6,14 +6,21 @@
     <div class="chat-header-left">
       <div class="chat-header-avatar">PS</div>
       <div class="chat-header-info">
-        <p class="chat-header-name">Dr. Priya Sharma</p>
-        <p class="chat-header-status">
+        <p class="chat-header-name" *ngIf="role === 'PATIENT'; else showPatient">
+          {{ doctorName }}
+        </p>
+        <ng-template #showPatient>
+          <p class="chat-header-name">
+            {{ patientName }}
+          </p>
+        </ng-template>
+        <p class="chat-header-status" *ngIf="role == 'PATIENT'">
           <span class="status-dot"></span>
-          Online · General Physician
+          Online · {{ specialization }}
         </p>
         <div class="chat-header-badges">
           <span class="badge badge-status-active">✓ Active</span>
-          <span class="badge badge-priority-critical">Critical</span>
+          <span class="badge badge-priority-critical"> {{ appointment.priority }}</span>
           <span class="badge badge-case">Case #CR-0041</span>
         </div>
       </div>
@@ -34,11 +41,7 @@
         <div class="date-divider">Today</div>
 
         <ng-container *ngFor="let msg of messages">
-          <div
-            class="message-row"
-            [class.self-message]="isSelf(msg)"
-            [class.other-message]="!isSelf(msg)"
-          >
+          <div class="message-row" [class.self-message]="isSelf(msg)" [class.other-message]="!isSelf(msg)">
             <div class="message-sender" *ngIf="!isSelf(msg)">Patient</div>
 
             <!-- TEXT -->
@@ -47,21 +50,15 @@
             </div>
 
             <!-- FILE: image -->
-            <div
-              *ngIf="msg.messageType === 'FILE' && isImage(msg.fileName)"
-              class="message-box file-message"
-            >
+            <div *ngIf="msg.messageType === 'FILE' && isImage(msg.fileName)" class="message-box file-message">
               <a [href]="msg.fileUrl" target="_blank" rel="noopener">
                 <img [src]="msg.fileUrl" [alt]="msg.fileName" loading="lazy" />
               </a>
             </div>
 
             <!-- FILE: non-image (PDF, DOCX, etc.) -->
-            <div
-              *ngIf="msg.messageType === 'FILE' && !isImage(msg.fileName)"
-              class="message-box"
-              style="padding:0; background:transparent; box-shadow:none;"
-            >
+            <div *ngIf="msg.messageType === 'FILE' && !isImage(msg.fileName)" class="message-box"
+              style="padding:0; background:transparent; box-shadow:none;">
               <a [href]="msg.fileUrl" target="_blank" rel="noopener" class="file-attachment-pill">
                 <div class="file-pill-icon">📄</div>
                 <div class="file-pill-info">
@@ -102,20 +99,10 @@
 
         <div class="chat-input-row">
           <div class="chat-input-wrap">
-            <input
-              type="text"
-              [(ngModel)]="message"
-              placeholder="Type a message..."
-              (keyup.enter)="sendMessage()"
-            />
+            <input type="text" [(ngModel)]="message" placeholder="Type a message..." (keyup.enter)="sendMessage()" />
           </div>
-          <button
-            type="button"
-            class="send-btn"
-            (click)="sendMessage()"
-            [disabled]="(!message?.trim() && !selectedFile) || isSending"
-            [class.sending]="isSending"
-          >&#10148;</button>
+          <button type="button" class="send-btn" (click)="sendMessage()"
+            [disabled]="(!message?.trim() && !selectedFile) || isSending" [class.sending]="isSending">&#10148;</button>
         </div>
       </div>
     </div>
@@ -134,7 +121,7 @@
         </div>
         <div class="details-row">
           <span>Age / Gender</span>
-          <strong>34 / {{ patientDetails.gender }}</strong>
+          <strong>{{ calculateAge(patientDetails.dateOfBirth) }}/ {{ patientDetails.gender }}</strong>
         </div>
         <div class="details-row">
           <span>Blood Group</span>
@@ -227,7 +214,8 @@
 
         <div class="form-group">
           <label>Description</label>
-          <textarea rows="4" [(ngModel)]="caseRoomForm.description" placeholder="Enter case discussion description"></textarea>
+          <textarea rows="4" [(ngModel)]="caseRoomForm.description"
+            placeholder="Enter case discussion description"></textarea>
         </div>
 
         <div class="form-group">
@@ -250,22 +238,15 @@
         <div class="modal-search">
           <div class="modal-search-wrap">
             <i class="ti ti-search"></i>
-            <input
-              type="text"
-              placeholder="Search by name or specialty..."
-              [(ngModel)]="searchTerm"
-              (input)="filterDoctors()"
-            />
+            <input type="text" placeholder="Search by name or specialty..." [(ngModel)]="searchTerm"
+              (input)="filterDoctors()" />
           </div>
         </div>
 
         <div class="modal-doctor-list">
           <label class="doctor-item" *ngFor="let doctor of filteredDoctors">
-            <input
-              type="checkbox"
-              [checked]="selectedDoctorIds.includes(doctor.id)"
-              (change)="toggleDoctor($event, doctor.id)"
-            />
+            <input type="checkbox" [checked]="selectedDoctorIds.includes(doctor.id)"
+              (change)="toggleDoctor($event, doctor.id)" />
             <span class="check-box"><i class="ti ti-check"></i></span>
             <div class="doc-avatar">
               <img [src]="doctor.profilePhotoUrl" [alt]="doctor.name" />
@@ -283,11 +264,7 @@
         <div class="modal-sel-count">{{ selectedDoctorIds.length }} selected</div>
         <div class="modal-footer-actions">
           <button class="btn-cancel" (click)="closeModal()">Cancel</button>
-          <button
-            class="btn-caseroom"
-            [disabled]="selectedDoctorIds.length === 0"
-            (click)="createCaseRoom()"
-          >
+          <button class="btn-caseroom" [disabled]="selectedDoctorIds.length === 0" (click)="createCaseRoom()">
             <i class="ti ti-plus"></i>
             Create Case Room
           </button>

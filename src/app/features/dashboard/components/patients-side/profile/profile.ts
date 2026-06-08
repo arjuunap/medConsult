@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../../core/services/authServices/auth';
 import { Router } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +15,9 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent {
   constructor(private authService: AuthService, private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private toastr: ToastrService
+
   ) { }
 
   // ─── Fields ───
@@ -88,7 +92,7 @@ export class ProfileComponent {
     // multipart form data for file upload
     const formData = new FormData();
     formData.append(
-      'data',new Blob(
+      'data', new Blob(
         [JSON.stringify(profileData)],
         {
           type: 'application/json'
@@ -105,15 +109,26 @@ export class ProfileComponent {
 
     console.log('Updating profile...');
 
-    console.log('Saving profile:', profileData);``
+    console.log('Saving profile:', profileData); ``
     this.authService.updateProfile(formData).subscribe({
       next: (res) => {
-        alert('Profile updated successfully!');
+
+        this.toastr.success(
+          'Your profile has been updated successfully.',
+          'Success'
+        );
+
         this.cd.detectChanges();
       },
+
       error: (err) => {
+
         console.error('Error updating profile', err);
-        alert('Failed to update profile. Please try again.');
+
+        this.toastr.error(
+          'Failed to update profile. Please try again.',
+          'Error'
+        );
       }
     });
   }
