@@ -47,24 +47,24 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private cd: ChangeDetectorRef,
     private doctorService: DoctorService,
-  ) {}
+  ) { }
 
   onFileSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
+    const input = event.target as HTMLInputElement;
 
-  if (input.files && input.files.length > 0) {
-    this.selectedFile = input.files[0];
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
 
-    console.log('Selected File:', this.selectedFile);
+      console.log('Selected File:', this.selectedFile);
+    }
   }
-}
 
   ngOnInit(): void {
-    
+
 
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '';
     this.consultationId = this.route.snapshot.paramMap.get('consultationId') || '';
-    this.getConsultationDetails();  
+    this.getConsultationDetails();
     this.loadCurrentUser();
 
     const token = localStorage.getItem('token');
@@ -85,7 +85,7 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
       },
     );
   }
-getConsultationDetails() {
+  getConsultationDetails() {
     this.doctorService.getConsultationDetails(this.consultationId).subscribe({
       next: (res) => {
         console.log('resPPPPPPrrr', res);
@@ -98,7 +98,7 @@ getConsultationDetails() {
       },
     });
   }
-  
+
 
   loadCurrentUser(): void {
     this.authService.UserDetails().subscribe({
@@ -157,30 +157,40 @@ getConsultationDetails() {
   }
 
   sendMessage(): void {
-  if (!this.message.trim() && !this.selectedFile) {
-    return;
+    if (!this.message.trim() && !this.selectedFile) {
+      return;
+    }
+
+    const payload: any = {
+      caseId: this.caseId,
+      content: this.message,
+    };
+
+    // If file selected
+    if (this.selectedFile) {
+      this.websocketService.uploadCaseFile(this.selectedFile, this.caseId).subscribe({
+        next: (fileResponse) => {
+          console.log('File Upload Response:', fileResponse);
+          this.message = '';
+          this.selectedFile = null;
+        },
+
+        error: (err) => {
+          console.error(err);
+        },
+      });
+
+      return;
+    }
+
+    this.websocketService.sendCaseMessage(payload);
+    console.log('Sent Message Payload:', payload);
+
+    this.message = '';
+    this.selectedFile = null;
+
+    this.cd.detectChanges();
   }
-
-  const payload: any = {
-    caseId: this.caseId,
-    content: this.message,
-  };
-
-  // If file selected
-  if (this.selectedFile) {
-    payload.file = this.selectedFile;
-    payload.fileName = this.selectedFile.name;
-    payload.fileType = this.selectedFile.type;
-  }
-
-  this.websocketService.sendCaseMessage(payload);
-  console.log('Sent Message Payload:', payload);
-
-  this.message = '';
-  this.selectedFile = null;
-
-  this.cd.detectChanges();
-}
 
   isSelf(message: any): boolean {
     return message.senderId === this.currentUserId;

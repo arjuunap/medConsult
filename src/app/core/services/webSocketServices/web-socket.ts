@@ -10,7 +10,7 @@ export class WebSocketService {
   private stompClient!: Client;
   private apiUrl = 'http://localhost:8080/ws';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   connect(token: string, onConnected?: () => void) {
     this.stompClient = new Client({
@@ -120,5 +120,14 @@ export class WebSocketService {
     formData.append('consultationId', consultationId);
 
     return this.http.post<any>(`http://localhost:8080/api/chat/upload`, formData);
+  }
+  
+  uploadCaseFile(file: File, caseId: string) {
+    const formData = new FormData();
+
+    formData.append('file', file);
+    formData.append('caseId', caseId);
+
+    return this.http.post<any>(`http://localhost:8080/api/chat/case/upload`, formData);
   }
 }
