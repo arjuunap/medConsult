@@ -129,5 +129,10 @@ export class WebSocketService {
     formData.append('caseId', caseRoomId);
 
     return this.http.post<any>(`http://localhost:8080/api/chat/case/upload`, formData);
+
+  }
+
+  getCaseFiles(caseRoomId: string) {
+    return this.http.get<any[]>(`http://localhost:8080/api/consultation/caseroom/files/${caseRoomId}`);
   }
 }

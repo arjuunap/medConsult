@@ -25,19 +25,17 @@ import { DoctorService } from '../../../../../core/services/doctorServices/docto
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaseRoomChatComponent implements OnInit, OnDestroy {
-  @ViewChild('chatBody')
-  chatBody!: ElementRef;
+  @ViewChild('chatBody') chatBody!: ElementRef;
 
   caseId: string = '';
-
-  currentUserId: string = '';
-
-  message: string = '';
-
-  messages: any[] = [];
-
-  isLoading: boolean = false;
   consultationId: string = '';
+  currentUserId: string = '';
+  
+  message: string = '';
+  messages: any[] = [];
+  
+  isSending: boolean = false;
+  isLoading: boolean = false;
   selectedFile: File | null = null;
 
   constructor(
@@ -47,164 +45,147 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private cd: ChangeDetectorRef,
     private doctorService: DoctorService,
-  ) { }
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-
-      console.log('Selected File:', this.selectedFile);
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
-
-
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '';
     this.consultationId = this.route.snapshot.paramMap.get('consultationId') || '';
+    
     this.getConsultationDetails();
     this.loadCurrentUser();
 
-    const token = localStorage.getItem('token');
+    // Fetch initial case files
+    this.websocketService.getCaseFiles(this.caseId).subscribe({
+      next: (files) => console.log('Case Files:', files),
+      error: (err) => console.error('Error fetching case files:', err),
+    });
 
+    const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
       return;
     }
 
-    // this is a comment .
-
-    this.websocketService.connect(
-      token,
-
-      () => {
-        this.subscribeToRoom();
-        this.loadOldMessages();
-      },
-    );
-  }
-  getConsultationDetails() {
-    this.doctorService.getConsultationDetails(this.consultationId).subscribe({
-      next: (res) => {
-        console.log('resPPPPPPrrr', res);
-
-
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        console.log('err', err);
-      },
+    this.websocketService.connect(token, () => {
+      this.subscribeToRoom();
+      this.loadOldMessages();
     });
   }
 
+  getConsultationDetails() {
+    this.doctorService.getConsultationDetails(this.consultationId).subscribe({
+      next: (res) => {
+        this.cd.detectChanges();
+      },
+      error: (err) => console.error('Error fetching consultation:', err),
+    });
+  }
 
   loadCurrentUser(): void {
     this.authService.UserDetails().subscribe({
       next: (res: any) => {
-        console.log('dfff', res);
         this.currentUserId = res.id;
         this.cd.detectChanges();
       },
-
-      error: (err) => {
-        console.error(err);
-      },
+      error: (err) => console.error(err),
     });
   }
 
   subscribeToRoom(): void {
     this.websocketService.subscribeToCaseRoom(
       this.caseId,
-
       (message: any) => {
-        console.log('Incoming Message:', message);
-
-        message.self = message.authorId === this.currentUserId;
-
-        console.log('user idd ', this.currentUserId);
-
+        // Standardize the self check. Ensure we use senderId consistently based on your logs.
+        message.self = message.senderId === this.currentUserId;
         this.messages.push(message);
-
         this.cd.detectChanges();
-
         this.scrollToBottom();
       },
     );
   }
 
   loadOldMessages(): void {
-    this.websocketService.getCaseRoomMessages(this.caseId).subscribe({
-      next: (res: any) => {
-        this.messages = res.map((msg: any) => ({
-          ...msg,
+  this.websocketService.getCaseRoomMessages(this.caseId).subscribe({
+    // Change any[] to any here 👇
+    next: (res: any) => {
+      this.messages = res.map((msg: any) => ({
+        ...msg,
+        self: msg.senderId === this.currentUserId,
+      }));
+      this.cd.detectChanges();
+      this.scrollToBottom();
+    },
+    error: (err) => console.error(err),
+  });
+}
 
-          self: msg.authorId === this.currentUserId,
-        }));
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
 
-        console.log('Loaded Messages:', this.messages);
-
-        this.cd.detectChanges();
-
-        this.scrollToBottom();
-      },
-
-      error: (err) => {
-        console.error(err);
-      },
-    });
+  removeSelectedFile(): void {
+    this.selectedFile = null;
   }
 
   sendMessage(): void {
-    if (!this.message.trim() && !this.selectedFile) {
-      return;
-    }
+    if (!this.message.trim() && !this.selectedFile) return;
 
-    const payload: any = {
-      caseId: this.caseId,
-      content: this.message,
-    };
+    this.isSending = true;
 
-    // If file selected
+    // File Upload Scenario
     if (this.selectedFile) {
       this.websocketService.uploadCaseFile(this.selectedFile, this.caseId).subscribe({
         next: (fileResponse) => {
-          console.log('File Upload Response:', fileResponse);
-
           const payload = {
             caseId: this.caseId,
-            content: this.message,
-            fileId: fileResponse.id,
-            fileName: fileResponse.fileName,
+            content: fileResponse.fileUrl,
+            fileId: fileResponse.id || fileResponse.fileId,
+            fileName: fileResponse.fileName || this.selectedFile?.name,
             fileUrl: fileResponse.fileUrl,
+            mimeType: fileResponse.mimeType || this.selectedFile?.type,
             messageType: 'FILE'
           };
+          
           this.websocketService.sendCaseMessage(payload);
-
-          this.message = '';
-          this.selectedFile = null;
+          this.resetInput();
         },
-
         error: (err) => {
-          console.error(err);
+          console.error('File upload failed:', err);
+          this.isSending = false;
         },
       });
-
       return;
     }
 
-    this.websocketService.sendCaseMessage(payload);
-    console.log('Sent Message Payload:', payload);
+    // Text Message Scenario
+    const payload = {
+      caseId: this.caseId,
+      content: this.message,
+      messageType: 'TEXT'
+    };
 
+    this.websocketService.sendCaseMessage(payload);
+    this.resetInput();
+  }
+
+  private resetInput(): void {
     this.message = '';
     this.selectedFile = null;
-
+    this.isSending = false;
     this.cd.detectChanges();
   }
 
-  isSelf(message: any): boolean {
-    return message.senderId === this.currentUserId;
+  // Helper to determine if a file is an image or document
+  isImageFile(msg: any): boolean {
+    if (msg.mimeType) {
+      return msg.mimeType.startsWith('image/');
+    }
+    // Fallback regex if MIME type isn't provided
+    const url = msg.fileUrl || msg.content || '';
+    return !!url.match(/\.(jpeg|jpg|gif|png|webp)$/i);
   }
 
   scrollToBottom(): void {
@@ -223,5 +204,19 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.websocketService.disconnect();
+  }
+
+  // Add these inside your CaseRoomChatComponent class
+
+  isImage(content: string): boolean {
+    if (!content) return false;
+    // Checks if the string ends with an image extension
+    return !!content.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i);
+  }
+
+  isDocument(content: string): boolean {
+    if (!content) return false;
+    // Checks if the string ends with a document extension
+    return !!content.match(/\.(pdf|doc|docx|txt|xls|csv)(\?.*)?$/i);
   }
 }
