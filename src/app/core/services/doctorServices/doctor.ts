@@ -50,6 +50,7 @@ export class DoctorService {
   schedules(): Observable<any> {
     return this.http.get(`${this.apiUrl}/doctors/my-schedules`);
   }
+  
   deleteSchedule(scheduleId: string) {
     return this.http.delete(
       `${this.apiUrl}/doctors/schedule/delete/${scheduleId}`,

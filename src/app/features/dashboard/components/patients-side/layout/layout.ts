@@ -53,6 +53,7 @@ closeSidebar() {
     this.authService.UserDetails().subscribe({
       next: (res) => {
         this.user = res; 
+        this.user = res;
 
         this.role = res.role;
         this.cd.detectChanges();

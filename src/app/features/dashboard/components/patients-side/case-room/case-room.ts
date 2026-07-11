@@ -72,14 +72,24 @@ export class CaseRoomChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  getConsultationDetails() {
-    this.doctorService.getConsultationDetails(this.consultationId).subscribe({
-      next: (res) => {
-        this.cd.detectChanges();
-      },
-      error: (err) => console.error('Error fetching consultation:', err),
-    });
-  }
+  consultationDetails: any | null = null;
+isLoadingDetails = false;
+
+getConsultationDetails() {
+  this.isLoadingDetails = true;
+  this.doctorService.getConsultationDetails(this.consultationId).subscribe({
+    next: (res: any) => {
+      this.consultationDetails = res;
+      this.isLoadingDetails = false;
+      this.cd.detectChanges();
+    },
+    error: (err) => {
+      console.error('Error fetching consultation:', err);
+      this.isLoadingDetails = false;
+      this.cd.detectChanges();
+    },
+  });
+}
 
   loadCurrentUser(): void {
     this.authService.UserDetails().subscribe({

@@ -62,7 +62,7 @@ export const routes: Routes = [
     path: 'layout',
     component: LayoutComponent,
     canActivate: [authGuard],
-    
+
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'patient-dashboard', component: PatientDashboard },
@@ -83,11 +83,11 @@ export const routes: Routes = [
       { path: 'add-schedule', component: Addschedule },
       { path: 'chatlist', component: ConsultationList },
       { path: 'prescription/:id', component: PrescriptionForm },
-      {path : 'case-room-list', component : CaseSidebarComponent},
+      { path: 'case-room-list', component: CaseSidebarComponent },
       {
-  path: 'case-discussion/:consultationId/:caseId',
-  component: CaseRoomChatComponent
-},
+        path: 'case-discussion/:consultationId/:caseId',
+        component: CaseRoomChatComponent
+      },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },

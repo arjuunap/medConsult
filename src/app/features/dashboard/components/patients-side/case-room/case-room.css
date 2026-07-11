@@ -272,3 +272,147 @@
   50% { transform: scale(0.95); }
   100% { transform: scale(1); }
 }
+
+
+/* Layout wrapper */
+.consultation-layout {
+  display: flex;
+  gap: 16px;
+  height: 85vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.consultation-layout .chat-container {
+  flex: 1.4;
+  height: 100%;
+  margin: 0;
+}
+
+/* Patient details panel */
+.patient-details-panel {
+  flex: 1;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.panel-header {
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #10b981;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f3f5;
+  font-size: 13px;
+}
+
+.detail-label {
+  color: #868e96;
+}
+
+.detail-value {
+  color: #212529;
+  font-weight: 500;
+  text-align: right;
+}
+
+.detail-value.mono {
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.vital-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vital-label {
+  font-size: 11px;
+  color: #868e96;
+}
+
+.vital-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.prescription-item {
+  padding: 10px 12px;
+  background-color: #d1fae5;
+  color: #059669;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.empty-state {
+  color: #adb5bd;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.panel-loading {
+  padding: 40px 20px;
+  text-align: center;
+  color: #868e96;
+  font-size: 13px;
+}
+
+/* Responsive: stack on smaller screens */
+@media (max-width: 900px) {
+  .consultation-layout {
+    flex-direction: column;
+    height: auto;
+  }
+  .consultation-layout .chat-container,
+  .patient-details-panel {
+    height: 70vh;
+  }
+}

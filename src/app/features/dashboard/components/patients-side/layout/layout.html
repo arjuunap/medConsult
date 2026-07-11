@@ -31,6 +31,7 @@
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </ng-template>
+        
       </button>
 
       <!-- Logout Button -->
@@ -132,7 +133,7 @@
         <span class="active-bar"></span>
       </a>
 
-      <a routerLink="/layout/settings" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
+      <a *ngIf="role === 'PATIENT'" routerLink="/layout/settings" routerLinkActive="active" class="nav-item" (click)="closeSidebar()">
         <span class="nav-icon">
   <svg
     viewBox="0 0 24 24"
